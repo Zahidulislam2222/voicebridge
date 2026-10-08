@@ -30,4 +30,5 @@ It changes documentation and repository metadata; it does not change deployed co
     canonical replacement, and stored under this project's my-project-view/.
 
 If no matching existing Google Doc can be found, PUB11/PUB12 remain unresolved;
-publication does not authorize creating a replacement document.
+creation requires a separate explicit instruction. The owner supplied that
+instruction after the native document search returned no matching project file.
