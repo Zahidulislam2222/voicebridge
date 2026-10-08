@@ -26,7 +26,9 @@ installs pinned scanners; it is a backstop rather than a substitute for local ho
 The backend suite loads `.local/core-engine/.env`. Configure an isolated loopback
 PostgreSQL administrator allowed to create/drop generated `voicebridge_test_`
 databases; never point it at production. Tests replace service credentials and
-reject external sockets. CI creates its own PostgreSQL service and safe settings
+reject external sockets. Process-crash follow-up tests also require a local capture
+SMTP service on the host/port configured in that test environment; it must not relay
+to real recipients. CI creates isolated PostgreSQL and digest-pinned Mailpit services and safe settings
 from `.env.example`; real provider execution remains disabled.
 
 Exercise actual HTTP/CLI/browser sign-in/CSRF/logout, booking retries/conflicts,
