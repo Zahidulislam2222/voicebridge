@@ -1,0 +1,98 @@
+{
+  "title": "Business engine",
+  "subtitle": "Persistent workspace \u00b7 synthetic customers \u00b7 calls disabled",
+  "connect": "Connect local engine",
+  "credential": "Local operator credential",
+  "connectionHint": "Use the local operator credential from your private project recovery file. It stays in memory for this tab.",
+  "disabled": "The local engine URL is not configured for this frontend build.",
+  "disconnect": "Disconnect",
+  "refresh": "Refresh records",
+  "navigation": [
+    {
+      "id": "overview",
+      "label": "Overview"
+    },
+    {
+      "id": "appointments",
+      "label": "Appointments"
+    },
+    {
+      "id": "contacts",
+      "label": "Contacts"
+    },
+    {
+      "id": "calls",
+      "label": "Calls"
+    },
+    {
+      "id": "automations",
+      "label": "Automations"
+    },
+    {
+      "id": "knowledge",
+      "label": "Knowledge"
+    },
+    {
+      "id": "agent",
+      "label": "Agent"
+    },
+    {
+      "id": "integrations",
+      "label": "Integrations"
+    },
+    {
+      "id": "evaluations",
+      "label": "Evaluations"
+    },
+    {
+      "id": "audit",
+      "label": "Audit"
+    }
+  ],
+  "booking": "Request appointment",
+  "confirm": "I confirm these appointment details",
+  "pending": "Request accepted. Check the booking status before treating it as confirmed.",
+  "saved": "Saved and verified through the engine.",
+  "bookingConfirmed": "Your appointment is confirmed by the calendar.",
+  "bookingRescheduled": "Your appointment has been rescheduled by the calendar.",
+  "bookingCancelled": "Your appointment has been cancelled by the calendar.",
+  "cancel": "Cancel appointment",
+  "cancelPrompt": "Cancel this appointment?",
+  "reschedule": "Reschedule",
+  "revision": "Revision",
+  "reconcile": "Reconcile",
+  "retry": "Retry known failure",
+  "empty": "No records yet.",
+  "save": "Save",
+  "remove": "Remove document",
+  "removePrompt": "Remove this document from active answers?",
+  "evaluate": "Run business evaluations",
+  "acoustic": "Real voice and listening tests remain pending.",
+  "query": "Ask approved knowledge",
+  "unavailable": "Engine connection failed. Previously displayed records may be stale.",
+  "back": "Back to presentation",
+  "fieldLabels": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "service": "Service",
+    "start": "Start with timezone offset",
+    "documentName": "Document name",
+    "approvedText": "Approved text",
+    "greeting": "Greeting",
+    "handoff": "Handoff",
+    "voice_id": "Voice"
+  },
+  "startPlaceholder": "YYYY-MM-DDTHH:MM:SS\u00b1HH:MM",
+  "chooseService": "Choose a service",
+  "newStart": "New start with timezone offset",
+  "attempts": "Attempts",
+  "passed": "Passed",
+  "needsReview": "Needs review",
+  "requestFailed": "Request failed",
+  "connectionDisabled": "Local engine connection is not configured.",
+  "evaluationFixtures": "Synthetic evaluation cleanup",
+  "cleanup": "Verify fixture cancellation",
+  "login": "Sign in with Google",
+  "logout": "Sign out"
+}

@@ -1,0 +1,63 @@
+# Private recovery, narrative, and project memory
+/CREDENTIALS.md
+/CREDENTIALS.md.tmp
+/PROJECT-DOSSIER.md
+/memory/
+
+# Private machine instructions, installed agent tooling and document exports
+/AGENTS.md
+/CLAUDE.md
+/.claude/
+/my-project-view/
+
+# Local credentials; safe examples remain visible to Git and scanners
+.env
+.env.*
+!.env.example
+!.env.*.example
+/credentials/
+/secrets/
+*.pem
+*.key
+*.p12
+*.pfx
+*.license
+/licenses/generated/
+
+# Personal manual tooling; keep genuine CI tests trackable
+/manual-tests/
+
+# Private agent settings and browser/live-server artifacts
+.claude/settings.local.json
+/.local/
+/_live_server/
+
+# Local dependency, build, and cache output
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+.next/
+coverage/
+*.tsbuildinfo
+/VoiceBridge-preview.html
+/VoiceBridge-preview.html.tmp
+*.log
+
+# Operating-system clutter
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Browser snapshots may contain private page content
+/.playwright-mcp/
+
+*.egg-info/

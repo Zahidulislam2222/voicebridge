@@ -1,0 +1,28 @@
+{
+  "name": "voicebridge",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/web"
+  ],
+  "engines": {
+    "node": ">=24.15.0 <25"
+  },
+  "scripts": {
+    "dev": "npm run dev --workspace @voicebridge/web",
+    "build": "npm run build --workspace @voicebridge/web",
+    "typecheck": "npm run typecheck --workspace @voicebridge/web",
+    "test": "npm run test --workspace @voicebridge/web",
+    "test:presentation": "node --test --test-isolation=none tools/presentation-preview.test.mjs",
+    "lint": "npm run lint --workspace @voicebridge/web",
+    "preview": "npm run preview --workspace @voicebridge/web",
+    "presentation": "npm run build && node tools/create-presentation-preview.mjs",
+    "format": "prettier --write apps/web/src apps/web/vite.config.ts apps/web/eslint.config.js tools config package.json apps/web/package.json apps/web/tsconfig.json",
+    "format:check": "prettier --check apps/web/src apps/web/vite.config.ts apps/web/eslint.config.js tools config package.json apps/web/package.json apps/web/tsconfig.json",
+    "test:release": "node --test --test-isolation=none tools/frontend-release.test.mjs",
+    "test:core-contracts": "node --test --test-isolation=none tools/core-contracts.test.mjs"
+  },
+  "devDependencies": {
+    "openapi-typescript": "7.13.0"
+  }
+}

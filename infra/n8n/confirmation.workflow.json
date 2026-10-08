@@ -1,0 +1,173 @@
+{
+  "id": "voicebridgeConfirmation",
+  "name": "VoiceBridge local confirmation capture",
+  "active": false,
+  "nodes": [
+    {
+      "id": "webhook",
+      "name": "Confirmed booking",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "__WEBHOOK_PATH__",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "voicebridgeLocalWebhook",
+          "name": "VoiceBridge Local Webhook"
+        }
+      },
+      "webhookId": "voicebridge-local-confirmation"
+    },
+    {
+      "id": "guard",
+      "name": "Synthetic recipient only",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "invalid-domain",
+              "leftValue": "={{ new RegExp(\"^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\\\\.)+[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?$\").test($json.body.email) ? $json.body.email : \"\" }}",
+              "rightValue": ".invalid",
+              "operator": {
+                "type": "string",
+                "operation": "endsWith"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "email",
+      "name": "Capture confirmation",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        440,
+        -80
+      ],
+      "parameters": {
+        "fromEmail": "__SMTP_FROM__",
+        "toEmail": "={{ $json.body.email }}",
+        "subject": "={{ $json.body.subject }}",
+        "emailFormat": "text",
+        "text": "={{ $json.body.body }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "credentials": {
+        "smtp": {
+          "id": "voicebridgeLocalSmtp",
+          "name": "VoiceBridge Local SMTP Capture"
+        }
+      }
+    },
+    {
+      "id": "receipt",
+      "name": "Return SMTP receipt",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        660,
+        -80
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { accepted: true, operation_key: $('Confirmed booking').item.json.body.operation_key, receipt: $json.messageId } }}",
+        "options": {
+          "responseCode": 200
+        }
+      }
+    },
+    {
+      "id": "reject",
+      "name": "Reject external recipient",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        440,
+        140
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"accepted\":false}",
+        "options": {
+          "responseCode": 403
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Confirmed booking": {
+      "main": [
+        [
+          {
+            "node": "Synthetic recipient only",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Synthetic recipient only": {
+      "main": [
+        [
+          {
+            "node": "Capture confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Reject external recipient",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Capture confirmation": {
+      "main": [
+        [
+          {
+            "node": "Return SMTP receipt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "none",
+    "saveDataSuccessExecution": "none",
+    "saveManualExecutions": false
+  },
+  "pinData": {}
+}

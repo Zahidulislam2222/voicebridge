@@ -1,0 +1,1 @@
+{"subject": "Appointment confirmation", "body": "Hello {name},\nYour {service} appointment is confirmed for {start} ({timezone}).\nReference: {booking_id}\nNorthline Home Services\n", "from_name": "Northline Home Services"}

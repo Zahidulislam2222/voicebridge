@@ -1,0 +1,62 @@
+# Security CI template — copy to <repo>/.github/workflows/security.yml
+# Layer 5: the backstop that blocks the branch for anything that slipped
+# past the agent hooks and pre-commit.
+#
+# Standard public-repository runners are free; this project uses no artifact uploads.
+# NOTE on the optional Claude review job at the bottom: it needs an
+# ANTHROPIC_API_KEY secret, and API usage is PAID (billed per token, separate
+# from the Claude Max plan). It ships commented out on purpose — prefer running
+# /security-review inside Claude Code (covered by the plan) before merging.
+
+name: security
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  gitleaks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0 # full history so gitleaks scans every commit
+      - uses: gitleaks/gitleaks-action@dcedce43c6f43de0b836d1fe38946645c9c638dc
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  semgrep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - run: pipx run --spec semgrep==1.168.0 semgrep scan --error --config p/security-audit --metrics=off
+
+  bandit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - run: pipx run --spec bandit==1.9.4 bandit -q -ll -r .
+        # Remove this job for non-Python repos.
+
+    # OPTIONAL — LLM security review of PR diffs (contextual issues SAST misses:
+    # missing auth checks, logic flaws). Uncomment only after adding the
+    # ANTHROPIC_API_KEY repo secret. PAID API usage — see note at top.
+    #
+    # claude-security-review:
+    #   if: github.event_name == 'pull_request'
+    #   runs-on: ubuntu-latest
+    #   timeout-minutes: 15
+  #   permissions:
+  #     pull-requests: write
+  #     contents: read
+  #   steps:
+  #     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  #     - uses: anthropics/claude-code-security-review@main
+  #       with:
+  #         claude-api-key: ${{ secrets.ANTHROPIC_API_KEY }}

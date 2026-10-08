@@ -1,0 +1,12 @@
+{{HOSTNAME}} {
+  header Strict-Transport-Security "max-age=31536000"
+  handle_path /engine-api/* {
+    reverse_proxy 127.0.0.1:{{ENGINE_HOST_PORT}}
+  }
+  handle /auth/* {
+    reverse_proxy 127.0.0.1:{{ENGINE_HOST_PORT}}
+  }
+  handle {
+    reverse_proxy 127.0.0.1:{{FRONTEND_HOST_PORT}}
+  }
+}

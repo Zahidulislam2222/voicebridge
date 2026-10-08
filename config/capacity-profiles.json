@@ -1,0 +1,27 @@
+{
+  "revision": 1,
+  "targets": {
+    "registered_accounts": 1000000,
+    "active_dashboard_sessions": 1000000,
+    "simultaneous_voice_calls": 1000000,
+    "mixed_workload": "not-yet-measured"
+  },
+  "local": {
+    "concurrency": 4,
+    "requests": 40,
+    "requests_per_second": 8,
+    "seed_rows": 1000,
+    "max_duration_seconds": 20,
+    "cpu_stop_percent": 65,
+    "memory_stop_percent": 75,
+    "max_response_seconds": 2,
+    "max_errors": 0
+  },
+  "uptime": {
+    "roadmap_target_percent": 99.9,
+    "owner_minimum_percent": 99.5,
+    "observation_days": 30,
+    "zero_downtime_claim": false
+  },
+  "real_voice_calls_enabled": false
+}

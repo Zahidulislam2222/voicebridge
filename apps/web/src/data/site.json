@@ -1,0 +1,468 @@
+{
+  "nav": [
+    {
+      "id": "features",
+      "label": "Product"
+    },
+    {
+      "id": "solutions",
+      "label": "Solutions"
+    },
+    {
+      "id": "pricing",
+      "label": "Pricing"
+    },
+    {
+      "id": "company",
+      "label": "Company"
+    },
+    {
+      "id": "resources",
+      "label": "Resources"
+    }
+  ],
+  "labels": {
+    "getStarted": "Get started",
+    "workspace": "Open workspace",
+    "how": "See how it works",
+    "explore": "Explore the product",
+    "contact": "Let\u2019s talk",
+    "menu": "Open menu",
+    "close": "Close menu",
+    "pause": "Pause motion",
+    "play": "Play motion",
+    "home": "Home",
+    "read": "Read the guide",
+    "back": "Back to resources",
+    "all": "All capabilities",
+    "next": "Continue",
+    "edit": "Edit details",
+    "review": "Review your request",
+    "name": "Your name",
+    "email": "Work email",
+    "company": "Company name",
+    "industry": "Your industry",
+    "message": "What would you like to improve?",
+    "team": "Team size",
+    "request": "Your conversation brief",
+    "reviewHeading": "Let\u2019s get the details right",
+    "reviewText": "Review your priorities and the workspace you\u2019d like to build.",
+    "reviewAction": "Explore your workspace",
+    "privacy": "Your details stay in this browser until you leave this page.",
+    "footerNote": "A little more human. A lot more possible.",
+    "copyright": "\u00a9 2026 VoiceBridge",
+    "pageNav": "VoiceBridge navigation",
+    "faq": "Frequently asked questions",
+    "learn": "Learn more",
+    "planAction": "Find your fit",
+    "integrationAction": "Explore your workflow",
+    "selected": "Selected",
+    "conversation": "A better first conversation",
+    "booking": "Appointment confirmed",
+    "caller": "Northline Home Services",
+    "voice": "Elena \u00b7 Calm & confident",
+    "callText": "\u201cOf course. Let\u2019s find a time that works for you.\u201d",
+    "callTime": "Thursday, 10:00 AM",
+    "activity": "The next step, taken care of.",
+    "storyEyebrow": "FROM HELLO TO HANDLED",
+    "storyTitle": "One conversation.\nA whole lot of possibility.",
+    "storyText": "The small moments that make a business feel personal \u2014 connected in one thoughtful flow.",
+    "sectionFeatures": "MORE THAN ANSWERING",
+    "featureHeading": "Make room for\nwhat you do best.",
+    "industryEyebrow": "BUILT AROUND YOUR BUSINESS",
+    "industryHeading": "Your world.\nYour way of working.",
+    "integrationsEyebrow": "A CONNECTED WAY TO WORK",
+    "integrationsHeading": "The tools you know.\nA workflow you\u2019ll love.",
+    "integrationsText": "Design the connections between your voice, calendar, contacts, and follow-up. Everything has its place.",
+    "faqHeading": "Good questions.\nClear answers.",
+    "ctaEyebrow": "YOUR NEXT CHAPTER",
+    "ctaHeading": "A better hello\nchanges everything.",
+    "ctaText": "Give your business a voice \u2014 and your people a little more room to breathe.",
+    "businessStrip": "A thoughtful first impression, in every kind of business.",
+    "introProductEyebrow": "THE BIG PICTURE",
+    "introProductTitle": "A calmer front desk.\nA clearer view of your business.",
+    "introProductText": "From the first ring to the follow-up, bring every conversation into focus.",
+    "onboardingEyebrow": "MAKE IT YOURS",
+    "onboardingHeading": "Your business.\nYour voice.",
+    "onboardingText": "Start with the essentials. Shape a workspace around the way you work.",
+    "contactEyebrow": "LET\u2019S BUILD YOUR NEXT CHAPTER",
+    "contactHeading": "Great conversations\nstart with a hello.",
+    "contactText": "Tell us where you are today, and what you\u2019d like tomorrow to feel like.",
+    "detailsStep": "Your business",
+    "preferencesStep": "Your preferences",
+    "readyStep": "Your workspace",
+    "voiceLabel": "Choose a voice character",
+    "invalidForm": "Please enter complete, valid details. Fields cannot contain only spaces."
+  },
+  "hero": {
+    "eyebrow": "YOUR BUSINESS, WITH A BETTER VOICE",
+    "lines": ["Good conversations.", "Great business."],
+    "description": "An AI receptionist that turns the first hello into appointments, answers, and lasting connections. So you can get back to what you do best.",
+    "points": ["Your voice, your way", "Every detail in one place", "A thoughtful next step"],
+    "scroll": "There\u2019s more to the conversation"
+  },
+  "workflow": [
+    {
+      "title": "Meet your next customer.",
+      "description": "A warm greeting. The right questions. A conversation that feels like your business, from the very first word.",
+      "label": "01 \u00b7 THE FIRST HELLO",
+      "icon": "phone",
+      "detail": "A familiar voice",
+      "detailText": "Consistent, thoughtful, and unmistakably yours."
+    },
+    {
+      "title": "Make the moment count.",
+      "description": "Find the right service. Check the details. Give your customer a clear next step, without the back-and-forth.",
+      "label": "02 \u00b7 THE RIGHT NEXT STEP",
+      "icon": "calendar",
+      "detail": "A time that works",
+      "detailText": "An appointment, a handoff, or a helpful answer."
+    },
+    {
+      "title": "Keep everything connected.",
+      "description": "Bring the conversation, customer, booking, and follow-up into one clear view. Less chasing. More doing.",
+      "label": "03 \u00b7 THE BIGGER PICTURE",
+      "icon": "flow",
+      "detail": "Every detail, together",
+      "detailText": "A conversation becomes a connected workflow."
+    }
+  ],
+  "features": [
+    {
+      "id": "voice",
+      "icon": "wave",
+      "title": "A voice that feels like you.",
+      "text": "Shape the tone, greeting, and character of your receptionist. Keep your first impression consistent.",
+      "detail": "Fine-tune voice profiles, opening greetings, and handoff preferences in a focused agent workspace."
+    },
+    {
+      "id": "booking",
+      "icon": "calendar",
+      "title": "From conversation to calendar.",
+      "text": "Turn a customer\u2019s intention into a clear, confirmed next step. Keep appointments and context together.",
+      "detail": "Review customer details, confirm a time, reschedule thoughtfully, and keep the conversation linked to the booking."
+    },
+    {
+      "id": "context",
+      "icon": "users",
+      "title": "Remember the whole story.",
+      "text": "People are more than a phone number. Bring their conversations and appointments into one view.",
+      "detail": "Search contacts, inspect conversation history, and move between related records without losing your place."
+    },
+    {
+      "id": "knowledge",
+      "icon": "book",
+      "title": "The answers that matter.",
+      "text": "Give your voice a clear understanding of your services, policies, and way of working.",
+      "detail": "Organize readable business knowledge, review content, and keep your guidance easy to maintain."
+    },
+    {
+      "id": "followup",
+      "icon": "flow",
+      "title": "A little less busywork.",
+      "text": "Keep the next step moving. Give your team a clear view of follow-ups and anything needing attention.",
+      "detail": "Inspect workflow activity, understand a failed step, and retry it without losing the original appointment."
+    },
+    {
+      "id": "visibility",
+      "icon": "chart",
+      "title": "Clarity, at a glance.",
+      "text": "See the conversations, bookings, and moments that make up your business day.",
+      "detail": "A calm dashboard brings call history, appointment activity, evaluation results, and operational details together."
+    }
+  ],
+  "industries": [
+    {
+      "id": "home",
+      "label": "Home services",
+      "icon": "flow",
+      "headline": "Be there, even when\nyou\u2019re out there.",
+      "text": "Keep the front desk moving while your team is on the job. Turn appliance repairs, maintenance requests, and service questions into organized next steps.",
+      "items": [
+        "Capture the job details",
+        "Find an appointment time",
+        "Keep the technician informed"
+      ],
+      "tag": "NORTHLINE HOME SERVICES",
+      "quote": "\u201cMy refrigerator stopped working. Could someone come tomorrow?\u201d",
+      "reply": "\u201cLet\u2019s get you taken care of. What time works best?\u201d"
+    },
+    {
+      "id": "professional",
+      "label": "Professional services",
+      "icon": "users",
+      "headline": "First impressions\nthat mean business.",
+      "text": "Make it easy to reach the right person. Capture context and route new enquiries while your team focuses on clients.",
+      "items": [
+        "Qualify new enquiries",
+        "Route to the right team",
+        "Organize consultation requests"
+      ],
+      "tag": "CLIENT SERVICES",
+      "quote": "\u201cI\u2019d like to speak with someone about a consultation.\u201d",
+      "reply": "\u201cAbsolutely. Tell me a little about what you\u2019re looking for.\u201d"
+    },
+    {
+      "id": "property",
+      "label": "Property & real estate",
+      "icon": "grid",
+      "headline": "Open the door\nto the next opportunity.",
+      "text": "Help your team stay close to buyers, tenants, and property owners. Keep enquiries and viewing requests organized.",
+      "items": [
+        "Capture property enquiries",
+        "Arrange viewing requests",
+        "Route maintenance concerns"
+      ],
+      "tag": "PROPERTY SERVICES",
+      "quote": "\u201cIs there a time I can view the property this week?\u201d",
+      "reply": "\u201cLet\u2019s find a convenient time and keep the details together.\u201d"
+    },
+    {
+      "id": "wellness",
+      "label": "Beauty & wellness",
+      "icon": "spark",
+      "headline": "A warm welcome,\nbefore they walk in.",
+      "text": "Make choosing a service and arranging a visit feel as considered as the experience you create in person.",
+      "items": [
+        "Answer service questions",
+        "Organize appointment requests",
+        "Pass special requests to your team"
+      ],
+      "tag": "YOUR NEXT APPOINTMENT",
+      "quote": "\u201cI\u2019d love to book a treatment for Friday.\u201d",
+      "reply": "\u201cWe\u2019d love to welcome you. Which service did you have in mind?\u201d"
+    }
+  ],
+  "integrations": ["ElevenLabs", "Retell", "Vapi", "Google Calendar", "HubSpot", "n8n"],
+  "faq": [
+    {
+      "question": "What can I do with VoiceBridge?",
+      "answer": "Design your receptionist\u2019s voice and greeting, organize conversations and contacts, manage appointments, curate business knowledge, and follow the next step from one clear workspace."
+    },
+    {
+      "question": "Can the voice match my business?",
+      "answer": "Yes. Voice profiles, greetings, knowledge, and handoff preferences let you shape the character and context of your receptionist around your business."
+    },
+    {
+      "question": "How do appointments stay connected to conversations?",
+      "answer": "A confirmed appointment keeps its conversation and contact together. You can move between related records, review the details, and manage changes from the workspace."
+    },
+    {
+      "question": "What happens when a customer needs a person?",
+      "answer": "Define a clear handoff destination and give your team the context they need to continue the conversation. Human judgement stays part of the workflow."
+    },
+    {
+      "question": "How should I choose a plan?",
+      "answer": "Start with your locations, call patterns, integrations, and team workflow. The plan comparison helps frame the conversation; pricing is tailored to the setup and usage you need."
+    }
+  ],
+  "pages": {
+    "features": {
+      "eyebrow": "THE VOICEBRIDGE PRODUCT",
+      "title": "A better front desk.\nBuilt around you.",
+      "text": "Thoughtful tools for the conversations, customers, and next steps that keep your business moving."
+    },
+    "solutions": {
+      "eyebrow": "YOUR BUSINESS HAS ITS OWN RHYTHM",
+      "title": "A familiar voice.\nIn your kind of world.",
+      "text": "Different businesses. Different conversations. One clear way to turn the first hello into something useful."
+    },
+    "pricing": {
+      "eyebrow": "ROOM FOR YOUR NEXT CHAPTER",
+      "title": "The right fit.\nFor the way you work.",
+      "text": "A single location or a growing operation. Build a plan around the conversations and connections your business needs."
+    },
+    "company": {
+      "eyebrow": "WHY VOICEBRIDGE",
+      "title": "Business is personal.\nLet\u2019s keep it that way.",
+      "text": "We believe technology should give people room to do their best work \u2014 and make the moments in between feel a little more human."
+    },
+    "resources": {
+      "eyebrow": "IDEAS FOR BETTER CONVERSATIONS",
+      "title": "A little perspective.\nA clearer next step.",
+      "text": "Practical guides for thoughtful reception, organized operations, and a voice that feels like your business."
+    }
+  },
+  "plans": [
+    {
+      "name": "Essential",
+      "eyebrow": "FOR YOUR FIRST LOCATION",
+      "description": "A clear, focused foundation for your business conversations.",
+      "price": "A plan that fits you",
+      "priceNote": "Tailored to your call volume and setup",
+      "featured": false,
+      "features": [
+        "One focused business workspace",
+        "Voice and greeting preferences",
+        "Conversation and contact history",
+        "Appointment organization",
+        "Business knowledge"
+      ]
+    },
+    {
+      "name": "Growth",
+      "eyebrow": "FOR YOUR NEXT CHAPTER",
+      "description": "More connected workflows. More room for your growing team.",
+      "price": "Built around your growth",
+      "priceNote": "Tailored to your team and workflow",
+      "featured": true,
+      "features": [
+        "Everything in Essential",
+        "Connected workflow planning",
+        "Team handoff preferences",
+        "Evaluation and activity visibility",
+        "Integration configuration",
+        "Guided rollout planning"
+      ]
+    },
+    {
+      "name": "Scale",
+      "eyebrow": "FOR A BROADER OPERATION",
+      "description": "A considered approach to more locations and complex operations.",
+      "price": "Let\u2019s build your plan",
+      "priceNote": "A conversation about your requirements",
+      "featured": false,
+      "features": [
+        "Multi-location requirements",
+        "Custom workflow architecture",
+        "Security and access requirements",
+        "Operational ownership planning",
+        "Integration and rollout planning",
+        "A roadmap for your next stage"
+      ]
+    }
+  ],
+  "comparison": [
+    {
+      "label": "Best for",
+      "values": ["Independent business", "Growing team", "Multiple locations"]
+    },
+    {
+      "label": "Core workspace",
+      "values": ["Included", "Included", "Included"]
+    },
+    {
+      "label": "Workflow planning",
+      "values": ["Focused", "Connected", "Custom"]
+    },
+    {
+      "label": "Rollout approach",
+      "values": ["One location", "Team rollout", "Staged rollout"]
+    },
+    {
+      "label": "Plan pricing",
+      "values": ["Tailored", "Tailored", "Tailored"]
+    }
+  ],
+  "values": [
+    {
+      "number": "01",
+      "title": "Make space for people.",
+      "text": "Give teams less administration and more time for the work that needs their care, judgement, and expertise."
+    },
+    {
+      "number": "02",
+      "title": "Keep the next step clear.",
+      "text": "A useful conversation ends with understanding. Design every handoff, appointment, and follow-up around that simple idea."
+    },
+    {
+      "number": "03",
+      "title": "Put you in control.",
+      "text": "Your business has a character of its own. Your tools should help express it, while keeping the details easy to understand."
+    }
+  ],
+  "companyStory": {
+    "eyebrow": "THE SPACE BETWEEN HELLO AND HANDLED",
+    "title": "Small moments.\nA bigger difference.",
+    "paragraphs": [
+      "Someone calls with a question. A team member is out on a job. An appointment needs a little context. These are small moments, but they shape how a business feels.",
+      "VoiceBridge brings those moments into one considered experience. A recognizable voice. A clear next step. A workspace that makes the whole story easier to see.",
+      "The goal is simple: let technology take care of the in-between, so people can take care of what matters."
+    ]
+  },
+  "resources": [
+    {
+      "id": "first-impression",
+      "category": "VOICE & BRAND",
+      "title": "The first ten seconds matter.",
+      "summary": "How to shape a greeting that sounds like your business \u2014 and makes the next question easy.",
+      "minutes": "4 min read",
+      "paragraphs": [
+        "A useful greeting does three things: introduces the business, makes the customer feel welcome, and invites a clear next step. Keep it short enough that the caller can join the conversation.",
+        "Choose words your team would actually use. A warm, practical service business may sound different from a formal professional practice. Consistency matters more than sounding impressive.",
+        "Make the first question useful. Ask what the person needs before asking for details you may not need. This helps the conversation feel focused and respectful.",
+        "Write down the moments that should lead to a person. Complex, urgent, or sensitive requests deserve a clear route to human judgement. A good greeting is the beginning of that whole experience."
+      ]
+    },
+    {
+      "id": "connected-workflow",
+      "category": "OPERATIONS",
+      "title": "Give every conversation a next step.",
+      "summary": "A practical way to connect context, appointments, and follow-up without losing the customer\u2019s story.",
+      "minutes": "5 min read",
+      "paragraphs": [
+        "Start by naming the outcome. Is the customer looking for an answer, an appointment, or a person? Keep these outcomes separate so the next action stays clear.",
+        "Capture just the details needed for that outcome. Confirm names, contact details, service, and appointment time before committing to the next step.",
+        "Keep the conversation linked to the contact and appointment. A team member should be able to understand what happened without reconstructing it from scattered notes.",
+        "Make failures visible and recoverable. A follow-up issue should not erase a confirmed appointment. Keep the original record and give your team a clear way to review what needs attention."
+      ]
+    },
+    {
+      "id": "business-knowledge",
+      "category": "BUSINESS KNOWLEDGE",
+      "title": "Good answers start with clear knowledge.",
+      "summary": "What to include in your business guidance, and how to keep it understandable as you grow.",
+      "minutes": "3 min read",
+      "paragraphs": [
+        "Use plain, specific language for the questions your team answers every day: services, coverage, opening hours, appointment expectations, and how to reach the right person.",
+        "Separate a general policy from a decision that needs judgement. Explain what can be answered directly and what should be passed to a team member.",
+        "Keep facts easy to maintain. Short, focused documents are easier to review than a single page containing every detail about your business.",
+        "Review knowledge when the business changes. A new service, a different schedule, or an updated policy should have a clear owner and a simple update process."
+      ]
+    }
+  ],
+  "visual": {
+    "torusRadius": 1.42,
+    "tubeRadius": 0.43,
+    "tubularSegments": 168,
+    "radialSegments": 24,
+    "knotP": 2,
+    "knotQ": 3,
+    "cameraDistance": 6.3,
+    "rotationSpeed": 0.00017,
+    "maxPixelRatio": 1.5,
+    "exposure": 1.25,
+    "metalness": 0.72,
+    "roughness": 0.22,
+    "colors": ["#c5c8ff", "#a79bea", "#aee3db"],
+    "lightIntensity": 5.5,
+    "pointerTilt": 0.22,
+    "cameraFov": 35,
+    "ambientIntensity": 1.2,
+    "clearcoat": 1,
+    "clearcoatRoughness": 0.08,
+    "iridescence": 0.7,
+    "iridescenceIOR": 1.45,
+    "environmentIntensity": 1.4,
+    "initialRotation": [-0.35, 0.2, -0.5],
+    "cameraNear": 0.1,
+    "cameraFar": 100,
+    "maxFrameDeltaMs": 100
+  },
+  "motion": {
+    "revealDistance": 26,
+    "revealSeconds": 0.7,
+    "staggerSeconds": 0.1,
+    "floatSeconds": 6,
+    "orbitSeconds": 24,
+    "springStiffness": 100,
+    "springDamping": 28,
+    "viewportAmount": 0.15,
+    "heroParallax": 80,
+    "visualScaleStart": 0.94,
+    "visualScaleEnd": 1.03,
+    "storyParallax": 70,
+    "floatDistance": 12
+  },
+  "teamChoices": ["Just me", "2\u201310 people", "11\u201350 people", "51+ people"]
+}

@@ -1,0 +1,364 @@
+{
+  "sampleNow": "2026-10-07T12:30:00-04:00",
+  "agent": {
+    "name": "Northline receptionist",
+    "greeting": "Thanks for calling Northline Home Services. I'm your AI receptionist. How can I help today?",
+    "voiceId": "elena",
+    "handoff": "Northline service team"
+  },
+  "contacts": [
+    {
+      "id": "ct-1",
+      "name": "Jordan Lee",
+      "initials": "JL",
+      "phone": "+1 (202) 555-0101",
+      "email": "jordan@example.test",
+      "notes": "Refrigerator not cooling. Prefers a morning appointment."
+    },
+    {
+      "id": "ct-2",
+      "name": "Taylor Brooks",
+      "initials": "TB",
+      "phone": "+1 (202) 555-0102",
+      "email": "taylor@example.test",
+      "notes": "Washer making a noise during the spin cycle."
+    },
+    {
+      "id": "ct-3",
+      "name": "Sam Rivera",
+      "initials": "SR",
+      "phone": "+1 (202) 555-0103",
+      "email": "sam@example.test",
+      "notes": "Asked about service coverage and diagnostic visits."
+    },
+    {
+      "id": "ct-4",
+      "name": "Casey Quinn",
+      "initials": "CQ",
+      "phone": "+1 (202) 555-0104",
+      "email": "casey@example.test",
+      "notes": "Oven repair. Existing customer."
+    },
+    {
+      "id": "ct-5",
+      "name": "Riley Park",
+      "initials": "RP",
+      "phone": "+1 (202) 555-0105",
+      "email": "riley@example.test",
+      "notes": "Requested a callback from the service team."
+    }
+  ],
+  "calls": [
+    {
+      "id": "call-101",
+      "name": "Jordan Lee",
+      "initials": "JL",
+      "phone": "+1 (202) 555-0101",
+      "date": "2026-10-07T12:18:00-04:00",
+      "duration": 192,
+      "outcome": "Booked",
+      "service": "Refrigerator repair",
+      "summary": "Confirmed a diagnostic visit for a refrigerator that isn't cooling.",
+      "appointmentId": "apt-1",
+      "contactId": "ct-1",
+      "transcript": [
+        {
+          "speaker": "Elena",
+          "text": "Thanks for calling Northline. I'm your AI receptionist. How can I help?"
+        },
+        {
+          "speaker": "Jordan",
+          "text": "The refrigerator stopped cooling overnight."
+        },
+        {
+          "speaker": "Elena",
+          "text": "I can arrange a diagnostic visit. Is tomorrow at 9 AM Eastern a good time?"
+        },
+        {
+          "speaker": "Jordan",
+          "text": "Yes, that works."
+        },
+        {
+          "speaker": "Elena",
+          "text": "Your appointment is confirmed for tomorrow at 9 AM Eastern."
+        }
+      ]
+    },
+    {
+      "id": "call-102",
+      "name": "Taylor Brooks",
+      "initials": "TB",
+      "phone": "+1 (202) 555-0102",
+      "date": "2026-10-07T11:52:00-04:00",
+      "duration": 165,
+      "outcome": "Booked",
+      "service": "Washer repair",
+      "summary": "Booked a washer inspection after checking service availability.",
+      "appointmentId": "apt-2",
+      "contactId": "ct-2",
+      "transcript": [
+        {
+          "speaker": "Taylor",
+          "text": "My washer is noisy during the spin cycle."
+        },
+        {
+          "speaker": "Elena",
+          "text": "We can arrange an inspection. Let's confirm your preferred appointment."
+        }
+      ]
+    },
+    {
+      "id": "call-103",
+      "name": "Sam Rivera",
+      "initials": "SR",
+      "phone": "+1 (202) 555-0103",
+      "date": "2026-10-07T11:30:00-04:00",
+      "duration": 85,
+      "outcome": "Answered",
+      "service": "Appliance diagnosis",
+      "summary": "Answered a service-area question from the approved business knowledge.",
+      "contactId": "ct-3",
+      "transcript": [
+        {
+          "speaker": "Sam",
+          "text": "Do you service my area?"
+        },
+        {
+          "speaker": "Elena",
+          "text": "Northline serves the Northline service district. Our team can confirm coverage."
+        }
+      ]
+    },
+    {
+      "id": "call-104",
+      "name": "Casey Quinn",
+      "initials": "CQ",
+      "phone": "+1 (202) 555-0104",
+      "date": "2026-10-07T10:48:00-04:00",
+      "duration": 221,
+      "outcome": "Booked",
+      "service": "Oven repair",
+      "summary": "Confirmed an oven diagnostic appointment.",
+      "appointmentId": "apt-3",
+      "contactId": "ct-4",
+      "transcript": [
+        {
+          "speaker": "Casey",
+          "text": "The oven heats unevenly."
+        },
+        {
+          "speaker": "Elena",
+          "text": "Let's arrange a diagnostic visit and confirm the details."
+        }
+      ]
+    },
+    {
+      "id": "call-105",
+      "name": "Riley Park",
+      "initials": "RP",
+      "phone": "+1 (202) 555-0105",
+      "date": "2026-10-07T10:12:00-04:00",
+      "duration": 108,
+      "outcome": "Transferred",
+      "service": "Appliance diagnosis",
+      "summary": "Requested a team callback for an existing service issue.",
+      "contactId": "ct-5",
+      "transcript": [
+        {
+          "speaker": "Riley",
+          "text": "I'd like to speak to the service team about my last visit."
+        },
+        {
+          "speaker": "Elena",
+          "text": "I'll flag a callback request for the Northline team."
+        }
+      ]
+    },
+    {
+      "id": "call-106",
+      "name": "Jordan Lee",
+      "initials": "JL",
+      "phone": "+1 (202) 555-0101",
+      "date": "2026-10-07T09:35:00-04:00",
+      "duration": 74,
+      "outcome": "Answered",
+      "service": "Refrigerator repair",
+      "summary": "Explained the diagnostic-visit process.",
+      "contactId": "ct-1",
+      "transcript": [
+        {
+          "speaker": "Jordan",
+          "text": "What happens during a diagnostic visit?"
+        },
+        {
+          "speaker": "Elena",
+          "text": "The technician examines the appliance and explains the recommended next steps."
+        }
+      ]
+    },
+    {
+      "id": "call-107",
+      "name": "Sam Rivera",
+      "initials": "SR",
+      "phone": "+1 (202) 555-0103",
+      "date": "2026-10-07T09:08:00-04:00",
+      "duration": 116,
+      "outcome": "Needs review",
+      "service": "Appliance diagnosis",
+      "summary": "A repair estimate needs review by a human team member.",
+      "contactId": "ct-3",
+      "transcript": [
+        {
+          "speaker": "Sam",
+          "text": "Can you guarantee a final repair price?"
+        },
+        {
+          "speaker": "Elena",
+          "text": "I can't promise a final price. A technician needs to assess the appliance."
+        }
+      ]
+    }
+  ],
+  "appointments": [
+    {
+      "id": "apt-1",
+      "name": "Jordan Lee",
+      "service": "Refrigerator repair",
+      "date": "2026-10-08T09:00",
+      "status": "Confirmed",
+      "contactId": "ct-1",
+      "callId": "call-101"
+    },
+    {
+      "id": "apt-2",
+      "name": "Taylor Brooks",
+      "service": "Washer repair",
+      "date": "2026-10-08T11:00",
+      "status": "Confirmed",
+      "contactId": "ct-2",
+      "callId": "call-102"
+    },
+    {
+      "id": "apt-3",
+      "name": "Casey Quinn",
+      "service": "Oven repair",
+      "date": "2026-10-09T14:00",
+      "status": "Confirmed",
+      "contactId": "ct-4",
+      "callId": "call-104"
+    }
+  ],
+  "jobs": [
+    {
+      "id": "job-1",
+      "name": "Appointment confirmation",
+      "status": "Completed",
+      "appointmentId": "apt-1",
+      "attempts": 1,
+      "detail": "Appointment confirmation recorded."
+    },
+    {
+      "id": "job-2",
+      "name": "Appointment confirmation",
+      "status": "Failed",
+      "appointmentId": "apt-2",
+      "attempts": 1,
+      "detail": "Connector timeout. Retry preserves the existing appointment."
+    },
+    {
+      "id": "job-3",
+      "name": "CRM contact sync",
+      "status": "Completed",
+      "appointmentId": "apt-3",
+      "attempts": 1,
+      "detail": "Contact linked to the appointment."
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc-1",
+      "name": "Service guide.md",
+      "text": "Northline Home Services specializes in refrigerator, washer, and oven diagnostic visits. Technicians inspect the appliance and explain recommended next steps. Final repair pricing follows the assessment.",
+      "updated": "Oct 7"
+    },
+    {
+      "id": "doc-2",
+      "name": "Reception guidelines.txt",
+      "text": "Introduce yourself as an AI receptionist. Use only approved service information. Read back the customer name, service, date and time before confirming an appointment. Escalate safety concerns and uncertain price questions to a human team member.",
+      "updated": "Oct 7"
+    }
+  ],
+  "integrations": [
+    {
+      "id": "retell",
+      "name": "Retell",
+      "description": "Call orchestration and agent runtime",
+      "category": "Voice platform",
+      "connected": false
+    },
+    {
+      "id": "elevenlabs",
+      "name": "ElevenLabs",
+      "description": "Custom voice design and synthesis",
+      "category": "Voice provider",
+      "connected": false
+    },
+    {
+      "id": "vapi",
+      "name": "Vapi",
+      "description": "Additional voice platform adapter",
+      "category": "Voice platform",
+      "connected": false
+    },
+    {
+      "id": "calendar",
+      "name": "Calendar",
+      "description": "Availability and confirmed appointments",
+      "category": "Business tools",
+      "connected": false
+    },
+    {
+      "id": "crm",
+      "name": "CRM",
+      "description": "Contacts and conversation context",
+      "category": "Business tools",
+      "connected": false
+    },
+    {
+      "id": "n8n",
+      "name": "n8n",
+      "description": "Follow-ups and business workflows",
+      "category": "Automation",
+      "connected": false
+    }
+  ],
+  "evaluations": [
+    {
+      "id": "ev-1",
+      "name": "Booking confirmation",
+      "expectation": "Read back name, service, and time before confirming.",
+      "result": "Not run"
+    },
+    {
+      "id": "ev-2",
+      "name": "Uncertain repair price",
+      "expectation": "Avoid guarantees and hand off for an assessment.",
+      "result": "Not run"
+    },
+    {
+      "id": "ev-3",
+      "name": "Caller interruption",
+      "expectation": "Pause, acknowledge the correction, and continue.",
+      "result": "Not run"
+    }
+  ],
+  "audit": [
+    {
+      "id": "audit-seed",
+      "date": "2026-10-07T12:30:00-04:00",
+      "action": "Northline workspace opened",
+      "detail": "Business records loaded and organized for the next conversation."
+    }
+  ],
+  "operationIds": []
+}

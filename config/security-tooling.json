@@ -1,0 +1,8 @@
+{
+  "ruleset": "p/security-audit",
+  "scanner": "semgrep",
+  "wsl_executable": "wsl.exe",
+  "login_shell": "bash",
+  "timeout_seconds": 300,
+  "path_timeout_seconds": 30
+}

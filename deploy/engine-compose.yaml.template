@@ -1,0 +1,110 @@
+name: {{PROJECT_SLUG}}
+x-runtime: &runtime
+  image: {{ENGINE_IMAGE}}
+  user: "{{UID}}:{{GID}}"
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  restart: unless-stopped
+  mem_limit: {{ENGINE_MEMORY}}m
+  cpus: {{ENGINE_CPU}}
+  pids_limit: {{PIDS}}
+  tmpfs: ["/tmp:rw,noexec,nosuid,size=32m,mode=1777"]
+  volumes:
+    - ./runtime.env:/run/voicebridge/runtime.env:ro
+    - ./access.json:/run/voicebridge/access.json:ro
+    - ./provider-profiles.json:/run/voicebridge/provider-profiles.json:ro
+  networks: [private, identity]
+  logging:
+    driver: json-file
+    options: {max-size: "{{LOG_SIZE}}m", max-file: "{{LOG_FILES}}"}
+services:
+  api:
+    <<: *runtime
+    command: ["api", "--env-file", "/run/voicebridge/runtime.env"]
+    ports: ["127.0.0.1:{{HOST_PORT}}:{{CONTAINER_PORT}}"]
+    depends_on:
+      postgres: {condition: service_healthy}
+      mailpit: {condition: service_started}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('{{HEALTH_URL}}',timeout={{HEALTH_TIMEOUT}})"]
+      interval: {{HEALTH_INTERVAL}}s
+      timeout: {{HEALTH_TIMEOUT}}s
+      retries: {{HEALTH_RETRIES}}
+  worker:
+    <<: *runtime
+    command: ["worker", "--env-file", "/run/voicebridge/runtime.env"]
+    networks: [private]
+    depends_on:
+      api: {condition: service_healthy}
+  observer:
+    <<: *runtime
+    command: ["observe", "--env-file", "/run/voicebridge/runtime.env"]
+    mem_limit: {{OBSERVER_MEMORY}}m
+    cpus: {{OBSERVER_CPU}}
+    networks: [private]
+    volumes:
+      - ./runtime.env:/run/voicebridge/runtime.env:ro
+      - ./access.json:/run/voicebridge/access.json:ro
+      - ./provider-profiles.json:/run/voicebridge/provider-profiles.json:ro
+      - ./observation.json:/app/config/observation-profiles.json:ro
+      - {{OBSERVATION_DATA_PATH}}:/data
+    depends_on:
+      api: {condition: service_healthy}
+  postgres:
+    image: {{POSTGRES_IMAGE}}
+    user: "{{POSTGRES_UID}}:{{POSTGRES_GID}}"
+    command: ["postgres", "-p", "{{DB_PORT}}"]
+    environment:
+      POSTGRES_DB: {{DB_NAME}}
+      POSTGRES_USER: {{DB_OWNER}}
+      POSTGRES_PASSWORD_FILE: /run/secrets/database_owner
+    secrets: [database_owner, database_runtime]
+    networks: [private]
+    volumes:
+      - {{POSTGRES_DATA_PATH}}:/var/lib/postgresql
+      - ./database-init.sql:/docker-entrypoint-initdb.d/01-runtime-role.sql:ro
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+    mem_limit: {{DB_MEMORY}}m
+    cpus: {{DB_CPU}}
+    pids_limit: {{PIDS}}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-p", "{{DB_PORT}}", "-U", "{{DB_OWNER}}", "-d", "{{DB_NAME}}"]
+      interval: {{HEALTH_INTERVAL}}s
+      timeout: {{HEALTH_TIMEOUT}}s
+      retries: {{HEALTH_RETRIES}}
+    logging:
+      driver: json-file
+      options: {max-size: "{{LOG_SIZE}}m", max-file: "{{LOG_FILES}}"}
+  mailpit:
+    image: {{MAILPIT_IMAGE}}
+    user: "{{UID}}:{{GID}}"
+    environment:
+      MP_DISABLE_VERSION_CHECK: "true"
+      MP_SMTP_DISABLE_RDNS: "true"
+      MP_BLOCK_REMOTE_CSS_AND_FONTS: "true"
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_BIND_ADDR: "{{CONTAINER_BIND_HOST}}:{{SMTP_PORT}}"
+      MP_MAX_MESSAGES: "{{CAPTURE_MESSAGES}}"
+    networks: [private]
+    volumes: ["{{MAILPIT_DATA_PATH}}:/data"]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+    mem_limit: {{MAIL_MEMORY}}m
+    cpus: {{MAIL_CPU}}
+    pids_limit: {{PIDS}}
+    logging:
+      driver: json-file
+      options: {max-size: "{{LOG_SIZE}}m", max-file: "{{LOG_FILES}}"}
+networks:
+  private: {internal: true}
+  identity: {}
+secrets:
+  database_owner:
+    file: ./database-owner.secret
+  database_runtime:
+    file: ./database-runtime.secret

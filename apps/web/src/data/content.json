@@ -1,0 +1,359 @@
+{
+  "brand": "VoiceBridge",
+  "business": "Northline Home Services",
+  "workspace": "Northline",
+  "subtitle": "VOICE OPERATIONS",
+  "assets": {
+    "hero": "./voice-sculpture.png"
+  },
+  "chartHours": [8, 9, 10, 11, 12, 13, 14, 15],
+  "evaluationResults": {
+    "ev-1": "Passed",
+    "ev-2": "Passed",
+    "ev-3": "Needs review"
+  },
+  "fixedLabels": {
+    "disconnected": "Not connected",
+    "operatorName": "Northline operator",
+    "skip": "Skip to content",
+    "followup": "Appointment confirmation"
+  },
+  "hero": {
+    "eyebrow": "A better first conversation",
+    "title": "Every call.\nA next step.",
+    "description": "Give your business a voice that listens. Turn conversations into bookings, answers, and a little more room to breathe.",
+    "cta": "Explore the workspace",
+    "secondary": "Try a conversation",
+    "caption": "Designed for the space between hello and handled.",
+    "footer": "Every conversation deserves a better next step.",
+    "points": [
+      {
+        "title": "A voice that fits",
+        "text": "Shape the tone, greeting, and handoff."
+      },
+      {
+        "title": "Conversations to outcomes",
+        "text": "Follow a call through to its next step."
+      },
+      {
+        "title": "You stay in control",
+        "text": "Review, refine, and see what happened."
+      }
+    ]
+  },
+  "nav": [
+    {
+      "id": "overview",
+      "label": "Overview",
+      "icon": "grid",
+      "group": "workspace"
+    },
+    {
+      "id": "agents",
+      "label": "Agents",
+      "icon": "spark",
+      "group": "workspace"
+    },
+    {
+      "id": "voices",
+      "label": "Voice studio",
+      "icon": "wave",
+      "group": "workspace"
+    },
+    {
+      "id": "calls",
+      "label": "Call history",
+      "icon": "phone",
+      "group": "workspace"
+    },
+    {
+      "id": "appointments",
+      "label": "Appointments",
+      "icon": "calendar",
+      "group": "workspace"
+    },
+    {
+      "id": "contacts",
+      "label": "Contacts",
+      "icon": "users",
+      "group": "workspace"
+    },
+    {
+      "id": "automations",
+      "label": "Automations",
+      "icon": "flow",
+      "group": "manage"
+    },
+    {
+      "id": "knowledge",
+      "label": "Knowledge",
+      "icon": "book",
+      "group": "manage"
+    },
+    {
+      "id": "evaluations",
+      "label": "Evaluations",
+      "icon": "check",
+      "group": "manage"
+    },
+    {
+      "id": "integrations",
+      "label": "Integrations",
+      "icon": "link",
+      "group": "manage"
+    },
+    {
+      "id": "usage",
+      "label": "Usage",
+      "icon": "chart",
+      "group": "manage"
+    },
+    {
+      "id": "audit",
+      "label": "Activity log",
+      "icon": "clock",
+      "group": "manage"
+    }
+  ],
+  "pageDescriptions": {
+    "overview": "A clear view of your conversations and what comes next.",
+    "agents": "Shape how your receptionist listens, answers, and hands off.",
+    "voices": "Find the right presence for your first hello.",
+    "calls": "The conversation, the context, and the outcome.",
+    "appointments": "Keep the next step on the calendar.",
+    "contacts": "People, with the context of their conversations.",
+    "automations": "Follow every handoff from conversation to completion.",
+    "knowledge": "The approved information behind every answer.",
+    "evaluations": "Review how your agent handles the moments that matter.",
+    "integrations": "One workspace. The tools behind the next step.",
+    "usage": "Understand your conversations and business activity.",
+    "audit": "A clear history of your workspace activity."
+  },
+  "labels": {
+    "demo": "Northline workspace",
+    "sample": "Northline",
+    "operator": "Operator",
+    "viewer": "Viewer \u00b7 read only",
+    "workspace": "Workspace",
+    "manage": "Manage",
+    "today": "Oct 7, 2026",
+    "simulate": "Start a conversation",
+    "save": "Save changes",
+    "cancel": "Cancel",
+    "close": "Close",
+    "search": "Search",
+    "viewAll": "View all",
+    "review": "Review",
+    "details": "Details",
+    "back": "Back",
+    "noResults": "No matches found",
+    "emptyHint": "Try a different search or clear your filters.",
+    "all": "All outcomes",
+    "reset": "Reset filters",
+    "name": "Name",
+    "phone": "Phone",
+    "email": "Email",
+    "service": "Service",
+    "date": "Appointment time",
+    "confirm": "Confirm booking",
+    "reschedule": "Reschedule",
+    "cancelBooking": "Cancel appointment",
+    "retry": "Retry job",
+    "upload": "Add document",
+    "remove": "Remove",
+    "preview": "View voice profile",
+    "select": "Use this voice",
+    "selected": "Selected voice",
+    "run": "Run evaluation",
+    "connect": "Connect workspace",
+    "disconnect": "Disconnect",
+    "duration": "Duration",
+    "outcome": "Outcome",
+    "conversation": "Conversation",
+    "action": "Action",
+    "status": "Status",
+    "attempts": "Attempts",
+    "contact": "Contact",
+    "booking": "Appointment",
+    "showcase": "VoiceBridge home",
+    "menu": "Open navigation",
+    "dismiss": "Dismiss notification",
+    "emptyCalls": "No calls yet",
+    "noAppointments": "No appointments match this view",
+    "noContactCalls": "No conversations for this contact yet",
+    "textPreview": "Voice character and rhythm",
+    "connectionNotice": "Manage the tools that support your workflow.",
+    "usageNotice": "A clear view of conversations, bookings, and workflow activity.",
+    "viewerNotice": "Read-only access. Switch to Operator to make changes.",
+    "demoNotice": "VoiceBridge \u00b7 Northline Home Services",
+    "sessionNotice": "Your workspace, organized around the next conversation.",
+    "loading": "Working\u2026",
+    "simulationNotice": "From the first hello to the confirmed next step.",
+    "knowledgeNotice": "Add plain text or Markdown to your business knowledge.",
+    "confirmCancel": "Cancel this appointment?",
+    "confirmCancelDetail": "The appointment will be marked cancelled. Review the details before continuing.",
+    "confirmRemove": "Remove this document?",
+    "errorTitle": "Please check the form",
+    "restart": "Return to workspace",
+    "errorBoundary": "Your workspace could not load. Please refresh the page.",
+    "voiceProfiles": "Voice profiles",
+    "agentDraft": "Agent draft",
+    "greeting": "First greeting",
+    "handoff": "Handoff destination",
+    "agentNotice": "Set your greeting, voice, and handoff preferences.",
+    "bookingReady": "Ready for your next step",
+    "bookingReadyDetail": "Review the details before confirming the appointment.",
+    "filter": "Filter outcome",
+    "log": "Activity",
+    "day": "Today",
+    "week": "This week",
+    "allAppointments": "All appointments",
+    "activeAppointments": "Confirmed",
+    "cancelledAppointments": "Cancelled",
+    "callVolume": "Conversation rhythm",
+    "callVolumeSub": "Conversation distribution \u00b7 Eastern Time",
+    "recentCalls": "Recent conversations",
+    "upNext": "Coming up",
+    "attention": "One handoff needs attention",
+    "attentionDetail": "An appointment confirmation needs attention. Review the context and retry.",
+    "agentOnline": "Your voice, ready for the next hello",
+    "agentOnlineDetail": "Follow a conversation through to its next step.",
+    "minutes": "Conversation minutes",
+    "rate": "Booking rate",
+    "totalCalls": "Conversations",
+    "bookings": "Appointments",
+    "flowTitle": "From hello to handled",
+    "flowSubtitle": "The steps behind a confirmed next action.",
+    "guideTitle": "A calmer front desk",
+    "guideDetail": "One place to shape the voice, understand the conversation, and follow the next step.",
+    "viewContact": "View contact",
+    "viewBooking": "View appointment",
+    "openCall": "Open conversation",
+    "clearSearch": "Clear search"
+  },
+  "messages": {
+    "saved": "Agent draft saved locally.",
+    "voiceSelected": "Voice added to your agent draft.",
+    "bookingCreated": "Booking confirmed. Conversation, contact, and next steps are linked.",
+    "cancelled": "Appointment cancelled.",
+    "rescheduled": "Appointment rescheduled.",
+    "retried": "Job completed. The existing booking was preserved.",
+    "uploaded": "Document added to your knowledge.",
+    "removed": "Document removed.",
+    "connected": "Workspace connection updated.",
+    "evaluation": "Evaluation completed. Review the results below.",
+    "denied": "The Viewer role cannot change this workspace.",
+    "invalid": "Check required fields and use a valid email and phone.",
+    "unconfirmed": "Confirm the appointment details first.",
+    "tooLarge": "This file exceeds the configured text upload limit.",
+    "unsupported": "Only UTF-8 .txt and .md documents are supported.",
+    "invalidDocument": "The document is empty or is not valid plain text.",
+    "unknown": "This record is no longer available.",
+    "slotTaken": "That appointment time is occupied. Choose another time.",
+    "dateInvalid": "Choose an appointment time after the business date."
+  },
+  "timeline": [
+    {
+      "title": "Listen",
+      "text": "Understand the request"
+    },
+    {
+      "title": "Resolve",
+      "text": "Use approved knowledge"
+    },
+    {
+      "title": "Confirm",
+      "text": "Read back the details"
+    },
+    {
+      "title": "Follow through",
+      "text": "Record the next step"
+    }
+  ],
+  "voiceProfiles": [
+    {
+      "id": "elena",
+      "name": "Elena",
+      "style": "Warm & unhurried",
+      "description": "An attentive presence with a natural, measured pace.",
+      "accent": "American English",
+      "tone": "Warm",
+      "bars": [
+        22, 42, 30, 63, 89, 46, 70, 35, 82, 54, 29, 68, 45, 91, 64, 37, 76, 53, 28, 45, 65, 36, 23,
+        42
+      ]
+    },
+    {
+      "id": "james",
+      "name": "James",
+      "style": "Clear & grounded",
+      "description": "Calm confidence, clear direction, and room to respond.",
+      "accent": "British English",
+      "tone": "Grounded",
+      "bars": [
+        30, 53, 40, 70, 44, 88, 55, 33, 76, 46, 83, 54, 29, 64, 38, 80, 45, 66, 52, 31, 71, 47, 28,
+        38
+      ]
+    },
+    {
+      "id": "maya",
+      "name": "Maya",
+      "style": "Bright & conversational",
+      "description": "A friendly first hello that keeps things moving.",
+      "accent": "American English",
+      "tone": "Bright",
+      "bars": [
+        45, 67, 29, 51, 80, 35, 62, 89, 46, 65, 39, 76, 52, 88, 44, 68, 27, 59, 90, 47, 65, 32, 56,
+        25
+      ]
+    }
+  ],
+  "services": ["Appliance diagnosis", "Refrigerator repair", "Washer repair", "Oven repair"],
+  "scenario": {
+    "name": "Alex Morgan",
+    "phone": "+1 (202) 555-0147",
+    "email": "alex@example.test",
+    "service": "Refrigerator repair",
+    "date": "2026-10-08T10:00",
+    "confirmed": false
+  },
+  "simulationTranscript": [
+    {
+      "speaker": "Elena",
+      "text": "Thanks for calling Northline. I'm your AI receptionist. How can I help?"
+    },
+    {
+      "speaker": "Caller",
+      "text": "My refrigerator isn't cooling. Can I book someone to take a look?"
+    },
+    {
+      "speaker": "Elena",
+      "text": "I can help you arrange a refrigerator repair. Let's review your contact details and preferred time."
+    }
+  ],
+  "flowSteps": [
+    "Conversation captured",
+    "Appointment confirmed",
+    "Contact linked",
+    "Follow-up queued"
+  ],
+  "usageUnits": {
+    "conversation": "conversations",
+    "minute": "minutes",
+    "document": "documents",
+    "job": "jobs"
+  },
+  "outcomes": ["Booked", "Answered", "Transferred", "Needs review"],
+  "auditActions": {
+    "agent": "Agent draft saved",
+    "voice": "Voice selected",
+    "booking": "Booking confirmed",
+    "cancel": "Appointment cancelled",
+    "reschedule": "Appointment rescheduled",
+    "retry": "Automation retried",
+    "upload": "Knowledge added",
+    "remove": "Knowledge removed",
+    "integration": "Workspace connection changed",
+    "evaluate": "Evaluation completed"
+  }
+}

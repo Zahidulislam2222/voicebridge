@@ -1,0 +1,12 @@
+{
+  "revision": 1,
+  "url": "http://127.0.0.1:18080/health/ready",
+  "interval_seconds": 60,
+  "timeout_seconds": 3,
+  "gap_factor": 2,
+  "max_recent_samples": 1440,
+  "state_file": ".local/evidence/core-availability-observation.json",
+  "expected_status": 200,
+  "observation_days": 30,
+  "target_percent": 99.5
+}

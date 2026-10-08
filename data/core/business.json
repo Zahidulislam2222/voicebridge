@@ -1,0 +1,23 @@
+{
+  "name": "Northline Home Services",
+  "timezone": "America/New_York",
+  "services": {"Appliance repair": 60, "Maintenance visit": 60, "Service consultation": 30},
+  "opening_hour": 9,
+  "closing_hour": 17,
+  "weekdays": [0, 1, 2, 3, 4],
+  "slot_minutes": 30,
+  "advance_days": 90,
+  "greeting": "Hello, you are speaking with Northline's AI receptionist. How can I help?",
+  "handoff": "I will ask the team to help with that. I cannot confirm an answer or booking without verified information.",
+  "voice_id": "local-preview",
+  "messages": {
+    "confirmed": "Your appointment is confirmed.",
+    "pending": "Your request is saved, but the calendar result needs verification. Your appointment is not confirmed yet.",
+    "missing": "I do not have current approved information for that question. Please contact the team.",
+    "conflict": "The approved sources conflict. Please ask the team to confirm."
+  },
+  "knowledge": [
+    {"name": "Business hours", "text": "Northline Home Services operates Monday through Friday from 9 am to 5 pm America/New_York. Weekend visits are not available."},
+    {"name": "Supported services", "text": "Northline offers appliance repair, maintenance visits and service consultations. A technician confirms the repair estimate; the receptionist cannot promise a price."}
+  ]
+}

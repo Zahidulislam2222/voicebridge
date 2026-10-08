@@ -1,0 +1,62 @@
+name: quality
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - run: npm ci
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run presentation
+      - run: npm run test:presentation
+      - run: npm run test:release
+      - run: npm run test:core-contracts
+      - run: node --test --test-isolation=none tools/engine-release.test.mjs
+  backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: test-user
+          POSTGRES_PASSWORD: test-password
+          POSTGRES_DB: test-db
+        ports: ['15432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      VB_PDF_TIMEOUT_SECONDS: '10'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.lock
+      - run: python -m pip install --no-deps -e .
+      - name: Isolated test environment
+        run: |
+          mkdir -p .local/core-engine .local/evidence
+          cp .env.example .local/core-engine/.env
+      - run: python -m pytest
+      - run: python -m mypy
+      - run: python -m ruff check apps/api tests
+      - run: python -m build --no-isolation

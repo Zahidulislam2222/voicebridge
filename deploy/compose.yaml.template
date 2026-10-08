@@ -1,0 +1,28 @@
+name: {{PROJECT_SLUG}}
+services:
+  web:
+    image: {{IMAGE}}
+    entrypoint: ["nginx", "-c", "/etc/nginx/nginx.conf", "-g", "daemon off;"]
+    user: "{{UID}}:{{GID}}"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+    ports: ["127.0.0.1:{{HOST_PORT}}:{{CONTAINER_PORT}}"]
+    mem_limit: {{MEMORY}}m
+    cpus: {{CPU}}
+    pids_limit: {{PIDS}}
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=16m,mode=1777"]
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./html:/usr/share/nginx/html:ro
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:{{CONTAINER_PORT}}/healthz"]
+      interval: {{HEALTH_INTERVAL}}s
+      timeout: {{HEALTH_TIMEOUT}}s
+      retries: {{HEALTH_RETRIES}}
+    logging:
+      driver: json-file
+      options:
+        max-size: "{{LOG_SIZE}}m"
+        max-file: "{{LOG_FILES}}"
