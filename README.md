@@ -20,7 +20,7 @@ FastAPI/PostgreSQL core, durable workers and shared Retell/Vapi business tools.
 
 ## Implementation and roadmap
 
-The authenticated frontend and backend are deployed. Recorded gates include 148
+The authenticated frontend and backend are deployed. Recorded gates include 150
 backend/tooling tests, 78 frontend tests, types/lint/security/builds, twelve backend and six
 frontend release-file parity checks, and twenty-one public browser routes.
 Persistent booking/recovery checks use controlled test data and captured follow-ups.
