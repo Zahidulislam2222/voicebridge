@@ -61,3 +61,7 @@ Desktop.ini
 /.playwright-mcp/
 
 *.egg-info/
+
+/PROJECT-DOSSIER.md.*
+/AGENTS.md.*
+/CLAUDE.md.*
