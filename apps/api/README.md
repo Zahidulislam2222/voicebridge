@@ -46,7 +46,8 @@ never grants tool permission. PDF parsing has configured resource/concurrency li
 
 The suite requires loopback PostgreSQL with permission to create/drop generated
 test databases. Configure its private `.local/core-engine/.env`; never point it at
-production. Tests replace service credentials and block external sockets.
+production. Worker process-crash tests require capture SMTP on the configured
+loopback port; it must never relay externally. Tests replace service credentials and block external sockets.
 
 Run pytest, Mypy, Ruff, Bandit, secret scans and Python builds. See
 [testing](../../docs/testing.md), [API](../../docs/api/README.md),

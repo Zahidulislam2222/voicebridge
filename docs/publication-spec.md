@@ -19,6 +19,8 @@ It changes documentation and repository metadata; it does not change deployed co
    budgets, observability, redundancy, backup/restore and rollout procedures.
 8. PUB08: Tests, types, lint, security and build gates run locally; public CI uses
    standard runners, no paid API calls, and no uploaded private artifacts.
+   A clean runner declares every exercised dependency, including PostgreSQL and
+   capture SMTP for real worker process-crash behavior.
 9. PUB09: Public changes receive a fresh-context review and findings are resolved.
 10. PUB10: An ordinary push is verified against the remote commit/tree/author;
     repository description, topics, security reporting and workflow results are checked.
