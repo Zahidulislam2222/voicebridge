@@ -24,8 +24,9 @@ It changes documentation and repository metadata; it does not change deployed co
 9. PUB09: Public changes receive a fresh-context review and findings are resolved.
 10. PUB10: An ordinary push is verified against the remote commit/tree/author;
     repository description, topics, security reporting and workflow results are checked.
-11. PUB11: After publication, the existing Google Doc is identified and read fully;
-    targeted updates preserve prior content, document identity and native structure.
+11. PUB11: After publication, identify and read the existing Google Doc; targeted
+    updates preserve prior content, identity and native structure. If discovery finds
+    none, create one project overview only after separate explicit owner instruction.
 12. PUB12: The refreshed PDF is exported from that same Doc, validated before
     canonical replacement, and stored under this project's my-project-view/.
 

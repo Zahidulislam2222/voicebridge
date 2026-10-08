@@ -45,10 +45,26 @@ passed frontend checks and exposed a missing capture-SMTP dependency in backend 
 workflow declares digest-pinned Mailpit, with SMTP only and no relay configuration.
 The complete corrected local suite passes 150 tests, including two CI environment
 regressions; an independent read-only review accepted the correction.
-See [Actions](https://github.com/Zahidulislam2222/voicebridge/actions) for final remote
-run results. No live deployment or real provider execution follows from CI.
+[PR #1](https://github.com/Zahidulislam2222/voicebridge/pull/1) passed all five
+required checks before ordinary rebase merge. On the resulting main commit,
+[quality](https://github.com/Zahidulislam2222/voicebridge/actions/runs/37708656892)
+and [security](https://github.com/Zahidulislam2222/voicebridge/actions/runs/37708656800)
+workflows both passed. All 194 remote file modes/hashes matched the local tree;
+commit attribution remained the verified owner. See
+[Actions](https://github.com/Zahidulislam2222/voicebridge/actions) for subsequent runs. No live deployment or real provider execution follows from CI.
 
 The user authorized creation of the project overview after the accessible native
 Google Docs inventory contained no matching project document. The new document and
-its validated local PDF remain separate deliverables.
+its local PDF were then completed. Native readback verified the complete intended
+text, forty headings, 103 list paragraphs, thirty-one native link runs and three date
+chips, with no mismatches. The same document exported to a valid, non-empty PDF:
+fifteen pages, 248,407 bytes. Every rendered page was inspected; privacy and boundary
+checks found no issues. Canonical installation used a flushed temporary file and
+verified hash before replacement; no previous project PDF existed.
+
+Publication criteria PUB01–PUB12 are met for this scope, including the separately
+authorized new-document route. Local gates and remote checks are recorded above;
+actual HTTP/CLI worker recovery and native document/PDF export were exercised.
+Independent reviews accepted publication preparation and the CI correction. The
+broader product roadmap retains its own remaining acceptance gates.
 The full business roadmap keeps its independent remaining acceptance gates.
