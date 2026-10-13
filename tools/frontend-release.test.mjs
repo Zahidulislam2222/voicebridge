@@ -105,10 +105,6 @@ test('known artwork extraction binds bytes and keeps the image policy narrow', (
   assert.throws(() => externalizeArtwork(html, Buffer.from('different')), /differs/);
   assert.throws(() => externalizeArtwork(html + html, image), /exactly one/);
   const policyHtml = '<head></head><style>x</style><script>x</script>';
-  assert.ok(
-    contentPolicy(policyHtml, true, undefined, true).includes(
-      "img-src 'self' data:",
-    ),
-  );
+  assert.ok(contentPolicy(policyHtml, true, undefined, true).includes("img-src 'self' data:"));
   assert.ok(contentPolicy(policyHtml, true).includes('img-src data:'));
 });
