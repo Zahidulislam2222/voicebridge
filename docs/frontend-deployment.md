@@ -1,22 +1,23 @@
 # Frontend publication and release handoff
 
 **Live:** https://voicebridge.zahidul-islam.com/ — frontend
-`20261013-native-frontend-06` with backend
-`20261013-native-redaction-capture-10`. Guarded promotion matched six/six
-frontend files, 15/15 backend release files and all 15 application modules to
+`20261013-native-frontend-08` with backend
+`20261013-native-owner-voice-14`. Guarded promotion matched seven/seven
+frontend files, 16/16 backend release files and all 15 application modules to
 the reviewed image. The owned gateway fragment matched; 13 unrelated gateway
-files and 50 unrelated containers were preserved. Point-in-time readiness,
-exact public HTML, a served same-origin CSP assertion and unauthorized business-state HTTP 401 passed. Packaged
-Chromium checked 21 routes/login with zero JavaScript, CSP or external-request
-errors. Live voice calls remain disabled and untested; external follow-ups are
-captured. See [current release evidence](evidence/pilot-verification.md).
+files were preserved. Public HTTPS returned gzip/Vary, exact decoded HTML and
+the separately served committed PNG. Packaged Chromium checked 21 routes,
+login-link rendering and the image request with zero application/CSP errors.
+A fresh public Google owner sign-in completed and the Calls panel displayed
+both providers and bounded limits. One Retell web call was registered without
+media; audio remains untested and external follow-ups are captured. See
+[current release evidence](evidence/owner-release-20261013.md).
 
 The sections below retain the historical static release03 publication evidence.
-Current release CSP permits same-origin engine connections and the configured
-Retell/Daily call endpoints. Its frame and worker directives are limited to
-the reviewed release policy; the served same-origin assertion was checked at
-publication. The full current header has not been independently hash-matched.
-No new paid resource or Kubernetes cluster was provisioned.
+Current release CSP permits same-origin images, engine connections and the
+configured Retell/Daily call endpoints. Its frame and worker directives are
+limited to the reviewed release policy. The exact packaged browser checked its
+rendered CSP; no new paid resource or Kubernetes cluster was provisioned.
 
 ## Historical static release and evidence
 
@@ -100,10 +101,12 @@ have been exercised. Manual edit-bridge success does not prove every-edit dispat
 
 The earlier static release had no backend/authentication/provider execution.
 The current release has a persistent Business engine console and Google owner
-sessions; the twelve other workspace views keep local state. Calendar and CRM
+sessions; a fresh owner sign-in and Calls-panel readback passed. The twelve other
+workspace views keep local state. Calendar and CRM
 permissions are independently enabled, and one bounded owner-only booking has
-direct Calendar/CRM readbacks. General-recipient mail and native voice remain
-disabled pending their separate acceptance gates. Public intake forms still
+direct Calendar/CRM readbacks. General-recipient mail remains disabled. Native
+voice creation fails closed until a fresh free-entitlement receipt is recorded;
+its real-call acceptance remains open. Public intake forms still
 perform local review without remote submission.
 This existing server is one failure domain; legal compliance, million-user capacity,
 production monitoring and 99.9% uptime remain separately gated roadmap work.
