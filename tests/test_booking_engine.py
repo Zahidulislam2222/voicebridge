@@ -66,6 +66,21 @@ def test_calendar_receipt_and_atomic_outbox(app: FastAPI) -> None:
     assert sorted(j["kind"] for j in jobs) == ["calendar", "crm", "followup"]
 
 
+def test_followup_records_delivery_mode_at_receipt_time(app: FastAPI) -> None:
+    confirmed(app)
+    with app.state.service.sessions() as session:
+        job = session.scalar(select(Job).where(Job.kind == "followup"))
+        assert job is not None
+        job_id = job.id
+    app.state.worker.delivery.followup = lambda _key, _payload: "test-receipt"
+    assert app.state.worker.run_one(job_id)
+    followup = next(
+        item for item in app.state.service.snapshot("northline")["jobs"] if item["id"] == job_id
+    )
+    assert followup["status"] == "completed"
+    assert followup["delivery_mode"] == "capture"
+
+
 def test_timeout_after_write_does_not_false_confirm(app: FastAPI) -> None:
     app.state.service.calendar.timeout_after_write = True
     value = app.state.service.book("northline", request(app))
@@ -111,7 +126,6 @@ def test_cancel_and_reschedule_revision(app: FastAPI) -> None:
         ({"start": "2026-11-01T01:30:00-04:00"}, "ambiguous"),
         ({"start": "2026-11-02T10:00:00-04:00"}, "offset_mismatch"),
         ({"start": "2020-01-01T10:00:00-05:00"}, "outside_booking_window"),
-        ({"start": "2026-10-09T18:00:00-04:00"}, "invalid_slot"),
     ],
 )
 def test_time_service_validation(app: FastAPI, change: dict[str, str], error: str) -> None:
@@ -121,6 +135,13 @@ def test_time_service_validation(app: FastAPI, change: dict[str, str], error: st
     data.update({k: datetime.fromisoformat(v) if k == "start" else v for k, v in change.items()})
     with pytest.raises(DomainError, match=error):
         app.state.service.book("northline", BookingInput.model_validate(data))
+
+
+def test_slot_cannot_end_after_business_closes(app: FastAPI) -> None:
+    # Keep the slot in the future so this tests business hours on every run.
+    value = request(app, hour=app.state.service.business.closing_hour)
+    with pytest.raises(DomainError, match="invalid_slot"):
+        app.state.service.book("northline", value)
 
 
 def test_tenant_booking_isolation(app: FastAPI) -> None:

@@ -17,6 +17,10 @@ Replay only known failed/dead work according to contract. Reconcile stable calen
 IDs. Ambiguous CRM/email remains unknown until receipt evidence supports recovery.
 Never resend a confirmation merely because a process restarted.
 
+Distinguish captured follow-ups from externally delivered receipts. A disabled
+delivery switch is a configuration state, not evidence that a vendor accepted a
+message. Confirm provider receipts before moving unknown work to completed.
+
 ## Provider denial/quota
 
 Stop identical rejected requests and retain sanitized status/type/correlation.
@@ -30,6 +34,11 @@ Contain routes/credentials, revoke sessions and rotate compromised values. Asses
 tenant/data/provider scope and preserve private audit evidence. Involve assigned
 security/privacy owners and assess actual notification duties/deadlines. Never
 publish participant data or secrets. Add corrective regression tests.
+
+For transcript erasure, confirm the caller's tenant and authority, local tombstone,
+provider artifact deletion and historical-backup replay policy separately. A
+local redaction result alone is not an end-to-end deletion receipt. Preserve a
+minimal private audit trail without retaining deleted content.
 
 ## Restore/restart
 

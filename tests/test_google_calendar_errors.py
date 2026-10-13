@@ -10,7 +10,7 @@ def calendar(app: FastAPI, monkeypatch: pytest.MonkeyPatch) -> GoogleCalendar:
     instance = GoogleCalendar(
         settings.model_copy(
             update={
-                "provider": settings.provider.model_copy(update={"enabled": True}),
+                "provider": settings.provider.model_copy(update={"calendar_enabled": True}),
             }
         )
     )
@@ -80,7 +80,7 @@ def test_invalid_oauth_response_is_known_presend_failure(
     instance = GoogleCalendar(
         settings.model_copy(
             update={
-                "provider": settings.provider.model_copy(update={"enabled": True}),
+                "provider": settings.provider.model_copy(update={"calendar_enabled": True}),
             }
         )
     )

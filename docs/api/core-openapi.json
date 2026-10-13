@@ -932,6 +932,140 @@
         }
       }
     },
+    "/api/calls/{call_id}/transcript": {
+      "delete": {
+        "summary": "Redact Call Transcript",
+        "operationId": "redact_call_transcript_api_calls__call_id__transcript_delete",
+        "parameters": [
+          {
+            "name": "call_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Call Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/calls/native/create": {
+      "post": {
+        "summary": "Create Native Call",
+        "operationId": "create_native_call_api_calls_native_create_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NativeCallInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Create Native Call Api Calls Native Create Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/calls/native/status": {
+      "get": {
+        "summary": "Native Call Status",
+        "operationId": "native_call_status_api_calls_native_status_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeStatusView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/calls/bind": {
       "post": {
         "summary": "Bind Call Intent",
@@ -996,7 +1130,10 @@
             "in": "query",
             "required": true,
             "schema": {
-              "enum": ["retell", "vapi"],
+              "enum": [
+                "retell",
+                "vapi"
+              ],
               "type": "string",
               "title": "Provider"
             }
@@ -1068,7 +1205,10 @@
             "in": "path",
             "required": true,
             "schema": {
-              "enum": ["retell", "vapi"],
+              "enum": [
+                "retell",
+                "vapi"
+              ],
               "type": "string",
               "title": "Provider"
             }
@@ -1078,7 +1218,10 @@
             "in": "path",
             "required": true,
             "schema": {
-              "enum": ["events", "tools"],
+              "enum": [
+                "events",
+                "tools"
+              ],
               "type": "string",
               "title": "Surface"
             }
@@ -1120,7 +1263,10 @@
             "in": "path",
             "required": true,
             "schema": {
-              "enum": ["business", "management"],
+              "enum": [
+                "business",
+                "management"
+              ],
               "type": "string",
               "title": "Surface"
             }
@@ -1185,7 +1331,13 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["name", "greeting", "handoff", "voice_id", "expected_revision"],
+        "required": [
+          "name",
+          "greeting",
+          "handoff",
+          "voice_id",
+          "expected_revision"
+        ],
         "title": "AgentInput"
       },
       "AgentView": {
@@ -1213,7 +1365,13 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["name", "greeting", "handoff", "voice_id", "revision"],
+        "required": [
+          "name",
+          "greeting",
+          "handoff",
+          "voice_id",
+          "revision"
+        ],
         "title": "AgentView"
       },
       "AppointmentView": {
@@ -1308,7 +1466,12 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["id", "action", "target", "date"],
+        "required": [
+          "id",
+          "action",
+          "target",
+          "date"
+        ],
         "title": "AuditView"
       },
       "BookingInput": {
@@ -1368,7 +1531,15 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["operation_id", "name", "phone", "email", "service", "start", "confirmed"],
+        "required": [
+          "operation_id",
+          "name",
+          "phone",
+          "email",
+          "service",
+          "start",
+          "confirmed"
+        ],
         "title": "BookingInput"
       },
       "CallIntentBinding": {
@@ -1388,20 +1559,28 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["intent_id", "external_id"],
+        "required": [
+          "intent_id",
+          "external_id"
+        ],
         "title": "CallIntentBinding"
       },
       "CallIntentInput": {
         "properties": {
           "provider": {
             "type": "string",
-            "enum": ["retell", "vapi"],
+            "enum": [
+              "retell",
+              "vapi"
+            ],
             "title": "Provider"
           }
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["provider"],
+        "required": [
+          "provider"
+        ],
         "title": "CallIntentInput"
       },
       "CallView": {
@@ -1433,7 +1612,13 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["id", "provider", "state", "date", "transcript"],
+        "required": [
+          "id",
+          "provider",
+          "state",
+          "date",
+          "transcript"
+        ],
         "title": "CallView"
       },
       "ChangeInput": {
@@ -1447,7 +1632,10 @@
           },
           "action": {
             "type": "string",
-            "enum": ["cancel", "reschedule"],
+            "enum": [
+              "cancel",
+              "reschedule"
+            ],
             "title": "Action"
           },
           "start": {
@@ -1474,7 +1662,12 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["operation_id", "action", "confirmed", "expected_revision"],
+        "required": [
+          "operation_id",
+          "action",
+          "confirmed",
+          "expected_revision"
+        ],
         "title": "ChangeInput"
       },
       "ContactView": {
@@ -1502,7 +1695,13 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["id", "name", "email", "phone", "notes"],
+        "required": [
+          "id",
+          "name",
+          "email",
+          "phone",
+          "notes"
+        ],
         "title": "ContactView"
       },
       "DocumentInput": {
@@ -1544,7 +1743,10 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["name", "text"],
+        "required": [
+          "name",
+          "text"
+        ],
         "title": "DocumentInput"
       },
       "DocumentView": {
@@ -1577,7 +1779,14 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["id", "name", "text", "revision", "updated", "checksum"],
+        "required": [
+          "id",
+          "name",
+          "text",
+          "revision",
+          "updated",
+          "checksum"
+        ],
         "title": "DocumentView"
       },
       "EvaluationFixtureView": {
@@ -1604,7 +1813,12 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["id", "status", "booking_ids", "detail"],
+        "required": [
+          "id",
+          "status",
+          "booking_ids",
+          "detail"
+        ],
         "title": "EvaluationFixtureView"
       },
       "HTTPValidationError": {
@@ -1663,12 +1877,168 @@
               }
             ],
             "title": "Receipt"
+          },
+          "delivery_mode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delivery Mode"
           }
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["id", "kind", "status", "attempts", "detail", "booking_id", "receipt"],
+        "required": [
+          "id",
+          "kind",
+          "status",
+          "attempts",
+          "detail",
+          "booking_id",
+          "receipt",
+          "delivery_mode"
+        ],
         "title": "JobView"
+      },
+      "NativeCallInput": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "retell",
+              "vapi"
+            ],
+            "title": "Provider"
+          },
+          "operation_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 16,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Operation Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "provider",
+          "operation_id"
+        ],
+        "title": "NativeCallInput"
+      },
+      "NativeEntitlementView": {
+        "properties": {
+          "state": {
+            "type": "string",
+            "title": "State"
+          },
+          "verified_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verified At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "state",
+          "verified_at"
+        ],
+        "title": "NativeEntitlementView"
+      },
+      "NativeLimitsView": {
+        "properties": {
+          "max_seconds": {
+            "type": "integer",
+            "title": "Max Seconds"
+          },
+          "max_concurrent": {
+            "type": "integer",
+            "title": "Max Concurrent"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "max_seconds",
+          "max_concurrent"
+        ],
+        "title": "NativeLimitsView"
+      },
+      "NativeOperationView": {
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "title": "Operation Id"
+          },
+          "provider": {
+            "type": "string",
+            "title": "Provider"
+          },
+          "state": {
+            "type": "string",
+            "title": "State"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "recovery": {
+            "type": "string",
+            "title": "Recovery"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "operation_id",
+          "provider",
+          "state",
+          "created_at",
+          "recovery"
+        ],
+        "title": "NativeOperationView"
+      },
+      "NativeStatusView": {
+        "properties": {
+          "operations": {
+            "items": {
+              "$ref": "#/components/schemas/NativeOperationView"
+            },
+            "type": "array",
+            "title": "Operations"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/NativeLimitsView"
+          },
+          "entitlements": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/NativeEntitlementView"
+            },
+            "type": "object",
+            "title": "Entitlements"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "operations",
+          "limits",
+          "entitlements"
+        ],
+        "title": "NativeStatusView"
       },
       "StateView": {
         "properties": {
@@ -1786,7 +2156,10 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["name", "arguments"],
+        "required": [
+          "name",
+          "arguments"
+        ],
         "title": "ToolInput"
       },
       "TranscriptEntry": {
@@ -1802,7 +2175,10 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["speaker", "text"],
+        "required": [
+          "speaker",
+          "text"
+        ],
         "title": "TranscriptEntry"
       },
       "ValidationError": {
@@ -1838,7 +2214,11 @@
           }
         },
         "type": "object",
-        "required": ["loc", "msg", "type"],
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
         "title": "ValidationError"
       }
     }

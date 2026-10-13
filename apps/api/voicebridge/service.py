@@ -166,6 +166,35 @@ class Service:
         if call.state == "ended":
             raise DomainError("call_not_active", 403)
 
+    def redact_call_transcript(self, tenant: str, call_id: str) -> None:
+        """Clear an ended call and prevent a late terminal event from restoring it."""
+        with self.sessions.begin() as s:
+            tenant_lock(s, tenant)
+            call = s.scalar(select(Call).where(Call.id == call_id, Call.tenant_id == tenant))
+            if not call:
+                raise DomainError("call_not_found", 404)
+            if call.state != "ended":
+                raise DomainError("call_not_ended", 409)
+            marker = s.scalar(
+                select(Record).where(
+                    Record.tenant_id == tenant,
+                    Record.kind == "call_redaction",
+                    Record.key == call_id,
+                )
+            )
+            call.transcript = []
+            if not marker:
+                s.add(
+                    Record(
+                        id=identity(),
+                        tenant_id=tenant,
+                        kind="call_redaction",
+                        key=call_id,
+                        value={"redacted_at": now().isoformat()},
+                    )
+                )
+                audit(s, tenant, "call.transcript.redacted", call_id)
+
     def availability(
         self, tenant: str, start: datetime, service: str, call_id: str | None = None
     ) -> dict[str, Any]:
@@ -656,6 +685,9 @@ class Service:
                         "detail": r.detail,
                         "booking_id": r.payload.get("booking_id"),
                         "receipt": r.receipt,
+                        "delivery_mode": r.payload.get("delivery_mode")
+                        if r.kind == "followup"
+                        else None,
                     }
                     for r in rows(Job)
                 ],
@@ -699,8 +731,11 @@ class Service:
                     model.__tablename__: count(model) for model in [Appointment, Contact, Call, Job]
                 },
                 "integrations": {
-                    "calendar": "live-enabled" if self.settings.provider.enabled else "local",
-                    "crm": "live-enabled" if self.settings.provider.enabled else "local",
+                    "calendar": "live-enabled"
+                    if self.settings.provider.calendar_enabled
+                    else "local",
+                    "crm": "live-enabled" if self.settings.provider.crm_enabled else "local",
+                    "voice": "enabled" if self.settings.provider.voice_enabled else "disabled",
                     "vapi": (
                         "read-only-access-verified"
                         if self.settings.provider.vapi_owner_resolved
@@ -720,5 +755,7 @@ class Service:
                         .limit(self.settings.max_records_per_page)
                     )
                 ],
-                "synthetic": not self.settings.provider.enabled,
+                "synthetic": not (
+                    self.settings.provider.calendar_enabled or self.settings.provider.crm_enabled
+                ),
             }

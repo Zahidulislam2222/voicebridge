@@ -21,6 +21,7 @@ x-runtime: &runtime
 services:
   api:
     <<: *runtime
+{{NATIVE_API_MOUNTS}}
     command: ["api", "--env-file", "/run/voicebridge/runtime.env"]
     ports: ["127.0.0.1:{{HOST_PORT}}:{{CONTAINER_PORT}}"]
     depends_on:
@@ -34,7 +35,7 @@ services:
   worker:
     <<: *runtime
     command: ["worker", "--env-file", "/run/voicebridge/runtime.env"]
-    networks: [private]
+    networks: {{WORKER_NETWORKS}}
     depends_on:
       api: {condition: service_healthy}
   observer:

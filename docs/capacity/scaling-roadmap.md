@@ -1,6 +1,7 @@
 # Capacity roadmap: 1M+ concurrent users
 
-This future target has staged capacity acceptance. The distributed architecture
+This future target has staged capacity acceptance. The deployed single-business
+release has not proved any million-scale workload. The distributed architecture
 must be implemented and measured before increasing admission beyond a validated stage.
 
 | Workload                   | Definition                                          | Measurements                                           |
@@ -51,18 +52,26 @@ remain outside pod autoscaling. See the official
 
 ## Stages
 
-| Stage | Intended scope                        | Exit evidence                                                                        |
-| ----- | ------------------------------------- | ------------------------------------------------------------------------------------ |
-| C0    | Guarded local baseline                | Environment/data, latency/errors, recovery and stop limits                           |
-| C1    | 100–1,000 concurrent sessions         | Pagination, realistic cadence, pool/worker saturation                                |
-| C2    | 10,000 concurrent sessions            | Multiple replicas, fairness, spike/soak and one-node loss                            |
-| C3    | 100,000 concurrent sessions           | Partitions, database failover, quotas and headroom                                   |
-| C4    | 1M+ concurrent users                  | Distributed generators, declared mixed workload, regional failure and sustained SLOs |
-| V1–V4 | Separate increasing voice concurrency | Written provider quotas, small real audio acceptance, staged call tests              |
+| Stage | Intended scope                                                      | Exit evidence                                                                        |
+| ----- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| C0    | Guarded local baseline                                              | Environment/data, latency/errors, recovery and stop limits                           |
+| C1    | 100–1,000 concurrent sessions                                       | Pagination, realistic cadence, pool/worker saturation                                |
+| C2    | 10,000 concurrent sessions                                          | Multiple replicas, fairness, spike/soak and one-node loss                            |
+| C3    | 100,000 concurrent sessions                                         | Partitions, database failover, quotas and headroom                                   |
+| C4    | 1M+ active dashboard sessions                                       | Distributed generators, declared mixed workload, regional failure and sustained SLOs |
+| V1–V4 | Increasing voice concurrency through a 1M+ simultaneous-call target | Written provider quotas, real audio acceptance and staged call tests                 |
 
 These are planned gates, not hardware promises. Determine throughput/data size
 before instance counts. Reserve measured headroom for a failed replica/cell and
 account for tenant skew and retry amplification.
+
+Stored-account growth needs its own index, migration, backup/restore and privacy
+tests through one million registered accounts; it is not inferred from C4 session
+traffic. Likewise, no backend load result can prove one million real calls without
+account-specific telephony, provider, speech, model and business-tool commitments.
+The mixed stage must exercise those workloads together rather than add separate
+peak numbers. Record provider limits, region and data-location constraints, rates,
+cost envelopes and failover assumptions before admitting traffic.
 
 ## Safe tests and deliverables
 

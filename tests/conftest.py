@@ -32,6 +32,14 @@ def no_external_network(monkeypatch: pytest.MonkeyPatch) -> None:
 def app() -> Iterator[FastAPI]:
     settings = load_settings(".local/core-engine/.env")
     assert not settings.provider.enabled, "Tests refuse enabled real providers"
+    assert not settings.external_delivery_enabled, "Tests refuse enabled external mail"
+    assert not any(
+        (
+            settings.provider.calendar_enabled,
+            settings.provider.crm_enabled,
+            settings.provider.voice_enabled,
+        )
+    ), "Tests refuse enabled real connectors"
     settings = settings.model_copy(
         update={
             "operator_key": SecretStr("test-operator-credential-local-only"),

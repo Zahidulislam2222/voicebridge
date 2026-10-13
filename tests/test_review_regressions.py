@@ -48,7 +48,7 @@ def test_expired_owner_cannot_write_calendar_or_complete(app: FastAPI) -> None:
 def test_remote_write_404_is_not_a_receipt(app: FastAPI, monkeypatch: pytest.MonkeyPatch) -> None:
     settings = app.state.service.settings
     settings = settings.model_copy(
-        update={"provider": settings.provider.model_copy(update={"enabled": True})}
+        update={"provider": settings.provider.model_copy(update={"calendar_enabled": True})}
     )
     calendar = GoogleCalendar(settings)
     monkeypatch.setattr(calendar, "headers", lambda: {"Authorization": "Bearer test-key"})

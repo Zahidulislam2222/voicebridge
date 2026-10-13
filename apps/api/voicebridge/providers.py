@@ -54,7 +54,11 @@ class Providers:
         self.service, self.worker = service, worker
 
     def evaluate(self, tenant: str) -> dict[str, Any]:
-        if self.service.settings.provider.enabled:
+        if (
+            self.service.settings.provider.calendar_enabled
+            or self.service.settings.provider.crm_enabled
+            or self.service.settings.external_delivery_enabled
+        ):
             raise DomainError("synthetic_evaluation_required", 403)
 
         def parity(query: str) -> str:
@@ -188,7 +192,11 @@ class Providers:
         return "confirmed" if statuses == ["confirmed", "confirmed"] else "booking_failed"
 
     def fixture_provider(self, tenant: str, fixture_id: str) -> "Providers":
-        if self.service.settings.provider.enabled:
+        if (
+            self.service.settings.provider.calendar_enabled
+            or self.service.settings.provider.crm_enabled
+            or self.service.settings.external_delivery_enabled
+        ):
             raise DomainError("synthetic_evaluation_required", 403)
         with self.service.sessions() as session:
             fixture = session.scalar(
@@ -551,7 +559,14 @@ class Providers:
                 call.state = "ended"
             elif call.state != "ended":
                 call.state = "active"
-            if transcript and not call.transcript:
+            redacted = s.scalar(
+                select(Record.id).where(
+                    Record.tenant_id == tenant,
+                    Record.kind == "call_redaction",
+                    Record.key == call_id,
+                )
+            )
+            if transcript and not redacted and not call.transcript:
                 call.transcript = transcript
             audit(s, tenant, "provider.event.accepted", call.id)
         return {"accepted": True, "duplicate": False}

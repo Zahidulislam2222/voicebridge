@@ -30,8 +30,11 @@ they are included in browser bundles.
 
 Set `VITE_CORE_API_URL` and matching backend origins to connect the console.
 Use `VITE_CORE_SESSION_AUTH=true` in a session-authenticated release. The Business
-engine persists through HTTP/PostgreSQL. Other workspace views currently use local
-state that resets on reload; they do not send operations to external providers.
+engine persists through HTTP/PostgreSQL. Native call controls are bounded by the
+server's provider and owner authorization gates; the deployed release keeps live
+voice disabled pending audio and business-tool acceptance. Other workspace views
+currently use local state that resets on reload; they do not send operations to
+external providers.
 
 ## Accessibility and delivery
 
@@ -39,7 +42,9 @@ Verify keyboard/focus behavior, narrow layouts, reduced motion, readable errors
 and actual CSP violation events. Exercise the exact built artifact. The existing
 bundle-size warning is tracked for route splitting and deferred visual modules.
 
-See [public criteria](../../docs/public-frontend-spec.md),
+The deployed release matched six frontend files to the server after local
+97-test and packaged browser checks. Those checks do not establish completed
+live voice calls or future-scale reliability. See [public criteria](../../docs/public-frontend-spec.md),
 [operator criteria](../../docs/frontend-spec.md),
 [deployment](../../docs/frontend-deployment.md) and
 [current evidence](../../docs/evidence/pilot-verification.md).

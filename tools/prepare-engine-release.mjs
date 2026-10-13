@@ -10,6 +10,14 @@ export const engineDeploymentSchema = z.object({
   projectSlug: z.string().regex(/^[a-z][a-z0-9-]+$/),
   releaseId: z.string().regex(/^[a-z0-9-]+$/),
   engineImage: z.string().regex(/^voicebridge-engine:[a-z0-9-]+$/),
+  workerExternalAccess: z.boolean().default(false),
+  nativeApiMounts: z.boolean().default(false),
+  providerProfileSource: z
+    .union([
+      z.literal('config/provider-profiles.json'),
+      z.string().regex(/^\.local\/engine-releases\/[a-z0-9-]+\/provider-profiles\.json$/),
+    ])
+    .default('config/provider-profiles.json'),
   pythonImage: image,
   postgresImage: image,
   mailpitImage: image,
@@ -48,6 +56,35 @@ export const engineDeploymentSchema = z.object({
   captureMessages: integer.max(10000),
 });
 
+export function workerNetworks(externalAccess) {
+  return externalAccess ? '[private, identity]' : '[private]';
+}
+
+export function nativeApiMounts(enabled) {
+  if (!enabled) return '';
+  const common = [
+    '    volumes:',
+    '      - ./runtime.env:/run/voicebridge/runtime.env:ro',
+    '      - ./access.json:/run/voicebridge/access.json:ro',
+    '      - ./provider-profiles.json:/run/voicebridge/provider-profiles.json:ro',
+  ];
+  for (const name of [
+    'native-request-bodies.json',
+    'native-retell-approved.json',
+    'native-free-entitlement.json',
+  ]) {
+    common.push(
+      '      - type: bind',
+      `        source: ./${name}`,
+      `        target: /run/voicebridge/${name}`,
+      '        read_only: true',
+      '        bind:',
+      '          create_host_path: false',
+    );
+  }
+  return common.join('\n');
+}
+
 export async function prepareEngineRelease(configurationFile) {
   const settings = engineDeploymentSchema.parse(
     JSON.parse(await readFile(configurationFile, 'utf8')),
@@ -72,6 +109,8 @@ export async function prepareEngineRelease(configurationFile) {
     ENGINE_MEMORY: settings.engineMemory,
     ENGINE_CPU: settings.engineCpu,
     HEALTH_URL: `http://127.0.0.1:${settings.containerPort}/health/ready`,
+    WORKER_NETWORKS: workerNetworks(settings.workerExternalAccess),
+    NATIVE_API_MOUNTS: nativeApiMounts(settings.nativeApiMounts),
   });
   for (const [template, name] of [
     ['engine-compose.yaml.template', 'compose.yaml'],
@@ -82,7 +121,7 @@ export async function prepareEngineRelease(configurationFile) {
   }
   await writeFile(
     resolve(output, 'provider-profiles.json'),
-    await readFile(resolve('config/provider-profiles.json')),
+    await readFile(resolve(settings.providerProfileSource)),
   );
   const manifest = {
     releaseId: settings.releaseId,

@@ -119,6 +119,10 @@ class Worker:
                     audit(s, tenant, "job.superseded", key)
                     return
                 receipt = self.delivery.followup(row.operation_key, row.payload)
+                row.payload = {
+                    **row.payload,
+                    "delivery_mode": self.service.settings.followup_transport,
+                }
             elif row.kind == "crm":
                 receipt = self.delivery.crm(row.operation_key, row.payload, session=s)
             else:

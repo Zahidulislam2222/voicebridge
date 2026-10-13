@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import { agentDraft, bookingNotice, CoreClient } from '../services/core-client';
+import {
+  agentDraft,
+  bookingNotice,
+  CoreClient,
+  followupDeliveryNotice,
+  ownerSessionDenied,
+} from '../services/core-client';
 import type {
   Agent,
   AgentRecord,
@@ -11,6 +17,7 @@ import { settings } from '../config/settings';
 import copy from '../data/core-console';
 import type { CorePage } from '../protocol';
 import { Brand, Button, Field, Notice } from './ui';
+import { NativeCallPanel } from './native-call-panel';
 import './core-console.css';
 
 export function CoreConsole() {
@@ -21,9 +28,11 @@ export function CoreConsole() {
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [pending, setPending] = useState(false);
+  const [owner, setOwner] = useState(false);
   const [bootstrap, setBootstrap] = useState<{
     services: Record<string, number>;
     timezone: string;
+    native_calls_available: boolean;
   } | null>(null);
   const [booking, setBooking] = useState<Partial<Booking>>({ confirmed: false });
   const [operation, setOperation] = useState(() => crypto.randomUUID());
@@ -42,17 +51,20 @@ export function CoreConsole() {
     let alive = true;
     const probe = new CoreClient('');
     void probe
-      .request<{ csrf: string }>('/auth/session')
+      .request<{ csrf: string; role: string }>('/auth/session')
       .then(async (session) => {
         const next = new CoreClient('', session.csrf);
-        const boot = await next.request<{ services: Record<string, number>; timezone: string }>(
-          '/api/bootstrap',
-        );
+        const boot = await next.request<{
+          services: Record<string, number>;
+          timezone: string;
+          native_calls_available: boolean;
+        }>('/api/bootstrap');
         const snapshot = await next.state();
         if (alive) {
           setBootstrap(boot);
           setState(snapshot);
           setClient(next);
+          setOwner(session.role === 'owner');
         }
       })
       .catch(() => {
@@ -76,8 +88,13 @@ export function CoreConsole() {
       try {
         const next = await client!.state(controller.signal);
         if (alive) setState(next);
-      } catch {
-        if (alive) setError(copy.unavailable);
+      } catch (reason) {
+        if (alive && ownerSessionDenied(reason)) {
+          setClient(null);
+          setState(null);
+          setBootstrap(null);
+          setOwner(false);
+        } else if (alive) setError(copy.unavailable);
       } finally {
         if (alive)
           timer = setTimeout(() => {
@@ -113,9 +130,11 @@ export function CoreConsole() {
     event.preventDefault();
     const next = new CoreClient(credential);
     await action(async () => {
-      const boot = await next.request<{ services: Record<string, number>; timezone: string }>(
-        '/api/bootstrap',
-      );
+      const boot = await next.request<{
+        services: Record<string, number>;
+        timezone: string;
+        native_calls_available: boolean;
+      }>('/api/bootstrap');
       setBootstrap(boot);
       await refresh(next);
       setClient(next);
@@ -182,6 +201,7 @@ export function CoreConsole() {
                       setState(null);
                       setBootstrap(null);
                       setAgent(null);
+                      setOwner(false);
                     },
                     copy.logout,
                     false,
@@ -192,6 +212,7 @@ export function CoreConsole() {
                 setState(null);
                 setCredential('');
                 setAgent(null);
+                setOwner(false);
               }}
             >
               {settings.coreSessionAuth ? copy.logout : copy.disconnect}
@@ -481,6 +502,9 @@ export function CoreConsole() {
                       {row.detail} · {copy.attempts} {row.attempts}
                     </p>
                     <p>{row.receipt}</p>
+                    {row.kind === 'followup' && row.status === 'completed' && (
+                      <p>{followupDeliveryNotice(row.delivery_mode)}</p>
+                    )}
                     {['dead', 'failed'].includes(row.status) && (
                       <Button
                         disabled={pending}
@@ -515,6 +539,14 @@ export function CoreConsole() {
                     <p>{row.notes}</p>
                   </article>
                 ))}
+              {page === 'calls' && (
+                <NativeCallPanel
+                  key={`${owner}-${bootstrap?.native_calls_available === true}`}
+                  client={client}
+                  available={bootstrap?.native_calls_available === true}
+                  owner={owner}
+                />
+              )}
               {page === 'calls' &&
                 state.calls.map((row) => (
                   <article className="panel core-record" key={row.id}>
@@ -527,6 +559,21 @@ export function CoreConsole() {
                         {line.speaker}: {line.text}
                       </p>
                     ))}
+                    {owner && row.state === 'ended' && row.transcript.length > 0 && (
+                      <Button
+                        variant="danger"
+                        disabled={pending}
+                        onClick={() => {
+                          if (window.confirm(copy.redactTranscriptPrompt))
+                            void action(
+                              () => client.request(`/api/calls/${row.id}/transcript`, 'DELETE'),
+                              copy.redactTranscriptDone,
+                            );
+                        }}
+                      >
+                        {copy.redactTranscript}
+                      </Button>
+                    )}
                   </article>
                 ))}
               {page === 'integrations' &&
@@ -534,8 +581,21 @@ export function CoreConsole() {
                   <article className="panel core-record" key={name}>
                     <h3>{name}</h3>
                     <p>{status}</p>
+                    <p>{copy.configuredOnly}</p>
                   </article>
                 ))}
+              {page === 'integrations' && (
+                <article className="panel core-record">
+                  <h3>{copy.recordLimit}</h3>
+                  <p>{state.record_limit}</p>
+                  {Object.entries(state.counts).map(([name, count]) => (
+                    <p key={name}>
+                      {name}: {count} {copy.recordCount}
+                      {count > state.record_limit ? `; first ${state.record_limit} displayed` : ''}
+                    </p>
+                  ))}
+                </article>
+              )}
               {page === 'evaluations' && (
                 <>
                   <Button

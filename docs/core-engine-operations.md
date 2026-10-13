@@ -7,16 +7,25 @@ scope check separate capabilities. Keep those five values in an ignored environm
 file and the private credential recovery file. Never put them in browser URLs,
 shell arguments, screenshots or public evidence.
 
-The historical local engine meets eighteen test-data criteria. The authenticated
-pilot is now published as backend03/frontend06 with144backend/78frontend tests,
-12backend/6frontend file parity and current public21route/7HTTP checks. See
-[pilot evidence](evidence/pilot-verification.md); actual voice and external delivery
-remain separate unverified gates.
+The historical local engine meets eighteen test-data criteria. The current
+authenticated single-business release is backend
+`20261013-native-redaction-capture-10` with frontend
+`20261013-native-frontend-06`. Local suites passed 194 backend and 97 frontend
+tests; promotion matched 15/15 backend and 6/6 frontend files, the reviewed image
+modules and the owned gateway. Readiness, exact public HTML, a served same-origin CSP assertion and unauthorized
+business-state HTTP 401 passed at the recorded time. See
+[release evidence](evidence/pilot-verification.md); these checks do not measure
+sustained uptime or a real voice conversation.
+
 Vapi support identified the default Python header as the cause
 of the earlier edge denial and authorized an application User-Agent/HTTPX request.
 One read-only assistant inventory request returned HTTP 200. The configured owner
-gate is resolved for this account; dedicated native profile configuration is verified, while calls/audio and external
-business delivery remain untested/disabled.
+gate is resolved for this account; dedicated native profile configuration is
+verified. Live voice is disabled with a configured 60-second, one-call limit and
+has no completed audio/tool acceptance. Calendar and CRM permissions are
+independently enabled, with one bounded owner-only readback; general external
+email delivery is disabled and follow-ups use capture mode.
+
 Do not repeat the original rejected request or bypass any new security denial.
 
 ## Start from the existing checkout
@@ -224,11 +233,12 @@ browser and restore journeys, then obtain a fresh-context review.
 
 Capacity evidence is bounded by `config/capacity-profiles.json`. It does not prove
 one million users/calls or sustained uptime. Keep resource guards, no-cost limits
-and provider execution gates intact. Google owner authentication and the bounded pilot release are verified. Real
-voice rights/listening, external delivery, production onboarding, legal/compliance,
-large-scale capacity and sustained uptime remain open.
+and provider execution gates intact. Google owner authentication and the bounded
+single-business release are verified. Real voice rights/listening, unrestricted
+external mail, production onboarding, legal/compliance, large-scale capacity and
+sustained uptime remain open.
 
-## Existing deployed pilot recovery
+## Existing deployed release recovery
 
 Preserve the current server database, identity encryption key, accounts and native
 profiles. Read the ignored recovery checkpoint and deployment evidence before any
@@ -239,12 +249,12 @@ preflight-resume path accepts only its known no-process-mutation journal stage a
 independently rechecks all current artifacts; an unknown process outcome requires
 inspection rather than a retry.
 
-The latest33032-byte quiesced backup is valid PGDMP. The separately verified
-restore used the earlier32787-byte backup and matched thirteen tables in an
-isolated clone; do not claim the latest backup has also been restored. The working
-database and capture mailbox stayed intact during the upgrade. API and worker
-were quiesced, so zero downtime is not claimed.
+The current backend promotion took a valid PostgreSQL custom-format backup with
+a matching saved digest before activating the new image. An earlier restore check
+matched thirteen tables in an isolated clone; it does not prove that the new
+backup was restored. The working database was preserved during promotion. API
+and worker quiescence means zero downtime is not claimed.
 
-Observation recorded101probes/100successes/one unsuccessful and zero unknown
-seconds at the final check. That is a measured interval, not an achieved uptime
-SLA. Preserve unsuccessful samples and the earlier release/review evidence.
+An earlier observation interval recorded 101 probes, 100 successes, one
+unsuccessful probe and zero unknown seconds. Retain that result as dated history;
+it is not a measurement of the new release or an achieved uptime SLA.

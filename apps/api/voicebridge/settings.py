@@ -1,5 +1,6 @@
 """One typed environment boundary; no secret is returned by public bootstrap."""
 
+import re
 from pathlib import Path
 from string import Formatter
 from typing import Any, Literal
@@ -10,6 +11,7 @@ from pydantic import BaseModel, ConfigDict, Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from .contracts import DocumentInput
+from .protocol import SINGLE_EMAIL_PATTERN
 
 
 class AuthSettings(BaseModel):
@@ -95,6 +97,9 @@ class ProviderSettings(BaseModel):
     timeout_seconds: float = Field(gt=0)
     user_agent: str = Field(min_length=1, pattern=r"^[^\r\n]+$")
     enabled: bool
+    calendar_enabled: bool = False
+    crm_enabled: bool = False
+    voice_enabled: bool = False
     vapi_owner_resolved: bool
     calendar_id: str
     google_client_id: str
@@ -107,6 +112,8 @@ class ProviderSettings(BaseModel):
 
     @model_validator(mode="after")
     def secure_endpoints(self) -> "ProviderSettings":
+        if self.enabled:
+            raise ValueError("Use independent calendar, CRM and voice execution permissions")
         for endpoint in (
             self.base_url,
             self.contacts_path,
@@ -123,6 +130,7 @@ class ProviderSettings(BaseModel):
                 or parsed.password
                 or parsed.query
                 or parsed.fragment
+                or parsed.params
             ):
                 raise ValueError(
                     "Provider endpoints require HTTPS without embedded credentials or parameters"
@@ -152,6 +160,15 @@ class Settings(BaseSettings):
     provider_metadata_capability: bool = False
     call_intent_seconds: int = Field(default=300, gt=0)
     max_pending_call_intents: int = Field(default=100, gt=0)
+    native_cipher_key: SecretStr = SecretStr("")
+    native_template_file: Path | None = None
+    native_retell_approved_file: Path | None = None
+    native_entitlement_file: Path | None = None
+    native_entitlement_ttl_seconds: int = Field(default=900, gt=0)
+    native_grant_seconds: int = Field(default=120, gt=0)
+    native_max_seconds: int = Field(default=60, gt=0, le=60)
+    native_vapi_media_host_suffix: str = Field(default="daily.co", pattern=r"^[a-z0-9.-]+$")
+    native_vapi_model_provider: str = Field(default="openai", pattern=r"^[a-z][a-z0-9_-]{0,39}$")
     tenant_id: str
     host: str
     port: int = Field(gt=0, lt=65536)
@@ -186,16 +203,38 @@ class Settings(BaseSettings):
     smtp_from: str
     n8n_url: str
     n8n_key: SecretStr = Field(min_length=1)
-    followup_transport: Literal["capture", "n8n"]
+    followup_transport: Literal["capture", "n8n", "smtp"]
+    external_delivery_enabled: bool = False
+    followup_recipients: list[str] = Field(default_factory=list)
+    smtp_security: Literal["tls", "starttls"] = "tls"
+    smtp_username: str = ""
+    smtp_password: SecretStr = SecretStr("")
     provider: ProviderSettings
 
     @model_validator(mode="after")
     def safe_local(self) -> "Settings":
+        if self.provider.voice_enabled:
+            from cryptography.fernet import Fernet
+
+            if (
+                self.stage != "pilot"
+                or not self.auth
+                or not self.provider_metadata_capability
+                or not self.native_template_file
+                or not self.native_retell_approved_file
+                or not self.native_entitlement_file
+                or not self.provider.vapi_owner_resolved
+                or min(
+                    len(self.provider.retell_key.get_secret_value()),
+                    len(self.provider.vapi_key.get_secret_value()),
+                )
+                < 24
+            ):
+                raise ValueError("Native voice requires pilot identity, profiles and real keys")
+            Fernet(self.native_cipher_key.get_secret_value().encode())
         if self.stage == "pilot":
             if not self.auth or not self.auth.cookie_secure:
                 raise ValueError("Public pilot requires configured secure OIDC sessions")
-            if self.provider.enabled:
-                raise ValueError("Pilot publication initially keeps real providers disabled")
             if any(urlparse(origin).scheme != "https" for origin in self.origins):
                 raise ValueError("Pilot origins require HTTPS")
         elif self.host not in {"127.0.0.1", "localhost", "::1"}:
@@ -217,8 +256,26 @@ class Settings(BaseSettings):
             "::1",
         }:
             raise ValueError("Only local n8n allowed")
-        if self.stage == "pilot" and self.followup_transport != "capture":
-            raise ValueError("Initial public pilot only permits capture delivery")
+        if self.stage == "pilot" and self.followup_transport == "n8n":
+            raise ValueError("Public n8n delivery requires its separate acceptance gate")
+        if self.followup_transport == "smtp" or self.external_delivery_enabled:
+            if (
+                self.followup_transport != "smtp"
+                or not self.external_delivery_enabled
+                or not self.smtp_username.strip()
+                or not self.smtp_password.get_secret_value().strip()
+                or not self.followup_recipients
+                or not re.fullmatch(SINGLE_EMAIL_PATTERN, self.smtp_from)
+                or self.smtp_from.lower().endswith(".invalid")
+                or any(
+                    not re.fullmatch(SINGLE_EMAIL_PATTERN, address)
+                    or address.lower().endswith(".invalid")
+                    for address in self.followup_recipients
+                )
+            ):
+                raise ValueError(
+                    "SMTP delivery requires permission, credentials and real recipients"
+                )
         if (
             len(
                 {
@@ -354,6 +411,7 @@ class EvaluationSuite(MaintainedData):
 class ProviderProfile(MaintainedData):
     agent_id: str
     voice_id: str
+    version: int | str | None = None
     state: str = Field(min_length=1)
 
 

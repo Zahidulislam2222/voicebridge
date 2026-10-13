@@ -14,6 +14,11 @@ export function bookingNotice(status: string, action: 'create' | 'reschedule' | 
     cancel: copy.bookingCancelled,
   }[action];
 }
+export function followupDeliveryNotice(mode: string | null): string {
+  if (mode === 'capture') return copy.captureDelivery;
+  if (mode === 'smtp' || mode === 'n8n') return copy.externalDelivery;
+  return copy.unknownDelivery;
+}
 export type Agent = paths['/api/agent']['put']['requestBody']['content']['application/json'];
 export type AgentRecord =
   paths['/api/agent']['put']['responses'][200]['content']['application/json'];
@@ -28,12 +33,38 @@ export function agentDraft(value: Omit<Agent, 'expected_revision'> & { revision:
 }
 export type CoreSnapshot =
   paths['/api/state']['get']['responses'][200]['content']['application/json'];
+export class CoreRequestError extends Error {
+  constructor(readonly code: string) {
+    super(code.replaceAll('_', ' '));
+  }
+}
+export function ownerSessionDenied(reason: unknown): boolean {
+  return (
+    reason instanceof CoreRequestError &&
+    [
+      'authorization_required',
+      'session_expired',
+      'invalid_session',
+      'identity_not_allowed',
+      'role_denied',
+      'csrf_required',
+      'untrusted_origin',
+      'native_owner_required',
+    ].includes(reason.code)
+  );
+}
 export class CoreClient {
   constructor(
     private readonly credential: string,
     private readonly csrf?: string,
   ) {}
-  async request<T>(path: string, method = 'GET', body?: unknown, signal?: AbortSignal): Promise<T> {
+  async request<T>(
+    path: string,
+    method = 'GET',
+    body?: unknown,
+    signal?: AbortSignal,
+    timeoutMs = settings.coreRequestTimeoutMs,
+  ): Promise<T> {
     if (!settings.coreApiUrl) throw new Error(copy.connectionDisabled);
     const response = await fetch(settings.coreApiUrl + path, {
       method,
@@ -48,8 +79,8 @@ export class CoreClient {
       cache: 'no-store',
       redirect: 'error',
       signal: signal
-        ? AbortSignal.any([signal, AbortSignal.timeout(settings.coreRequestTimeoutMs)])
-        : AbortSignal.timeout(settings.coreRequestTimeoutMs),
+        ? AbortSignal.any([signal, AbortSignal.timeout(timeoutMs)])
+        : AbortSignal.timeout(timeoutMs),
     });
     if (!response.ok) {
       const error: unknown = await response.json().catch(() => ({}));
@@ -57,7 +88,7 @@ export class CoreClient {
         error && typeof error === 'object' && 'error' in error
           ? String(error.error)
           : copy.requestFailed;
-      throw new Error(code.replaceAll('_', ' '));
+      throw new CoreRequestError(code);
     }
     return (response.status === 204 ? undefined : await response.json()) as T;
   }

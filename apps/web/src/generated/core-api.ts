@@ -312,6 +312,57 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/calls/{call_id}/transcript': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Redact Call Transcript */
+    delete: operations['redact_call_transcript_api_calls__call_id__transcript_delete'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/calls/native/create': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Create Native Call */
+    post: operations['create_native_call_api_calls_native_create_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/calls/native/status': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Native Call Status */
+    get: operations['native_call_status_api_calls_native_status_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/calls/bind': {
     parameters: {
       query?: never;
@@ -594,6 +645,58 @@ export interface components {
       booking_id: string | null;
       /** Receipt */
       receipt: string | null;
+      /** Delivery Mode */
+      delivery_mode: string | null;
+    };
+    /** NativeCallInput */
+    NativeCallInput: {
+      /**
+       * Provider
+       * @enum {string}
+       */
+      provider: 'retell' | 'vapi';
+      /** Operation Id */
+      operation_id: string;
+    };
+    /** NativeEntitlementView */
+    NativeEntitlementView: {
+      /** State */
+      state: string;
+      /** Verified At */
+      verified_at: string | null;
+    };
+    /** NativeLimitsView */
+    NativeLimitsView: {
+      /** Max Seconds */
+      max_seconds: number;
+      /** Max Concurrent */
+      max_concurrent: number;
+    };
+    /** NativeOperationView */
+    NativeOperationView: {
+      /** Operation Id */
+      operation_id: string;
+      /** Provider */
+      provider: string;
+      /** State */
+      state: string;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /** Recovery */
+      recovery: string;
+    };
+    /** NativeStatusView */
+    NativeStatusView: {
+      /** Operations */
+      operations: components['schemas']['NativeOperationView'][];
+      limits: components['schemas']['NativeLimitsView'];
+      /** Entitlements */
+      entitlements: {
+        [key: string]: components['schemas']['NativeEntitlementView'];
+      };
     };
     /** StateView */
     StateView: {
@@ -1311,6 +1414,105 @@ export interface operations {
           'application/json': {
             [key: string]: unknown;
           };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  redact_call_transcript_api_calls__call_id__transcript_delete: {
+    parameters: {
+      query?: never;
+      header?: {
+        authorization?: string;
+      };
+      path: {
+        call_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  create_native_call_api_calls_native_create_post: {
+    parameters: {
+      query?: never;
+      header?: {
+        authorization?: string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['NativeCallInput'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  native_call_status_api_calls_native_status_get: {
+    parameters: {
+      query?: never;
+      header?: {
+        authorization?: string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['NativeStatusView'];
         };
       };
       /** @description Validation Error */

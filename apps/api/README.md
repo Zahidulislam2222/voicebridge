@@ -16,7 +16,10 @@ python -m pip install --no-deps -e .
 
 Populate a private environment file from `.env.example`; configure PostgreSQL,
 unique capabilities and business data. Examples are test credentials only.
-Keep `VB_PROVIDER__ENABLED=false` and follow-up capture enabled locally.
+Keep `VB_PROVIDER__ENABLED=false` and follow-up capture enabled locally. The
+deployed single-business release also keeps live voice and unrestricted email
+delivery disabled. An earlier owner-only Calendar/CRM/email receipt verifies a
+bounded path; it does not authorize general delivery.
 
 ```sh
 python -m voicebridge.cli migrate --env-file .env.local
@@ -36,7 +39,10 @@ Local capabilities and deployed OIDC sessions are separate access modes. Server
 identity binding owns tenant/role. Mutations require authorization, explicit
 confirmation where appropriate, stable operation IDs and expected revisions.
 Provider credentials establish platform identity; bounded call capabilities
-establish active-call scope. Ended calls cannot regain tool authority.
+establish active-call scope. Ended calls cannot regain tool authority. The
+owner-only transcript redaction action requires an ended, same-tenant call and
+creates a local tombstone against late provider events; provider-held artifacts
+and historical backups require separate deletion/recovery verification.
 
 Workers persist leases, attempts and receipts. Known failures back off; ambiguous
 non-idempotent delivery stays unknown until receipt reconciliation. Knowledge text
@@ -52,4 +58,5 @@ loopback port; it must never relay externally. Tests replace service credentials
 Run pytest, Mypy, Ruff, Bandit, secret scans and Python builds. See
 [testing](../../docs/testing.md), [API](../../docs/api/README.md),
 [architecture](../../docs/architecture.md) and
-[operations](../../docs/core-engine-operations.md).
+[operations](../../docs/core-engine-operations.md) and the dated
+[release evidence](../../docs/evidence/pilot-verification.md).
