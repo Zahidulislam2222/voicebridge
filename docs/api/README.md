@@ -22,8 +22,9 @@ provider keys in browser variables.
 Local transcript redaction records a tombstone so late provider events cannot
 restore the deleted local transcript. It does not delete a provider copy or
 rewrite an earlier backup; both need separate verified lifecycle procedures.
-The deployed release keeps live voice disabled pending end-to-end audio and tool
-acceptance. See [current release evidence](../evidence/pilot-verification.md).
+The deployed owner-only native route requires a fresh verified free-entitlement
+receipt and currently fails closed before provider creation. End-to-end audio
+and tool acceptance remain open. See [current release evidence](../evidence/owner-release-20261013.md).
 
 Use stable operation IDs on retries, new IDs when intent changes, expected revisions
 and timezone-aware appointments. Present pending/conflict/unknown outcomes explicitly.

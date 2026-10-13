@@ -9,20 +9,23 @@ shell arguments, screenshots or public evidence.
 
 The historical local engine meets eighteen test-data criteria. The current
 authenticated single-business release is backend
-`20261013-native-redaction-capture-10` with frontend
-`20261013-native-frontend-06`. Local suites passed 194 backend and 97 frontend
-tests; promotion matched 15/15 backend and 6/6 frontend files, the reviewed image
-modules and the owned gateway. Readiness, exact public HTML, a served same-origin CSP assertion and unauthorized
-business-state HTTP 401 passed at the recorded time. See
-[release evidence](evidence/pilot-verification.md); these checks do not measure
+`20261013-native-owner-voice-14` with frontend
+`20261013-native-frontend-08`. The full backend suite exited successfully and
+97 frontend tests passed; promotion matched 16/16 backend and 7/7 frontend
+files, the reviewed image modules and the owned gateway. Readiness, exact
+public HTML/PNG, gzip/Vary and unauthorized business-state HTTP 401 passed at
+the recorded time. See [current release evidence](evidence/owner-release-20261013.md);
+these checks do not measure
 sustained uptime or a real voice conversation.
 
 Vapi support identified the default Python header as the cause
 of the earlier edge denial and authorized an application User-Agent/HTTPX request.
 One read-only assistant inventory request returned HTTP 200. The configured owner
 gate is resolved for this account; dedicated native profile configuration is
-verified. Live voice is disabled with a configured 60-second, one-call limit and
-has no completed audio/tool acceptance. Calendar and CRM permissions are
+verified. The owner-only native route has a configured 60-second, one-call limit.
+One Retell web call was registered without media and still occupies that slot;
+no audio/tool acceptance passed. Expired entitlement also blocks fresh creation
+until free balances and account settings are verified again. Calendar and CRM permissions are
 independently enabled, with one bounded owner-only readback; general external
 email delivery is disabled and follow-ups use capture mode.
 

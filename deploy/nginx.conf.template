@@ -13,6 +13,8 @@ http {
   uwsgi_temp_path /tmp/uwsgi;
   scgi_temp_path /tmp/scgi;
   gzip on;
+  gzip_proxied no-store;
+  gzip_vary on;
   gzip_types text/css application/javascript;
   server {
     listen {{CONTAINER_PORT}};
@@ -24,6 +26,7 @@ http {
     location = / { try_files /index.html =404; }
     location = /index.html { try_files $uri =404; }
     location = /robots.txt { default_type text/plain; return 200 "User-agent: *\nDisallow: /\n"; }
+{{ARTWORK_LOCATION}}
     location / { return 404; }
   }
 }

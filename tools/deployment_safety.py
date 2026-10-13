@@ -1,5 +1,7 @@
 """Pure ownership guards and independent compensating recovery for deployment tools."""
 
+import hashlib
+import json
 import posixpath
 import stat
 from collections.abc import Callable, Mapping, Sequence
@@ -10,14 +12,44 @@ from typing import Any
 FRONTEND_RELEASE_FILES = frozenset(
     {"html/index.html", "compose.yaml", "nginx.conf", "site.caddy", "SHA256SUMS", "release.json"}
 )
+FRONTEND_RELEASE_WITH_ARTWORK = FRONTEND_RELEASE_FILES | {"html/voice-sculpture.png"}
 
 
-def frontend_release_inventory(directory: Path) -> None:
-    files = {
+def frontend_release_inventory(directory: Path, external_artwork: bool | None = None) -> None:
+    if any(file.is_symlink() for file in directory.rglob("*")):
+        raise ValueError("Frontend release must not contain symlinks")
+    files = frozenset(
         file.relative_to(directory).as_posix() for file in directory.rglob("*") if file.is_file()
+    )
+    approved = (
+        (FRONTEND_RELEASE_WITH_ARTWORK if external_artwork else FRONTEND_RELEASE_FILES,)
+        if external_artwork is not None
+        else (FRONTEND_RELEASE_FILES, FRONTEND_RELEASE_WITH_ARTWORK)
+    )
+    if files not in approved:
+        raise ValueError("Frontend release must contain exactly the approved packaging artifacts")
+
+
+def frontend_release_manifest(directory: Path, release_id: str, external_artwork: bool) -> None:
+    """Bind every release byte to its immutable manifest before any remote mutation."""
+    frontend_release_inventory(directory, external_artwork)
+    manifest = json.loads((directory / "release.json").read_text())
+    expected = FRONTEND_RELEASE_WITH_ARTWORK if external_artwork else FRONTEND_RELEASE_FILES
+    payload = expected - {"SHA256SUMS", "release.json"}
+    if manifest.get("releaseId") != release_id or set(manifest.get("files", {})) != payload:
+        raise ValueError("Frontend release manifest identity or file set differs")
+    hashes = {
+        name: hashlib.sha256((directory / name).read_bytes()).hexdigest()
+        for name in sorted(payload)
     }
-    if files != FRONTEND_RELEASE_FILES:
-        raise ValueError("Frontend release must contain exactly the six packaging artifacts")
+    if manifest["files"] != hashes:
+        raise ValueError("Frontend release payload hash differs")
+    checksum_text = (directory / "SHA256SUMS").read_text()
+    expected_text = "\n".join(
+        f"{value}  {name}" for name, value in manifest["files"].items()
+    ) + "\n"
+    if checksum_text != expected_text:
+        raise ValueError("Frontend release checksums differ")
 
 
 def owned_path(path: str, root: str) -> str:

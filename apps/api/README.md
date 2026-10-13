@@ -17,9 +17,13 @@ python -m pip install --no-deps -e .
 Populate a private environment file from `.env.example`; configure PostgreSQL,
 unique capabilities and business data. Examples are test credentials only.
 Keep `VB_PROVIDER__ENABLED=false` and follow-up capture enabled locally. The
-deployed single-business release also keeps live voice and unrestricted email
-delivery disabled. An earlier owner-only Calendar/CRM/email receipt verifies a
-bounded path; it does not authorize general delivery.
+deployed single-business release has an owner-only native route with isolated
+API credentials and a short-lived free-entitlement guard. One Retell web call
+was registered without media; its occupied one-call slot needs reconciliation
+before another call. The entitlement also expires unless freshly verified.
+Unrestricted email
+delivery remains disabled. An earlier owner-only Calendar/CRM/email receipt
+verifies a bounded path; it does not authorize general delivery.
 
 ```sh
 python -m voicebridge.cli migrate --env-file .env.local
@@ -59,4 +63,4 @@ Run pytest, Mypy, Ruff, Bandit, secret scans and Python builds. See
 [testing](../../docs/testing.md), [API](../../docs/api/README.md),
 [architecture](../../docs/architecture.md) and
 [operations](../../docs/core-engine-operations.md) and the dated
-[release evidence](../../docs/evidence/pilot-verification.md).
+[current release evidence](../../docs/evidence/owner-release-20261013.md).

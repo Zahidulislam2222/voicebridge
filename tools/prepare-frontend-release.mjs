@@ -2,6 +2,7 @@ import { readFile, writeFile, mkdir, stat } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 import { z } from 'zod';
+import { artworkElementId, artworkDataPattern } from './presentation-protocol.mjs';
 
 const port = z.number().int().min(1024).max(65535);
 const safeHeader = z
@@ -17,6 +18,7 @@ const schema = z.object({
   releaseId: z.string().regex(/^[a-z0-9][a-z0-9-]{1,70}$/),
   loopbackPort: port,
   engineHostPort: port.optional(),
+  externalArtwork: z.boolean().optional(),
   voiceMedia: z
     .object({
       retellOrigin: mediaOrigin,
@@ -67,7 +69,12 @@ const digest = (value) => createHash('sha256').update(value).digest('hex');
 const hashSource = (value) =>
   "'sha256-" + createHash('sha256').update(value).digest('base64') + "'";
 /** @param {string} html */
-export function contentPolicy(html, sameOriginConnections = false, voiceMedia = undefined) {
+export function contentPolicy(
+  html,
+  sameOriginConnections = false,
+  voiceMedia = undefined,
+  externalArtwork = false,
+) {
   const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)].map((match) =>
     hashSource(match[1]),
   );
@@ -87,7 +94,18 @@ export function contentPolicy(html, sameOriginConnections = false, voiceMedia = 
     : scripts.join(' ');
   const frame = voiceMedia ? "'self' " + voiceMedia.dailyOrigins.join(' ') : "'none'";
   const worker = voiceMedia ? "'self' blob:" : "'none'";
-  return `default-src 'none'; script-src ${script}; style-src ${styles.join(' ')}; style-src-attr 'unsafe-inline'; img-src data:; font-src data:; connect-src ${connect}; frame-src ${frame}; worker-src ${worker}; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'`;
+  return `default-src 'none'; script-src ${script}; style-src ${styles.join(' ')}; style-src-attr 'unsafe-inline'; img-src ${externalArtwork ? "'self' " : ''}data:; font-src data:; connect-src ${connect}; frame-src ${frame}; worker-src ${worker}; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'`;
+}
+/** Extract only the known artwork when it matches the committed asset byte for byte. */
+export function externalizeArtwork(html, artworkBytes) {
+  const tag = new RegExp(`<meta id="${artworkElementId}" content="([^"]*)">`, 'g');
+  const matches = [...html.matchAll(tag)];
+  if (matches.length !== 1 || !artworkDataPattern.test(matches[0][1]))
+    throw new Error('Expected exactly one valid embedded artwork');
+  const encoded = matches[0][1].slice('data:image/png;base64,'.length);
+  if (!Buffer.from(encoded, 'base64').equals(artworkBytes))
+    throw new Error('Embedded artwork differs from the committed asset');
+  return html.replace(matches[0][0], '');
 }
 export async function prepareRelease(root, configurationFile) {
   const settings = deploymentSettings(JSON.parse(await readFile(configurationFile, 'utf8')));
@@ -98,7 +116,11 @@ export async function prepareRelease(root, configurationFile) {
   } catch (error) {
     if (error.code !== 'ENOENT') throw error;
   }
-  const html = await readFile(resolve(root, 'VoiceBridge-preview.html'), 'utf8');
+  const sourceHtml = await readFile(resolve(root, 'VoiceBridge-preview.html'), 'utf8');
+  const artwork = settings.externalArtwork
+    ? await readFile(resolve(root, 'apps/web/public/voice-sculpture.png'))
+    : undefined;
+  const html = artwork ? externalizeArtwork(sourceHtml, artwork) : sourceHtml;
   const values = {
     PROJECT_SLUG: settings.projectSlug,
     HOSTNAME: settings.hostname,
@@ -115,7 +137,13 @@ export async function prepareRelease(root, configurationFile) {
     HEALTH_INTERVAL: settings.healthIntervalSeconds,
     HEALTH_TIMEOUT: settings.healthTimeoutSeconds,
     HEALTH_RETRIES: settings.healthRetries,
-    CSP: contentPolicy(html, settings.engineHostPort !== undefined, settings.voiceMedia),
+    CSP: contentPolicy(
+      html,
+      settings.engineHostPort !== undefined,
+      settings.voiceMedia,
+      Boolean(artwork),
+    ),
+    ARTWORK_LOCATION: artwork ? '    location = /voice-sculpture.png { try_files $uri =404; }' : '',
     ENGINE_HOST_PORT: settings.engineHostPort ?? settings.loopbackPort,
     FRONTEND_HOST_PORT: settings.loopbackPort,
     SECURITY_HEADERS: Object.entries(settings.securityHeaders)
@@ -123,6 +151,7 @@ export async function prepareRelease(root, configurationFile) {
       .join('\n'),
   };
   const files = new Map([['html/index.html', html]]);
+  if (artwork) files.set('html/voice-sculpture.png', artwork);
   for (const [template, destination] of [
     ['compose.yaml.template', 'compose.yaml'],
     ['nginx.conf.template', 'nginx.conf'],

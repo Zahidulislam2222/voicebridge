@@ -1,6 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { contentPolicy, deploymentSettings, renderTemplate } from './prepare-frontend-release.mjs';
+import {
+  contentPolicy,
+  deploymentSettings,
+  externalizeArtwork,
+  renderTemplate,
+} from './prepare-frontend-release.mjs';
 import { createHash } from 'node:crypto';
 
 test('publication CSP hashes exact script/style bytes and denies remote connections', () => {
@@ -92,4 +97,14 @@ test('deployment boundary rejects injected hostnames and incomplete configuratio
     deploymentSettings({ hostname: 'example.invalid\nreverse_proxy attacker.invalid' }),
   );
   assert.throws(() => deploymentSettings({}));
+});
+test('known artwork extraction binds bytes and keeps the image policy narrow', () => {
+  const image = Buffer.from('verified-image-bytes');
+  const html = `<head><meta id="voicebridge-presentation-artwork" content="data:image/png;base64,${image.toString('base64')}"></head><style>x</style><main>x</main>`;
+  assert.equal(externalizeArtwork(html, image), '<head></head><style>x</style><main>x</main>');
+  assert.throws(() => externalizeArtwork(html, Buffer.from('different')), /differs/);
+  assert.throws(() => externalizeArtwork(html + html, image), /exactly one/);
+  const policyHtml = '<head></head><style>x</style><script>x</script>';
+  assert.ok(contentPolicy(policyHtml, true, undefined, true).includes("img-src 'self' data:"));
+  assert.ok(contentPolicy(policyHtml, true).includes('img-src data:'));
 });

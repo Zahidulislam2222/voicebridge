@@ -20,14 +20,17 @@ FastAPI/PostgreSQL core, durable workers and shared Retell/Vapi business tools.
 
 ## Implementation and roadmap
 
-The single-business authenticated frontend and backend are deployed on the existing
-server. The latest local release gates include 194 backend and 97 frontend tests;
-deployment checks matched 15 backend release files and six frontend files to the
-live artifacts. A bounded owner-only booking received direct Calendar and CRM
-readbacks and one authorized email confirmation. Live voice calls and general
-external email delivery remain disabled while their acceptance gates are open.
-See the dated [release evidence](docs/evidence/pilot-verification.md) for the
-exact versions, test scope and remaining work.
+The single-business frontend and backend are deployed on the existing server.
+The current guarded releases matched 16 backend and seven frontend files to
+their live artifacts. The full backend suite exited successfully, and 97
+frontend tests passed. One bounded owner-only booking previously received
+direct Calendar and CRM readbacks and one authorized email confirmation.
+The owner-only native route has isolated credentials and a short-lived
+free-credit gate. One Retell web call was registered and bound to the business,
+but no media session or conversation began. Its unjoined registration occupies
+the one-call slot; Vapi creation and audio acceptance remain open. Unrestricted
+external email delivery remains disabled. See the [current release evidence](docs/evidence/owner-release-20261013.md)
+and [earlier pilot record](docs/evidence/pilot-verification.md).
 
 The future architecture separately targets **1M+ registered accounts**, **1M+
 active dashboard sessions** and **1M+ simultaneous voice calls**, plus a declared
