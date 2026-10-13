@@ -2,13 +2,17 @@
 
 Updated: 2026-10-13 UTC. This is a scrubbed evidence summary derived from the private project dossier.
 
-The current single-business release is backend `20261013-native-redaction-capture-10`
+This page preserves the earlier backend10/frontend06 verification record.
+The later backend14/frontend08 state and its open audio and Vapi gates are
+recorded in [current release evidence](owner-release-20261013.md).
+
+The release verified in this record is backend `20261013-native-redaction-capture-10`
 and frontend `20261013-native-frontend-06` on the existing server. The guarded
 promotion verified 15/15 backend release files, 15/15 application source modules
 against the image, six/six frontend release files and the owned gateway fragment.
 The backend reached point-in-time readiness, and the frontend served the exact
 reviewed HTML and asserted the served same-origin CSP. Fifty unrelated containers and thirteen unrelated gateway
-files were preserved. The current runtime keeps native voice and external
+files were preserved. That runtime kept native voice and external
 follow-up delivery disabled; calendar and CRM permissions remain independently
 enabled. Earlier versions and checks below retain their dated scope.
 
