@@ -20,17 +20,22 @@ FastAPI/PostgreSQL core, durable workers and shared Retell/Vapi business tools.
 
 ## Implementation and roadmap
 
-The authenticated frontend and backend are deployed. Recorded gates include 150
-backend/tooling tests, 78 frontend tests, types/lint/security/builds, twelve backend and six
-frontend release-file parity checks, and twenty-one public browser routes.
-Persistent booking/recovery checks use controlled test data and captured follow-ups.
-Real voice/audio acceptance, custom-voice approval and external calendar/CRM/email
-receipts are the next integration gates. See [current evidence](docs/evidence/pilot-verification.md).
+The single-business authenticated frontend and backend are deployed on the existing
+server. The latest local release gates include 194 backend and 97 frontend tests;
+deployment checks matched 15 backend release files and six frontend files to the
+live artifacts. A bounded owner-only booking received direct Calendar and CRM
+readbacks and one authorized email confirmation. Live voice calls and general
+external email delivery remain disabled while their acceptance gates are open.
+See the dated [release evidence](docs/evidence/pilot-verification.md) for the
+exact versions, test scope and remaining work.
 
-The future architecture targets **1M+ concurrent users**, separately defining
-sessions, API traffic, calls and mixed workloads. Reliability planning defines a
-**99% baseline and 99.9% production service objectives** with measurable SLOs,
-error budgets, redundancy, staged capacity tests and recovery gates.
+The future architecture separately targets **1M+ registered accounts**, **1M+
+active dashboard sessions** and **1M+ simultaneous voice calls**, plus a declared
+mixed workload. None of these loads has been demonstrated. Reliability planning
+sets a **99% baseline** and a **99.9% production objective** for defined service
+indicators; neither is an achieved uptime figure or contractual SLA. The
+[capacity roadmap](docs/capacity/scaling-roadmap.md) and
+[reliability plan](docs/reliability.md) state the measurements required.
 
 ## Start developing
 
@@ -57,8 +62,9 @@ python -m voicebridge.cli api --env-file .env.local
 
 Run `python -m voicebridge.cli worker --env-file .env.local` in a separate process.
 Configure frontend API URL/origins from `.env.example` and open Business engine.
-Keep real transports disabled until their integration acceptance. Backend tests
-have their own environment requirements described in [testing](docs/testing.md).
+Keep real transports disabled in local development until their integration
+acceptance. Backend tests have their own environment requirements described in
+[testing](docs/testing.md).
 
 ## Guides
 

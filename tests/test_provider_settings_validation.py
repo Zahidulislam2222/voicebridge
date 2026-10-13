@@ -12,6 +12,7 @@ from voicebridge.settings import ProviderSettings
         "https://test-user:test-key@provider.invalid",
         "https://provider.invalid?token=test-key",
         "https://provider.invalid#unexpected-fragment",
+        "https://provider.invalid/contacts;unexpected",
         "",
     ],
 )

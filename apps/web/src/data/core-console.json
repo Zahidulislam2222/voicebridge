@@ -1,6 +1,6 @@
 {
   "title": "Business engine",
-  "subtitle": "Persistent workspace \u00b7 synthetic customers \u00b7 calls disabled",
+  "subtitle": "Persistent business workspace. Integration labels show configured modes; a live receipt or dated verification is needed to establish provider readiness.",
   "connect": "Connect local engine",
   "credential": "Local operator credential",
   "connectionHint": "Use the local operator credential from your private project recovery file. It stays in memory for this tab.",
@@ -66,8 +66,11 @@
   "save": "Save",
   "remove": "Remove document",
   "removePrompt": "Remove this document from active answers?",
+  "redactTranscript": "Clear local transcript",
+  "redactTranscriptPrompt": "Clear this ended call's local transcript? This does not remove provider copies or backups.",
+  "redactTranscriptDone": "Local transcript cleared. Provider copies and older backups still need separate deletion.",
   "evaluate": "Run business evaluations",
-  "acoustic": "Real voice and listening tests remain pending.",
+  "acoustic": "Voice acceptance is tracked separately from synthetic business evaluations.",
   "query": "Ask approved knowledge",
   "unavailable": "Engine connection failed. Previously displayed records may be stale.",
   "back": "Back to presentation",
@@ -94,5 +97,11 @@
   "evaluationFixtures": "Synthetic evaluation cleanup",
   "cleanup": "Verify fixture cancellation",
   "login": "Sign in with Google",
-  "logout": "Sign out"
+  "logout": "Sign out",
+  "configuredOnly": "Configuration only; this label does not prove a live connection.",
+  "recordLimit": "Displayed records per section",
+  "recordCount": "stored",
+  "captureDelivery": "Captured locally; no external email was sent.",
+  "externalDelivery": "External transport accepted the message; confirm inbox delivery separately.",
+  "unknownDelivery": "Delivery mode was not recorded for this historical job. Check its receipt and external inbox."
 }

@@ -37,3 +37,10 @@ test('presentation resolves its fonts and build files without external assets', 
   assert.equal((html.match(/data:font\/woff2;base64,/g) ?? []).length, 2);
   assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com|(?:src|href)="\/assets\//);
 });
+
+test('single-file release contains every compiled JavaScript chunk', async () => {
+  const assets = await readdir(new URL('../apps/web/dist/assets/', import.meta.url));
+  const scripts = assets.filter((name) => name.endsWith('.js'));
+  assert.equal(scripts.length, 1, 'extra chunks are not deployed with the single HTML file');
+  assert.match(scripts[0], /^index-.*\.js$/);
+});

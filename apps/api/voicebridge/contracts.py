@@ -22,6 +22,11 @@ class CallIntentBinding(Input):
     external_id: str = Field(min_length=1, max_length=100)
 
 
+class NativeCallInput(Input):
+    provider: Literal["retell", "vapi"]
+    operation_id: str = Field(min_length=16, max_length=64, pattern=r"^[A-Za-z0-9_-]+$")
+
+
 class BookingInput(Input):
     operation_id: str = Field(min_length=1, max_length=100, pattern=r"^[\w-]+$")
     name: str = Field(min_length=1, max_length=200)
@@ -127,6 +132,7 @@ class JobView(Output):
     detail: str
     booking_id: str | None
     receipt: str | None
+    delivery_mode: str | None
 
 
 class TranscriptEntry(Output):
@@ -140,6 +146,30 @@ class CallView(Output):
     state: str
     date: datetime
     transcript: list[TranscriptEntry]
+
+
+class NativeOperationView(Output):
+    operation_id: str
+    provider: str
+    state: str
+    created_at: datetime
+    recovery: str
+
+
+class NativeLimitsView(Output):
+    max_seconds: int
+    max_concurrent: int
+
+
+class NativeEntitlementView(Output):
+    state: str
+    verified_at: datetime | None
+
+
+class NativeStatusView(Output):
+    operations: list[NativeOperationView]
+    limits: NativeLimitsView
+    entitlements: dict[str, NativeEntitlementView]
 
 
 class DocumentView(Output):

@@ -284,7 +284,9 @@ def test_real_execution_gate_and_unsafe_exposure(app: FastAPI) -> None:
     from voicebridge.connectors import RemoteTransport
 
     with pytest.raises(DomainError, match="execution_disabled"):
-        RemoteTransport(app.state.service.settings).request("GET", "https://provider.invalid", {})
+        RemoteTransport(app.state.service.settings, "voice").request(
+            "GET", "https://provider.invalid", {}
+        )
     data = app.state.service.settings.model_dump()
     data["host"] = "untrusted.invalid"
     with pytest.raises(ValueError, match="loopback"):

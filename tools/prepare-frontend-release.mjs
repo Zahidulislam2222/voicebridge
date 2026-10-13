@@ -9,12 +9,23 @@ const safeHeader = z
   .min(1)
   .max(300)
   .regex(/^[^"\r\n\\]+$/);
+const mediaOrigin = z.string().regex(/^https:\/\/(?:\*\.)?[a-z0-9.-]+$/);
+const mediaSocketOrigin = z.string().regex(/^wss:\/\/(?:\*\.)?[a-z0-9.-]+$/);
 const schema = z.object({
   projectSlug: z.string().regex(/^[a-z][a-z0-9-]{1,50}$/),
   hostname: z.string().regex(/^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}$/),
   releaseId: z.string().regex(/^[a-z0-9][a-z0-9-]{1,70}$/),
   loopbackPort: port,
   engineHostPort: port.optional(),
+  voiceMedia: z
+    .object({
+      retellOrigin: mediaOrigin,
+      dailyOrigins: z.array(mediaOrigin).length(3),
+      dailySocketOrigins: z.array(mediaSocketOrigin).length(3),
+      dailyIceOrigin: mediaOrigin,
+    })
+    .strict()
+    .optional(),
   containerPort: port,
   containerUid: z.number().int().positive(),
   containerGid: z.number().int().positive(),
@@ -56,7 +67,7 @@ const digest = (value) => createHash('sha256').update(value).digest('hex');
 const hashSource = (value) =>
   "'sha256-" + createHash('sha256').update(value).digest('base64') + "'";
 /** @param {string} html */
-export function contentPolicy(html, sameOriginConnections = false) {
+export function contentPolicy(html, sameOriginConnections = false, voiceMedia = undefined) {
   const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)].map((match) =>
     hashSource(match[1]),
   );
@@ -64,7 +75,19 @@ export function contentPolicy(html, sameOriginConnections = false) {
     hashSource(match[1]),
   );
   if (!scripts.length || !styles.length) throw new Error('Expected packaged script and styles');
-  return `default-src 'none'; script-src ${scripts.join(' ')}; style-src ${styles.join(' ')}; style-src-attr 'unsafe-inline'; img-src data:; font-src data:; connect-src ${sameOriginConnections ? "'self'" : "'none'"}; worker-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'`;
+  if (voiceMedia && !sameOriginConnections)
+    throw new Error('Voice media requires the authenticated same-origin engine');
+  const connect = voiceMedia
+    ? `'self' ${voiceMedia.retellOrigin} ${voiceMedia.dailyOrigins.join(' ')} ${voiceMedia.dailySocketOrigins.join(' ')} ${voiceMedia.dailyIceOrigin}`
+    : sameOriginConnections
+      ? "'self'"
+      : "'none'";
+  const script = voiceMedia
+    ? scripts.join(' ') + ' ' + voiceMedia.dailyOrigins.join(' ')
+    : scripts.join(' ');
+  const frame = voiceMedia ? "'self' " + voiceMedia.dailyOrigins.join(' ') : "'none'";
+  const worker = voiceMedia ? "'self' blob:" : "'none'";
+  return `default-src 'none'; script-src ${script}; style-src ${styles.join(' ')}; style-src-attr 'unsafe-inline'; img-src data:; font-src data:; connect-src ${connect}; frame-src ${frame}; worker-src ${worker}; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'`;
 }
 export async function prepareRelease(root, configurationFile) {
   const settings = deploymentSettings(JSON.parse(await readFile(configurationFile, 'utf8')));
@@ -92,7 +115,7 @@ export async function prepareRelease(root, configurationFile) {
     HEALTH_INTERVAL: settings.healthIntervalSeconds,
     HEALTH_TIMEOUT: settings.healthTimeoutSeconds,
     HEALTH_RETRIES: settings.healthRetries,
-    CSP: contentPolicy(html, settings.engineHostPort !== undefined),
+    CSP: contentPolicy(html, settings.engineHostPort !== undefined, settings.voiceMedia),
     ENGINE_HOST_PORT: settings.engineHostPort ?? settings.loopbackPort,
     FRONTEND_HOST_PORT: settings.loopbackPort,
     SECURITY_HEADERS: Object.entries(settings.securityHeaders)

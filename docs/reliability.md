@@ -1,8 +1,9 @@
 # Reliability, uptime objectives and recovery
 
 Future baseline: **99%**. Production objective: **99.9%** for declared service
-indicators. The build plan retains its stronger production gate. An SLA requires
-a separate contract, eligibility and remedies. Recorded observation scope is in
+indicators. Neither has been demonstrated by the current single-server release.
+The build plan retains its stronger production gate. An SLA requires a separate
+contract, eligibility and remedies. Recorded observation scope is in
 [deployment evidence](evidence/pilot-verification.md).
 
 | Indicator | Good event                                            | Measurement                                                  |
@@ -35,6 +36,13 @@ The current server is a host failure domain. Future releases add redundant API,
 independent workers, database failover and regional recovery with booking uniqueness,
 tenant and receipt-integrity drills. Provider failure needs bounded admission and
 human handoff; mid-call provider switching has its own native-flow contract.
+
+The latest deployment passed release-file parity and point-in-time readiness;
+those checks establish neither a full observation window nor tolerance of this
+host's failure. A 99% or 99.9% achieved claim requires the declared eligible
+traffic, complete 30-day telemetry, error classification and measured results for
+each named indicator. Voice remains outside an achieved indicator until real calls
+and their setup, audio and tool results are observed.
 
 Use readiness-driven rolling/canary release, compatible schemas, graceful draining
 and lease reconciliation. Expand/migrate/contract schema changes preserve rollback

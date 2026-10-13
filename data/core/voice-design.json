@@ -1,0 +1,8 @@
+{
+  "voice_name": "VoiceBridge receptionist — elevenlabs.io",
+  "voice_description": "An original synthetic adult male receptionist with a neutral American English accent. Warm, calm and professional, with clear consonants, natural pauses and an unhurried conversational pace. Reassuring and attentive without sounding theatrical. Do not imitate a real person.",
+  "text": "Hello, you are speaking with an AI receptionist. I can answer questions from our approved information and help you find an appointment. Before I book anything, I will read the details back and ask you to confirm them.",
+  "use": "Owner-only noncommercial pilot listening and integration evaluation",
+  "attribution": "Voice generated with elevenlabs.io",
+  "real_speaker_cloning": false
+}

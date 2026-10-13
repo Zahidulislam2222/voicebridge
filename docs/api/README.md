@@ -4,20 +4,26 @@
 against it by `npm run test:core-contracts`. Update server schemas first, regenerate
 using the configured CLI/type generator, then review both sides.
 
-| Group          | Purpose                               | Boundary                                                     |
-| -------------- | ------------------------------------- | ------------------------------------------------------------ |
-| Health         | Liveness/schema readiness             | Minimal public status, no business data                      |
-| Authentication | OIDC/session/logout                   | State/PKCE/nonce/signature and trusted subject binding       |
-| State/bookings | Availability and confirmed operations | Tenant role/capability; CSRF on session mutations            |
-| Knowledge      | Import/search/revise/delete           | Tenant, size/parser limits and revisions                     |
-| Jobs           | Inspect/replay/reconcile              | Management scope; unknown delivery cannot be blindly retried |
-| Evaluations    | Maintained business cases             | Authorized isolated records and cancellation cleanup         |
-| Native calls   | Intent, bind, lifecycle/tools         | Owner plus bounded capability; platform authentication first |
-| MCP            | Business/management read/write tools  | Separate scopes and protocol-valid errors                    |
+| Group          | Purpose                                                   | Boundary                                                                                               |
+| -------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Health         | Liveness/schema readiness                                 | Minimal public status, no business data                                                                |
+| Authentication | OIDC/session/logout                                       | State/PKCE/nonce/signature and trusted subject binding                                                 |
+| State/bookings | Availability and confirmed operations                     | Tenant role/capability; CSRF on session mutations                                                      |
+| Knowledge      | Import/search/revise/delete                               | Tenant, size/parser limits and revisions                                                               |
+| Jobs           | Inspect/replay/reconcile                                  | Management scope; unknown delivery cannot be blindly retried                                           |
+| Evaluations    | Maintained business cases                                 | Authorized isolated records and cancellation cleanup                                                   |
+| Native calls   | Intent, bind, lifecycle/tools, local transcript redaction | Owner plus bounded capability; platform authentication first; deletion is ended-call and tenant scoped |
+| MCP            | Business/management read/write tools                      | Separate scopes and protocol-valid errors                                                              |
 
 Exact methods/routes/schemas/errors belong to OpenAPI and the provider specification.
 Health success does not establish user authorization. Never expose management or
 provider keys in browser variables.
+
+Local transcript redaction records a tombstone so late provider events cannot
+restore the deleted local transcript. It does not delete a provider copy or
+rewrite an earlier backup; both need separate verified lifecycle procedures.
+The deployed release keeps live voice disabled pending end-to-end audio and tool
+acceptance. See [current release evidence](../evidence/pilot-verification.md).
 
 Use stable operation IDs on retries, new IDs when intent changes, expected revisions
 and timezone-aware appointments. Present pending/conflict/unknown outcomes explicitly.

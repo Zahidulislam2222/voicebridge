@@ -29,11 +29,14 @@ from .contracts import (
     DocumentInput,
     DomainError,
     EvaluationFixtureView,
+    NativeCallInput,
+    NativeStatusView,
     StateView,
     ToolInput,
 )
 from .db import Record, make_sessions, now, tenant_lock
 from .documents import parse_pdf
+from .native import NativeCalls
 from .protocol import (
     BUSINESS_READ_TOOLS,
     BUSINESS_TOOLS,
@@ -56,12 +59,13 @@ def create_app(settings: Settings) -> FastAPI:
     sessions = make_sessions(settings)
     calendar = (
         GoogleCalendar(settings)
-        if settings.provider.enabled
+        if settings.provider.calendar_enabled
         else LocalCalendar(sessions, LOCAL_CALENDAR_KIND)
     )
     service = Service(settings, sessions, calendar)
     worker = Worker(service, Delivery(settings, sessions))
     providers = Providers(service, worker)
+    native_calls = NativeCalls(service, providers)
     app = FastAPI(
         title=service.profiles.application_name,
         version=version(CORE_DISTRIBUTION),
@@ -69,6 +73,7 @@ def create_app(settings: Settings) -> FastAPI:
         redoc_url=None,
     )
     app.state.service, app.state.worker, app.state.providers = service, worker, providers
+    app.state.native_calls = native_calls
     authentication = Authentication(settings, sessions)
     app.state.authentication = authentication
     authentication.install(app)
@@ -171,9 +176,10 @@ def create_app(settings: Settings) -> FastAPI:
             "business": service.business.name,
             "timezone": service.business.timezone,
             "services": service.business.services,
-            "synthetic": not settings.provider.enabled,
+            "synthetic": not (settings.provider.calendar_enabled or settings.provider.crm_enabled),
             "profiles": service.profiles.model_dump(),
-            "stage": "local-core",
+            "stage": settings.stage,
+            "native_calls_available": settings.stage == "pilot" and settings.provider.voice_enabled,
         }
 
     @app.get("/api/state", response_model=StateView)
@@ -274,6 +280,32 @@ def create_app(settings: Settings) -> FastAPI:
         value: CallIntentInput, tenant: str = Depends(authorize)
     ) -> dict[str, Any]:
         return providers.prepare_intent(tenant, value.provider)
+
+    @app.delete("/api/calls/{call_id}/transcript", status_code=204)
+    def redact_call_transcript(
+        call_id: str, request: Request, tenant: str = Depends(authorize)
+    ) -> Response:
+        granted = getattr(request.state, "identity", None)
+        if not granted or granted.get("role") != "owner":
+            raise DomainError("native_owner_required", 403)
+        service.redact_call_transcript(tenant, call_id)
+        return Response(status_code=204)
+
+    @app.post("/api/calls/native/create")
+    def create_native_call(
+        value: NativeCallInput, request: Request, tenant: str = Depends(authorize)
+    ) -> dict[str, Any]:
+        granted = getattr(request.state, "identity", None)
+        if not granted or granted.get("role") != "owner":
+            raise DomainError("native_owner_required", 403)
+        return native_calls.create(tenant, granted["subject"], value)
+
+    @app.get("/api/calls/native/status", response_model=NativeStatusView)
+    def native_call_status(request: Request, tenant: str = Depends(authorize)) -> dict[str, Any]:
+        granted = getattr(request.state, "identity", None)
+        if not granted or granted.get("role") != "owner":
+            raise DomainError("native_owner_required", 403)
+        return native_calls.status(tenant, granted["subject"])
 
     @app.post("/api/calls/bind")
     def bind_call_intent(

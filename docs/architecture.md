@@ -17,9 +17,13 @@ flowchart LR
   Observer[Passive observer] --> Gateway
 ```
 
-The current controlled deployment captures calendar/CRM/follow-up outcomes;
-production external delivery has its own acceptance gate. Browser and native-call
-tools use the same authorization and business rules.
+The deployed single-business release keeps Calendar and CRM permissions
+independently enabled. One bounded owner-only booking has direct Calendar and
+CRM readbacks and an authorized email receipt from an earlier controlled run.
+Current follow-ups use capture mode with no external recipients; native voice is
+disabled with a configured 60-second, one-call limit pending real audio/tool
+acceptance. Browser and native-call tools share the same authorization and
+business rules. See [dated release evidence](evidence/pilot-verification.md).
 
 ## Decisions
 

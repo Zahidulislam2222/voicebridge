@@ -16,6 +16,7 @@ export interface PublicSettings {
   coreSessionAuth: boolean;
   corePollMs: number;
   coreRequestTimeoutMs: number;
+  nativeCreateTimeoutMs: number;
 }
 export const settingsDefaults: PublicSettings = {
   locale: 'en-US',
@@ -33,6 +34,7 @@ export const settingsDefaults: PublicSettings = {
   coreSessionAuth: false,
   corePollMs: 2500,
   coreRequestTimeoutMs: 5000,
+  nativeCreateTimeoutMs: 30000,
 };
 export function createSettings(
   env: Record<string, string | undefined> = {},
@@ -55,6 +57,12 @@ export function createSettings(
       settingsDefaults.coreRequestTimeoutMs,
       250,
       30000,
+    ),
+    nativeCreateTimeoutMs: number(
+      'VITE_NATIVE_CREATE_TIMEOUT_MS',
+      settingsDefaults.nativeCreateTimeoutMs,
+      1000,
+      60000,
     ),
     simulationDelayMs: number(
       'VITE_SIMULATION_DELAY_MS',

@@ -1,5 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { agentDraft, bookingNotice, CoreClient } from './core-client';
+import {
+  agentDraft,
+  bookingNotice,
+  CoreClient,
+  CoreRequestError,
+  followupDeliveryNotice,
+  ownerSessionDenied,
+} from './core-client';
 import copy from '../data/core-console';
 import { createSettings, settings } from '../config/settings';
 
@@ -13,6 +20,26 @@ describe('core boundary regressions', () => {
     }
     expect(bookingNotice('cancelled', 'cancel')).toBe(copy.bookingCancelled);
     expect(bookingNotice('confirmed', 'reschedule')).toBe(copy.bookingRescheduled);
+  });
+  it('uses the historical receipt mode, never the current transport setting', () => {
+    expect(followupDeliveryNotice('capture')).toBe(copy.captureDelivery);
+    expect(followupDeliveryNotice('smtp')).toBe(copy.externalDelivery);
+    expect(followupDeliveryNotice(null)).toBe(copy.unknownDelivery);
+  });
+  it('distinguishes owner-session denial from a transient provider failure', () => {
+    for (const code of [
+      'authorization_required',
+      'session_expired',
+      'invalid_session',
+      'identity_not_allowed',
+      'role_denied',
+      'csrf_required',
+      'untrusted_origin',
+      'native_owner_required',
+    ]) {
+      expect(ownerSessionDenied(new CoreRequestError(code))).toBe(true);
+    }
+    expect(ownerSessionDenied(new CoreRequestError('native_profile_drift'))).toBe(false);
   });
   it('serializes the exact agent request without response-only revision', () => {
     const draft = agentDraft({

@@ -3,11 +3,12 @@
 import hashlib
 import re
 import smtplib
+import ssl
 from contextlib import nullcontext
 from email.message import EmailMessage
 from email.utils import formataddr
-from typing import Any, Protocol
-from urllib.parse import quote, urlparse
+from typing import Any, Literal, Protocol
+from urllib.parse import quote, unquote, urlparse
 
 import httpx
 from sqlalchemy import DateTime, cast, select
@@ -86,8 +87,9 @@ class LocalCalendar:
 
 
 class RemoteTransport:
-    def __init__(self, settings: Settings) -> None:
+    def __init__(self, settings: Settings, scope: Literal["calendar", "crm", "voice"]) -> None:
         self.settings = settings
+        self.scope = scope
 
     def request(
         self,
@@ -98,8 +100,44 @@ class RemoteTransport:
         *,
         allow_absent: bool = False,
     ) -> dict[str, Any]:
-        if not self.settings.provider.enabled:
+        provider = self.settings.provider
+        if not getattr(provider, self.scope + "_enabled"):
             raise DomainError("external_execution_disabled", 403)
+        destinations = {
+            "calendar": (
+                provider.base_url.rstrip("/")
+                + provider.calendar_path.format(calendar_id=quote(provider.calendar_id, safe="")),
+            ),
+            "crm": (provider.contacts_path,),
+            "voice": (
+                provider.retell_base_url,
+                provider.vapi_base_url,
+                provider.elevenlabs_base_url,
+            ),
+        }
+        requested = urlparse(url)
+        unsafe_path = any(
+            unquote(part) in {".", ".."}
+            or any(char in unquote(part) for char in ("/", "\\", "%", ";"))
+            for part in requested.path.split("/")
+        )
+        if (
+            requested.username
+            or requested.password
+            or requested.fragment
+            or requested.params
+            or unsafe_path
+            or not any(
+                requested.scheme == allowed.scheme
+                and requested.netloc == allowed.netloc
+                and (
+                    requested.path == allowed.path.rstrip("/")
+                    or requested.path.startswith(allowed.path.rstrip("/") + "/")
+                )
+                for allowed in map(urlparse, destinations[self.scope])
+            )
+        ):
+            raise DomainError("connector_destination_denied", 403)
         if (
             urlparse(url).hostname == urlparse(self.settings.provider.vapi_base_url).hostname
             and not self.settings.provider.vapi_owner_resolved
@@ -151,11 +189,11 @@ class RemoteTransport:
 class GoogleCalendar:
     def __init__(self, settings: Settings) -> None:
         self.settings = settings
-        self.transport = RemoteTransport(settings)
+        self.transport = RemoteTransport(settings, "calendar")
 
     def headers(self) -> dict[str, str]:
         p = self.settings.provider
-        if not p.enabled:
+        if not p.calendar_enabled:
             raise DomainError("external_execution_disabled", 403)
         try:
             with httpx.Client(timeout=p.timeout_seconds, trust_env=False) as client:
@@ -258,9 +296,9 @@ class Delivery:
 
     def crm(self, key: str, payload: dict[str, Any], session: Session | None = None) -> str:
         p = self.settings.provider
-        if p.enabled:
+        if p.crm_enabled:
             # Search by email first; reconcile ambiguous create instead of duplicate POST.
-            transport = RemoteTransport(self.settings)
+            transport = RemoteTransport(self.settings, "crm")
             headers = {"Authorization": "Bearer " + p.hubspot_key.get_secret_value()}
             search = transport.request(
                 "POST",
@@ -280,23 +318,51 @@ class Delivery:
                     ]
                 },
             )
-            matches = search.get("results", [])
+            matches = search.get("results")
+            if not isinstance(matches, list):
+                raise DomainError("crm_invalid_search_receipt", 502)
+            if len(matches) > 1:
+                raise DomainError("crm_contact_ambiguous", 409)
             properties = {
                 "email": payload["email"],
                 "firstname": payload["name"],
                 "phone": payload["phone"],
             }
             if matches:
-                receipt = str(matches[0]["id"])
-                transport.request(
+                existing_id = matches[0].get("id") if isinstance(matches[0], dict) else None
+                if not isinstance(existing_id, str) or not existing_id.strip():
+                    raise DomainError("crm_invalid_search_receipt", 502)
+                result = transport.request(
                     "PATCH",
-                    p.contacts_path + "/" + quote(receipt, safe=""),
+                    p.contacts_path + "/" + quote(existing_id, safe=""),
                     headers,
                     {"properties": properties},
                 )
-                return receipt
-            result = transport.request("POST", p.contacts_path, headers, {"properties": properties})
-            return str(result["id"])
+                if result.get("id") != existing_id:
+                    raise UnknownOutcome("crm_receipt_mismatch")
+            else:
+                result = transport.request(
+                    "POST", p.contacts_path, headers, {"properties": properties}
+                )
+            receipt = result.get("id")
+            if not isinstance(receipt, str) or not receipt.strip():
+                raise UnknownOutcome("crm_receipt_missing")
+            readback = transport.request(
+                "GET",
+                p.contacts_path
+                + "/"
+                + quote(receipt, safe="")
+                + "?properties=email,firstname,phone",
+                headers,
+            )
+            actual = readback.get("properties")
+            if (
+                readback.get("id") != receipt
+                or not isinstance(actual, dict)
+                or any(actual.get(name) != value for name, value in properties.items())
+            ):
+                raise UnknownOutcome("crm_receipt_mismatch")
+            return receipt
         with nullcontext(session) if session else self.sessions.begin() as active:
             row = active.get(ExternalRecord, key)
             if row:
@@ -307,7 +373,16 @@ class Delivery:
 
     def followup(self, key: str, payload: dict[str, Any]) -> str:
         email = payload.get("email")
-        if (
+        if self.settings.followup_transport == "smtp":
+            if not self.settings.external_delivery_enabled:
+                raise DomainError("external_delivery_disabled", 403)
+            if (
+                not isinstance(email, str)
+                or not re.fullmatch(SINGLE_EMAIL_PATTERN, email)
+                or email.lower() not in {a.lower() for a in self.settings.followup_recipients}
+            ):
+                raise DomainError("recipient_not_authorized", 403)
+        elif (
             not isinstance(email, str)
             or not re.fullmatch(SINGLE_EMAIL_PATTERN, email)
             or not email.lower().endswith(".invalid")
@@ -359,6 +434,8 @@ class Delivery:
             + ">"
         )
         msg.set_content(body)
+        if self.settings.followup_transport == "smtp":
+            return self.authenticated_smtp(key, msg)
         try:
             with smtplib.SMTP(
                 self.settings.smtp_host,
@@ -368,4 +445,49 @@ class Delivery:
                 smtp.send_message(msg)
         except OSError as exc:
             raise UnknownOutcome("followup_unverified") from exc
+        return key
+
+    def authenticated_smtp(self, key: str, message: EmailMessage) -> str:
+        settings = self.settings
+        context = ssl.create_default_context()
+        started = accepted = False
+        try:
+            connection = (
+                smtplib.SMTP_SSL(
+                    settings.smtp_host,
+                    settings.smtp_port,
+                    timeout=settings.smtp_timeout_seconds,
+                    context=context,
+                )
+                if settings.smtp_security == "tls"
+                else smtplib.SMTP(
+                    settings.smtp_host, settings.smtp_port, timeout=settings.smtp_timeout_seconds
+                )
+            )
+            with connection as smtp:
+                if settings.smtp_security == "starttls":
+                    smtp.ehlo()
+                    smtp.starttls(context=context)
+                    smtp.ehlo()
+                smtp.login(settings.smtp_username, settings.smtp_password.get_secret_value())
+                started = True
+                if smtp.send_message(message):
+                    raise DomainError("followup_recipient_refused", 422)
+                accepted = True
+        except smtplib.SMTPAuthenticationError as exc:
+            raise DomainError("followup_authorization_denied", 403) from exc
+        except smtplib.SMTPRecipientsRefused as exc:
+            raise DomainError("followup_recipient_refused", 422) from exc
+        except smtplib.SMTPResponseException as exc:
+            if not accepted:
+                if 400 <= exc.smtp_code < 500:
+                    raise RetryableFailure("smtp_temporarily_rejected") from exc
+                raise DomainError("followup_rejected", 422) from exc
+        except OSError as exc:
+            if not accepted:
+                if started:
+                    raise UnknownOutcome("followup_unverified") from exc
+                raise RetryableFailure("smtp_connection_unavailable") from exc
+        # SMTP acceptance proves the receiving relay accepted the message,
+        # not that it reached the recipient's inbox. Keep the stable identity.
         return key

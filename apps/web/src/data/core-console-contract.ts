@@ -27,6 +27,9 @@ const textKeys = [
   'save',
   'remove',
   'removePrompt',
+  'redactTranscript',
+  'redactTranscriptPrompt',
+  'redactTranscriptDone',
   'evaluate',
   'acoustic',
   'query',
@@ -44,6 +47,12 @@ const textKeys = [
   'cleanup',
   'login',
   'logout',
+  'configuredOnly',
+  'recordLimit',
+  'recordCount',
+  'captureDelivery',
+  'externalDelivery',
+  'unknownDelivery',
 ] as const;
 const fieldKeys = [
   'name',
