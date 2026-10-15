@@ -10,6 +10,14 @@ import {
 import copy from '../data/core-console';
 import { createSettings, settings } from '../config/settings';
 
+vi.mock(import('../config/settings'), async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    settings: actual.createSettings({ VITE_CORE_API_URL: 'http://127.0.0.1:18082' }),
+  };
+});
+
 afterEach(() => vi.unstubAllGlobals());
 describe('core boundary regressions', () => {
   it('rejects a non-JSON response even with a safe filename', async () => {
