@@ -19,9 +19,11 @@ from .protocol import (
     CALL_CAPABILITY_HEADER,
     CALL_CAPABILITY_METADATA_KEY,
     NATIVE_ACCOUNT_LOCK,
+    NATIVE_CALL_READ_PATHS,
     NATIVE_CREATE_PATHS,
     NATIVE_OPERATION_METADATA_KEY,
     NATIVE_OPERATION_PREFIX,
+    NATIVE_TERMINAL_STATUSES,
     VAPI_EVENT_PATH,
     VAPI_REQUIRED_SERVER_MESSAGES,
     VAPI_TOOL_PATH,
@@ -35,6 +37,7 @@ class NativeCalls:
         self.service, self.providers = service, providers
         self.settings = service.settings
         self.transport = RemoteTransport(self.settings, "voice")
+        self.reconciliation_transport = RemoteTransport(self.settings, "voice_read")
 
     def _cipher(self) -> Fernet:
         try:
@@ -129,6 +132,87 @@ class NativeCalls:
                 provider: self._entitlement_status(provider) for provider in ("retell", "vapi")
             },
         }
+
+    def reconcile(self, tenant: str, owner: str, value: NativeCallInput) -> dict[str, Any]:
+        """Retire only an exactly bound call with a verified terminal provider receipt."""
+        owner_digest = hashlib.sha256(owner.encode()).hexdigest()
+        key = NATIVE_OPERATION_PREFIX + value.provider + ":" + value.operation_id
+        with self.service.sessions() as session:
+            row = session.scalar(
+                select(Operation).where(Operation.tenant_id == tenant, Operation.key == key)
+            )
+            if not owner or not row or row.result.get("owner") != owner_digest:
+                raise DomainError("native_operation_not_found", 404)
+            data = row.result
+            call = session.get(Call, data.get("intent_id")) if data.get("intent_id") else None
+            if (
+                data.get("state") not in {"BOUND", "DONE"}
+                or data.get("provider") != value.provider
+                or not call
+                or call.tenant_id != tenant
+                or call.provider != value.provider
+                or call.external_id != data.get("external_id")
+                or not re.fullmatch(r"[A-Za-z0-9_-]{1,100}", call.external_id)
+            ):
+                raise DomainError("native_operation_requires_reconciliation", 409)
+            external, agent, intent_id = call.external_id, call.agent_id, call.id
+            already_done = data["state"] == "DONE" and call.state == "ended"
+        if already_done:
+            return self.status(tenant, owner)
+        provider = self.settings.provider
+        base_url = getattr(provider, value.provider + "_base_url").rstrip("/")
+        secret = getattr(provider, value.provider + "_key").get_secret_value()
+        try:
+            receipt = self.reconciliation_transport.request(
+                "GET",
+                base_url + NATIVE_CALL_READ_PATHS[value.provider] + external,
+                {"Authorization": "Bearer " + secret},
+            )
+        except Exception as exc:
+            raise DomainError("native_reconciliation_unverified", 409) from exc
+        id_field, agent_field, status_field = (
+            ("call_id", "agent_id", "call_status")
+            if value.provider == "retell"
+            else ("id", "assistantId", "status")
+        )
+        metadata_source: object = receipt
+        if value.provider == "vapi" and isinstance(receipt, dict):
+            metadata_source = receipt.get("assistantOverrides")
+        metadata = metadata_source.get("metadata") if isinstance(metadata_source, dict) else None
+        if (
+            not isinstance(receipt, dict)
+            or receipt.get(id_field) != external
+            or receipt.get(agent_field) != agent
+            or not isinstance(metadata, dict)
+            or metadata.get(NATIVE_OPERATION_METADATA_KEY) != value.operation_id
+            or not isinstance(receipt.get(status_field), str)
+            or receipt[status_field] not in NATIVE_TERMINAL_STATUSES[value.provider]
+        ):
+            raise DomainError("native_reconciliation_unverified", 409)
+        with self.service.sessions.begin() as session:
+            tenant_lock(session, tenant)
+            row = session.scalar(
+                select(Operation).where(Operation.tenant_id == tenant, Operation.key == key)
+            )
+            call = session.get(Call, intent_id)
+            if (
+                not row
+                or row.result.get("owner") != owner_digest
+                or row.result.get("state") not in {"BOUND", "DONE"}
+                or row.result.get("intent_id") != intent_id
+                or row.result.get("external_id") != external
+                or not call
+                or call.tenant_id != tenant
+                or call.provider != value.provider
+                or call.external_id != external
+                or call.agent_id != agent
+            ):
+                raise DomainError("native_operation_requires_reconciliation", 409)
+            if row.result["state"] != "DONE":
+                call.state = "ended"
+                row.result = {**row.result, "state": "DONE", "grant": None, "capability": None}
+                audit(session, tenant, "native.call.reconciled", row.id)
+        return self.status(tenant, owner)
 
     def _template(self) -> dict[str, Any]:
         path = self.settings.native_template_file

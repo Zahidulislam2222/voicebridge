@@ -89,3 +89,43 @@ Each stage delivers workload/data profiles, latency/resource charts, provider
 quota evidence, cost envelope, saturation diagnosis, failure drills and an admission
 ceiling. See [load criteria](core-load-spec.md), [reliability](../reliability.md)
 and [build-plan gates](../../BUILD-PLAN.md).
+
+## Workload model and admission decision
+
+For each stage record active/idle session ratio, refresh/read/write cadence,
+connection lifetime, payload/export/knowledge sizes, appointment contention,
+provider tool calls per conversation, geographic distribution, tenant skew and
+retry/reconnect bursts. One million stored accounts does not imply one million
+active sessions. Dashboard request capacity and provider audio capacity have
+different bottlenecks and must be exercised together for a mixed-stage claim.
+
+Derive request arrival and connection counts from the declared workload. Measure
+p50/p95/p99 latency, errors/timeouts, throughput, pool waits, lock time, backlog
+age, resource saturation and correctness. Measure the load generator separately.
+A stage exits only when thresholds set before the run pass across the sustained
+window, burst/recovery and declared failure case, with headroom for loss of one
+replica or cell. Preserve evidence for the worst tenant/resource skew.
+
+## Regional data and failure strategy
+
+Choose tenant placement and residency before sharding. Define one consistency
+writer per booking resource, safe regional routing, credential/session authority,
+provider region and replication/backup locations. Rehearse zone/cell loss, pool
+exhaustion, unavailable providers, slow storage and mass reconnects. Verify that
+failover does not duplicate appointments or external delivery. A regional routing
+change cannot override customer data-location or transfer decisions.
+
+## Economics and capacity commitments
+
+Keep measured infrastructure, storage/egress, provider concurrency/start/tool,
+speech/model, telephony and operational-support costs in a stage-specific envelope.
+Include retries, idle capacity and recovery headroom; record pricing date and
+written account-specific limits. Obtain authorization before chargeable tests or
+resources. No instance count, provider quota or budget is promised by this design.
+
+Stage deliverables include architecture/configuration revision, workload generator
+and data volume, threshold specification, latency/resource distributions, failure
+receipts, saturation diagnosis, cost assumptions, independent review and approved
+admission ceiling. Review [monitoring](../monitoring.md),
+[security](../security-model.md) and [legal data-location decisions](../legal-and-privacy.md)
+with each capacity expansion.

@@ -125,6 +125,93 @@
         }
       }
     },
+    "/api/exports/snapshot": {
+      "post": {
+        "summary": "Export Snapshot",
+        "operationId": "export_snapshot_api_exports_snapshot_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SnapshotExportView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/calls/{call_id}/transcript-export": {
+      "post": {
+        "summary": "Export Transcript",
+        "operationId": "export_transcript_api_calls__call_id__transcript_export_post",
+        "parameters": [
+          {
+            "name": "call_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Call Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TranscriptExportView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/availability": {
       "get": {
         "summary": "Availability",
@@ -1026,6 +1113,56 @@
         }
       }
     },
+    "/api/calls/native/reconcile": {
+      "post": {
+        "summary": "Reconcile Native Call",
+        "operationId": "reconcile_native_call_api_calls_native_reconcile_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NativeCallInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeStatusView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/calls/native/status": {
       "get": {
         "summary": "Native Call Status",
@@ -1583,6 +1720,36 @@
         ],
         "title": "CallIntentInput"
       },
+      "CallSummaryView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "provider": {
+            "type": "string",
+            "title": "Provider"
+          },
+          "state": {
+            "type": "string",
+            "title": "State"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Date"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "provider",
+          "state",
+          "date"
+        ],
+        "title": "CallSummaryView"
+      },
       "CallView": {
         "properties": {
           "id": {
@@ -1821,6 +1988,19 @@
         ],
         "title": "EvaluationFixtureView"
       },
+      "ExportInput": {
+        "properties": {
+          "format": {
+            "type": "string",
+            "const": "json",
+            "title": "Format",
+            "default": "json"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ExportInput"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -2040,6 +2220,96 @@
         ],
         "title": "NativeStatusView"
       },
+      "SnapshotExportView": {
+        "properties": {
+          "schema_version": {
+            "type": "integer",
+            "const": 1,
+            "title": "Schema Version",
+            "default": 1
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          },
+          "record_limit": {
+            "type": "integer",
+            "title": "Record Limit"
+          },
+          "counts": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Counts"
+          },
+          "truncated": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "type": "object",
+            "title": "Truncated"
+          },
+          "appointments": {
+            "items": {
+              "$ref": "#/components/schemas/AppointmentView"
+            },
+            "type": "array",
+            "title": "Appointments"
+          },
+          "contacts": {
+            "items": {
+              "$ref": "#/components/schemas/ContactView"
+            },
+            "type": "array",
+            "title": "Contacts"
+          },
+          "jobs": {
+            "items": {
+              "$ref": "#/components/schemas/JobView"
+            },
+            "type": "array",
+            "title": "Jobs"
+          },
+          "calls": {
+            "items": {
+              "$ref": "#/components/schemas/CallSummaryView"
+            },
+            "type": "array",
+            "title": "Calls"
+          },
+          "documents": {
+            "items": {
+              "$ref": "#/components/schemas/DocumentView"
+            },
+            "type": "array",
+            "title": "Documents"
+          },
+          "audit": {
+            "items": {
+              "$ref": "#/components/schemas/AuditView"
+            },
+            "type": "array",
+            "title": "Audit"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "generated_at",
+          "record_limit",
+          "counts",
+          "truncated",
+          "appointments",
+          "contacts",
+          "jobs",
+          "calls",
+          "documents",
+          "audit"
+        ],
+        "title": "SnapshotExportView"
+      },
       "StateView": {
         "properties": {
           "appointments": {
@@ -2180,6 +2450,50 @@
           "text"
         ],
         "title": "TranscriptEntry"
+      },
+      "TranscriptExportView": {
+        "properties": {
+          "schema_version": {
+            "type": "integer",
+            "const": 1,
+            "title": "Schema Version",
+            "default": 1
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          },
+          "call_id": {
+            "type": "string",
+            "title": "Call Id"
+          },
+          "provider": {
+            "type": "string",
+            "title": "Provider"
+          },
+          "redacted": {
+            "type": "boolean",
+            "title": "Redacted"
+          },
+          "transcript": {
+            "items": {
+              "$ref": "#/components/schemas/TranscriptEntry"
+            },
+            "type": "array",
+            "title": "Transcript"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "generated_at",
+          "call_id",
+          "provider",
+          "redacted",
+          "transcript"
+        ],
+        "title": "TranscriptExportView"
       },
       "ValidationError": {
         "properties": {

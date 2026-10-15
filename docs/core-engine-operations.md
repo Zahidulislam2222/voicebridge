@@ -1,20 +1,20 @@
 # Local core operation and recovery
 
-The local development stage runs on loopback with test-data customers. Its
-capability-based browser connection is for that stage only. The published pilot
+The local development stage runs on loopback with verification customers. Its
+capability-based browser connection is for that stage only. The published release
 uses Google owner login and secure server sessions. The operator and each business/management MCP read or write
 scope check separate capabilities. Keep those five values in an ignored environment
 file and the private credential recovery file. Never put them in browser URLs,
 shell arguments, screenshots or public evidence.
 
-The historical local engine meets eighteen test-data criteria. The current
+The historical local engine meets eighteen verification criteria. The current
 authenticated single-business release is backend
-`20261013-native-owner-voice-14` with frontend
-`20261013-native-frontend-08`. The full backend suite exited successfully and
-97 frontend tests passed; promotion matched 16/16 backend and 7/7 frontend
+`20261015-tenant-exports-19` with frontend
+`20261015-tenant-exports-10`. The full backend suite exited successfully and
+108 frontend tests passed; promotion matched 16/16 backend and 7/7 frontend
 files, the reviewed image modules and the owned gateway. Readiness, exact
 public HTML/PNG, gzip/Vary and unauthorized business-state HTTP 401 passed at
-the recorded time. See [current release evidence](evidence/owner-release-20261013.md);
+the recorded time. See [current release evidence](evidence/tenant-export-release-20261015.md);
 these checks do not measure
 sustained uptime or a real voice conversation.
 
@@ -23,9 +23,10 @@ of the earlier edge denial and authorized an application User-Agent/HTTPX reques
 One read-only assistant inventory request returned HTTP 200. The configured owner
 gate is resolved for this account; dedicated native profile configuration is
 verified. The owner-only native route has a configured 60-second, one-call limit.
-One Retell web call was registered without media and still occupies that slot;
-no audio/tool acceptance passed. Expired entitlement also blocks fresh creation
-until free balances and account settings are verified again. Calendar and CRM permissions are
+The earlier unjoined Retell call ended and its slot is clear. Creation is disabled;
+GET-only owner recovery requires VB_NATIVE_RECONCILIATION_ENABLED=true and never
+enables creation or media. Any later call also requires fresh free-credit and
+account verification. No audio/tool acceptance has passed. Calendar and CRM permissions are
 independently enabled, with one bounded owner-only readback; general external
 email delivery is disabled and follow-ups use capture mode.
 
@@ -117,7 +118,7 @@ has data authority only and cannot authorize actions.
 The nine versioned runtime cases cover approved/unsupported/adversarial questions,
 explicit confirmation, timezone, tenant isolation, both provider envelopes,
 successful booking through each adapter and an actually retrieved adversarial
-document. test-data booking fixtures use isolated tenant records and a separate
+document. verification booking fixtures use isolated tenant records and a separate
 local calendar namespace. Their workers claim only that fixture's tenant; the
 business worker cannot execute fixture jobs against its own calendar.
 Every accepted fixture booking receives persistent cancellation cleanup, including

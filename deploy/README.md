@@ -12,14 +12,21 @@ Preserve unrelated containers/gateway/database state; never delete working volum
 
 The current single-business release passed backend 16/16 and frontend 7/7
 local/live file parity checks, with a valid database backup and readiness checks.
-One Retell web call was registered without media and still occupies the owner-only
-one-call slot; its short-lived free entitlement also needs fresh verification
-before any new call. Unrestricted external mail remains disabled. Treat these as
+The earlier unjoined Retell call ended and its slot is clear. Creation remains
+disabled while separately approved GET-only recovery is enabled for the owner.
+Any later call requires fresh free-entitlement and owner acceptance checks.
+Unrestricted external mail remains disabled. Treat these as
 release-specific results; repeat drift, backup, security, behavioral and parity
 checks for every later deployment. The shared server is one failure domain and
 does not establish the [future uptime objective](../docs/reliability.md).
 
-See [current release evidence](../docs/evidence/owner-release-20261013.md),
+See [current release evidence](../docs/evidence/tenant-export-release-20261015.md),
 [frontend deployment](../docs/frontend-deployment.md),
 [engine operations](../docs/core-engine-operations.md),
 [reliability](../docs/reliability.md) and [runbooks](../docs/operations-runbooks.md).
+
+The current export release and configuration boundaries are documented in
+[release evidence](../docs/evidence/tenant-export-release-20261015.md),
+[configuration](../docs/configuration.md), [providers](../docs/integrations.md)
+and [monitoring](../docs/monitoring.md). Future infrastructure changes require
+staged capacity, security, cost and recovery acceptance before activation.

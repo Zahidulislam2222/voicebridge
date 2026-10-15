@@ -5,7 +5,7 @@ Historical local-core acceptance; later deployment/identity/provider results are
 this earlier stage.
 
 Scope: the eighteen criteria in [the core contract](../core-engine-spec.md), using
-test-data business data and disabled real-provider execution. This does not close
+verification business data and disabled real-provider execution. This does not close
 the eighty broader build-plan criteria. All eighteen local criteria have acceptance
 evidence. The fresh source review found no blocking implementation defects.
 Accepted on 8 October 2026, Asia/Dhaka.
@@ -22,14 +22,14 @@ Accepted on 8 October 2026, Asia/Dhaka.
 | C06       | Atomic CRM/follow-up jobs, separate worker, leases/attempts/receipts                                 | Real HTTP → worker → n8n → Mailpit journey; three completed jobs                    |
 | C07       | Worker process loss after an external effect and genuine lease expiry                                | Two owned CLI processes killed; one calendar event and no SMTP resend               |
 | C08       | Distinct provider authentication and server-owned call scope                                         | Raw-body HMAC, bearer, capability and identity denial tests                         |
-| C09       | Shared business tools and terminal lifecycle/idempotency                                             | Both test-data envelopes and out-of-order/duplicate/ended-call regressions          |
+| C09       | Shared business tools and terminal lifecycle/idempotency                                             | Both verification envelopes and out-of-order/duplicate/ended-call regressions          |
 | C10       | Protected tenant-filtered records and denial of caller-selected scope                                | HTTP, service, provider and MCP scope tests                                         |
 | C11       | Text/Markdown/PDF ingestion, revisions/deletion, sources and abstention                              | Knowledge/PDF tests, conflict-by-fact-key and retrieved-adversarial evaluations     |
 | C12       | Nine maintained evaluations with durable, isolated fixture cleanup                                   | Versioned suite and fixture isolation/ambiguous-write/recovery tests                |
 | C13       | Four MCP read/write scopes sharing services, valid protocol errors                                   | Official MCP SDK over HTTP; malformed-argument and promotion/scope denials          |
 | C14       | Persistent operator HTTP flow and readable failures                                                  | Ten native Chrome journeys, thirty layouts, zero captured errors/external requests  |
 | C15       | Disabled real transports, typed connector configuration and resolved Vapi read access                | Execution gate tests; one support-approved inventory GET returned 200               |
-| C16       | Authenticated local workflow, single test-data recipient and captured SMTP receipt                   | Three completed jobs, exactly one matching Mailpit message; recipient guard denial  |
+| C16       | Authenticated local workflow, single verification recipient and captured SMTP receipt                   | Three completed jobs, exactly one matching Mailpit message; recipient guard denial  |
 | C17       | Tests/types/lint/scans/build/contracts and current real flows                                        | Passing gate results below, current artifact/source hashes and restarted flows      |
 | C18       | Run/restore guides, private recovery records and fresh independent review                            | Current records and guides; fresh review 05 has no blocking implementation findings |
 
@@ -71,7 +71,7 @@ never overwritten. Worker recovery tests use the actual CLI loop with configurat
 injected from isolated fixtures; they are process-crash tests, not physical power
 loss. Uncertain non-idempotent delivery remains unknown pending receipt recovery.
 
-Capacity tests stay within the maintained resource guard: 1,000 test-data contacts,
+Capacity tests stay within the maintained resource guard: 1,000 verification contacts,
 four clients and forty requests. They do not prove a million users or calls, zero
 downtime, sustained uptime or production performance. Exact latest timing belongs
 in the private measurement report; it changes between runs.

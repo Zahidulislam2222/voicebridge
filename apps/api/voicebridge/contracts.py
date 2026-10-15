@@ -211,6 +211,40 @@ class StateView(Output):
     synthetic: bool
 
 
+class ExportInput(Input):
+    format: Literal["json"] = "json"
+
+
+class CallSummaryView(Output):
+    id: str
+    provider: str
+    state: str
+    date: datetime
+
+
+class SnapshotExportView(Output):
+    schema_version: Literal[1] = 1
+    generated_at: datetime
+    record_limit: int
+    counts: dict[str, int]
+    truncated: dict[str, bool]
+    appointments: list[AppointmentView]
+    contacts: list[ContactView]
+    jobs: list[JobView]
+    calls: list[CallSummaryView]
+    documents: list[DocumentView]
+    audit: list[AuditView]
+
+
+class TranscriptExportView(Output):
+    schema_version: Literal[1] = 1
+    generated_at: datetime
+    call_id: str
+    provider: str
+    redacted: bool
+    transcript: list[TranscriptEntry]
+
+
 class EvaluationFixtureView(Output):
     id: str
     status: str

@@ -1,6 +1,11 @@
 # Single-business release evidence — 2026-10-13
 
-The current owner-scoped release is backend `20261013-native-owner-voice-14`
+Later evidence supersedes the registered/occupied-slot state below: the call
+ended with `error user not joined`, zero duration and zero cost. The October 15
+[recovery release](reconciliation-release-20261015.md) disables creation and adds
+GET-only owner terminal recovery; the original dated sequence remains below.
+
+The owner-scoped release recorded on October 13 was backend `20261013-native-owner-voice-14`
 and frontend `20261013-native-frontend-08` on the existing shared server. The
 guarded backend promotion verified 16/16 release-file hashes, 15/15 application
 modules against its frozen image, ready health and preservation of 53 unrelated
@@ -40,7 +45,7 @@ Earlier bounded owner-only acceptance verified a Calendar event, Free CRM
 contact and one Gmail confirmation for one booking, followed by Calendar
 cancellation processed after worker restart. Current unrestricted external
 follow-up delivery remains disabled. The dated details remain in
-[pilot verification](pilot-verification.md).
+[release verification](pilot-verification.md).
 
 The frontend package passed 97 tests, six release tests, four presentation
 checks and 21 packaged Chromium routes. The full backend suite exited zero

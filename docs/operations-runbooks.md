@@ -53,3 +53,36 @@ Record intended action, baseline, recovery, commands/action IDs, outcome, unreso
 state and next step. Private evidence stays private. Public results derive from
 verified evidence. Google Docs keep stable identity; canonical PDFs change only
 after a valid temporary export is ready.
+
+## Owner export investigation
+
+Verify current session/role, CSRF/origin, selected tenant and response byte/row
+limits. A report with truncation is a bounded current view; use an approved backup
+or rights-request process for a different purpose. For transcript access, inspect
+ended state, local redaction tombstone and sanitized audit. Do not request provider
+recordings or recreate a call to satisfy a local download problem. Treat files
+already saved by a recipient as a separate access/retention responsibility.
+
+## Failed or interrupted image publication
+
+Inspect the saved deployment phase, active pointer/image/labels and manifest before
+retrying. Validate archive digest, saved release tag, image/config identity and
+source/payload hashes before upload or process quiesce. Preserve a failed immutable
+candidate and choose a distinct corrected release; do not relabel live state to
+hide a packaging failure. Verify owned process health and unrelated-resource
+preservation after activation or compensating rollback.
+
+## GitHub and public-document delivery
+
+Verify owner/author, secret exclusions and the exact staged tree. Push a reviewed
+branch, require protected checks, merge through the permitted workflow, then inspect
+remote commit/tree and post-merge CI. Keep repository metadata and all README links
+consistent with current evidence. Publish public summaries, not raw deployment
+profiles, credential recovery, browser captures or private customer records.
+
+After repository verification, compare the existing native Google Doc. Update the
+same ID with revision guards, latest relevant facts first, preserving earlier
+content and native structure. Export a temporary PDF, check content/page count and
+layout plus privacy/format/hash, then replace the canonical file atomically.
+Record interrupted/unknown writes before retrying; Google Doc identity, sharing
+and working prior PDF remain protected through this process.

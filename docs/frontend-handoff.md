@@ -2,7 +2,7 @@
 
 This handoff records the earlier static public/operator release. Current Business
 engine integration, authentication and deployment evidence are in
-[pilot verification](evidence/pilot-verification.md) and [frontend README](../apps/web/README.md).
+[release verification](evidence/pilot-verification.md) and [frontend README](../apps/web/README.md).
 Counts and disconnected-provider statements below describe the earlier release.
 
 VoiceBridge now has a complete public page map and the approved operator dashboard.

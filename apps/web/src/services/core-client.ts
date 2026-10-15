@@ -58,13 +58,13 @@ export class CoreClient {
     private readonly credential: string,
     private readonly csrf?: string,
   ) {}
-  async request<T>(
+  private async send(
     path: string,
     method = 'GET',
     body?: unknown,
     signal?: AbortSignal,
     timeoutMs = settings.coreRequestTimeoutMs,
-  ): Promise<T> {
+  ): Promise<Response> {
     if (!settings.coreApiUrl) throw new Error(copy.connectionDisabled);
     const response = await fetch(settings.coreApiUrl + path, {
       method,
@@ -90,7 +90,27 @@ export class CoreClient {
           : copy.requestFailed;
       throw new CoreRequestError(code);
     }
+    return response;
+  }
+  async request<T>(
+    path: string,
+    method = 'GET',
+    body?: unknown,
+    signal?: AbortSignal,
+    timeoutMs = settings.coreRequestTimeoutMs,
+  ): Promise<T> {
+    const response = await this.send(path, method, body, signal, timeoutMs);
     return (response.status === 204 ? undefined : await response.json()) as T;
+  }
+  async download(path: string, signal: AbortSignal): Promise<{ blob: Blob; filename: string }> {
+    const response = await this.send(path, 'POST', { format: 'json' }, signal);
+    const disposition = response.headers.get('Content-Disposition') ?? '';
+    const filename = /^attachment; filename="([A-Za-z0-9][A-Za-z0-9_.-]{0,100}\.json)"$/.exec(
+      disposition,
+    )?.[1];
+    if (!filename || response.headers.get('Content-Type')?.split(';')[0] !== 'application/json')
+      throw new CoreRequestError('invalid_export_response');
+    return { blob: await response.blob(), filename };
   }
   state(signal?: AbortSignal) {
     return this.request<CoreSnapshot>('/api/state', 'GET', undefined, signal);

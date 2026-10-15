@@ -1,4 +1,4 @@
-# Single-business pilot completion
+# Single-business release completion
 
 Requested 2026-10-13. Finish the single-business release on the existing server,
 preferring verified free/free-tier services. Million-scale workloads remain future
@@ -17,7 +17,7 @@ acceptance stages. Earlier evidence is historical until explicitly rechecked.
       visible authorization/failure/recovery states.
 - [x] F05 An explicitly authorized owner recipient receives a booking follow-up;
       the receipt and worker restart behavior are verified without blind resends.
-- [x] F06 A synthetic custom voice has a recorded creation method, settings,
+- [x] F06 An AI-generated custom voice has a recorded creation method, settings,
       attribution and permitted-use boundary; free balances and overage behavior are
       verified before generation. No commercial license is inferred from a free plan.
 - [ ] F07 Retell and Vapi each prepare/bind a bounded native call before audio,
@@ -60,7 +60,7 @@ acceptance stages. Earlier evidence is historical until explicitly rechecked.
 Free-credit calls require verified current balances and no-charge boundaries.
 An uncertain billable action remains blocked until the exact-cost warning and
 fresh-turn approval required by the owner's money rule. A missing gate remains
-open; test-data or contract success cannot replace a real external receipt.
+open; verification or contract success cannot replace a real external receipt.
 
 ## Worker egress correction acceptance
 

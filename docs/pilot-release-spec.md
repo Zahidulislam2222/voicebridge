@@ -1,6 +1,6 @@
-# Authenticated engine pilot acceptance
+# Authenticated engine release acceptance
 
-This extends the accepted local test-data core. The user authorized authentication,
+This extends the accepted local verification core. The user authorized authentication,
 backend publication on the existing server, free-first capacity/uptime work and
 minimal live voice testing. It does not establish million-user capacity or sustained
 uptime. Paid execution retains the explicit cost boundary in the global rules.
@@ -60,4 +60,4 @@ Frontend promotion requires the exact six-file baseline/candidate inventory, the
 
 Gateway candidate/rollback staging is created exclusively, refuses an existing file/symlink, tracks ownership immediately, and verifies pending bytes again immediately before promotion.
 
-R01–R08/R10 accepted only for the recorded test-data-business authenticated pilot. External delivery is disabled; guarded capacity and observation report measured scope. R11 final aggregate review approves the verified free pilot scope, and R12 records are synchronized. R09 real voice remains open. Eleven of twelve pilot criteria are accepted; this count is not a project completion percentage. See docs/evidence/pilot-verification.md.
+R01–R08/R10 accepted only for the recorded single-business authenticated release. External delivery is disabled; guarded capacity and observation report measured scope. R11 final aggregate review approves the verified free release scope, and R12 records are synchronized. R09 real voice remains open. Eleven of twelve release criteria are accepted; this count is not a project completion percentage. See docs/evidence/pilot-verification.md.

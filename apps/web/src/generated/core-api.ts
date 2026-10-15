@@ -72,6 +72,40 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/exports/snapshot': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Export Snapshot */
+    post: operations['export_snapshot_api_exports_snapshot_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/calls/{call_id}/transcript-export': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Export Transcript */
+    post: operations['export_transcript_api_calls__call_id__transcript_export_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/availability': {
     parameters: {
       query?: never;
@@ -346,6 +380,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/calls/native/reconcile': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Reconcile Native Call */
+    post: operations['reconcile_native_call_api_calls_native_reconcile_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/calls/native/status': {
     parameters: {
       query?: never;
@@ -539,6 +590,20 @@ export interface components {
        */
       provider: 'retell' | 'vapi';
     };
+    /** CallSummaryView */
+    CallSummaryView: {
+      /** Id */
+      id: string;
+      /** Provider */
+      provider: string;
+      /** State */
+      state: string;
+      /**
+       * Date
+       * Format: date-time
+       */
+      date: string;
+    };
     /** CallView */
     CallView: {
       /** Id */
@@ -624,6 +689,15 @@ export interface components {
       /** Detail */
       detail: string;
     };
+    /** ExportInput */
+    ExportInput: {
+      /**
+       * Format
+       * @default json
+       * @constant
+       */
+      format: 'json';
+    };
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
@@ -698,6 +772,42 @@ export interface components {
         [key: string]: components['schemas']['NativeEntitlementView'];
       };
     };
+    /** SnapshotExportView */
+    SnapshotExportView: {
+      /**
+       * Schema Version
+       * @default 1
+       * @constant
+       */
+      schema_version: 1;
+      /**
+       * Generated At
+       * Format: date-time
+       */
+      generated_at: string;
+      /** Record Limit */
+      record_limit: number;
+      /** Counts */
+      counts: {
+        [key: string]: number;
+      };
+      /** Truncated */
+      truncated: {
+        [key: string]: boolean;
+      };
+      /** Appointments */
+      appointments: components['schemas']['AppointmentView'][];
+      /** Contacts */
+      contacts: components['schemas']['ContactView'][];
+      /** Jobs */
+      jobs: components['schemas']['JobView'][];
+      /** Calls */
+      calls: components['schemas']['CallSummaryView'][];
+      /** Documents */
+      documents: components['schemas']['DocumentView'][];
+      /** Audit */
+      audit: components['schemas']['AuditView'][];
+    };
     /** StateView */
     StateView: {
       /** Appointments */
@@ -743,6 +853,28 @@ export interface components {
       speaker: string;
       /** Text */
       text: string;
+    };
+    /** TranscriptExportView */
+    TranscriptExportView: {
+      /**
+       * Schema Version
+       * @default 1
+       * @constant
+       */
+      schema_version: 1;
+      /**
+       * Generated At
+       * Format: date-time
+       */
+      generated_at: string;
+      /** Call Id */
+      call_id: string;
+      /** Provider */
+      provider: string;
+      /** Redacted */
+      redacted: boolean;
+      /** Transcript */
+      transcript: components['schemas']['TranscriptEntry'][];
     };
     /** ValidationError */
     ValidationError: {
@@ -859,6 +991,74 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['StateView'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  export_snapshot_api_exports_snapshot_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ExportInput'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SnapshotExportView'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  export_transcript_api_calls__call_id__transcript_export_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        call_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ExportInput'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TranscriptExportView'];
         };
       };
       /** @description Validation Error */
@@ -1482,6 +1682,41 @@ export interface operations {
           'application/json': {
             [key: string]: unknown;
           };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  reconcile_native_call_api_calls_native_reconcile_post: {
+    parameters: {
+      query?: never;
+      header?: {
+        authorization?: string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['NativeCallInput'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['NativeStatusView'];
         };
       };
       /** @description Validation Error */

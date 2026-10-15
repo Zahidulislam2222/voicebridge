@@ -18,9 +18,9 @@ Populate a private environment file from `.env.example`; configure PostgreSQL,
 unique capabilities and business data. Examples are test credentials only.
 Keep `VB_PROVIDER__ENABLED=false` and follow-up capture enabled locally. The
 deployed single-business release has an owner-only native route with isolated
-API credentials and a short-lived free-entitlement guard. One Retell web call
-was registered without media; its occupied one-call slot needs reconciliation
-before another call. The entitlement also expires unless freshly verified.
+API credentials. Creation is disabled; separately gated GET-only recovery can
+verify and retire an exact bound call without enabling audio. The earlier
+unjoined Retell call ended; native audio and Vapi acceptance remain open.
 Unrestricted email
 delivery remains disabled. An earlier owner-only Calendar/CRM/email receipt
 verifies a bounded path; it does not authorize general delivery.
@@ -63,4 +63,15 @@ Run pytest, Mypy, Ruff, Bandit, secret scans and Python builds. See
 [testing](../../docs/testing.md), [API](../../docs/api/README.md),
 [architecture](../../docs/architecture.md) and
 [operations](../../docs/core-engine-operations.md) and the dated
-[current release evidence](../../docs/evidence/owner-release-20261013.md).
+[current release evidence](../../docs/evidence/tenant-export-release-20261015.md).
+
+## Records and local transcript exports
+
+Owner-session/CSRF POST routes expose dedicated bounded schemas rather than raw
+state. Typed settings own byte limits and safe attachment filenames. Counts and
+rows for each collection share one database statement snapshot. Local transcript
+artifacts require an ended same-tenant call; redaction uses tenant/row locks and
+a durable tombstone. Success audits exclude content and credentials. Separate
+collections can change independently; the records report is not a full backup.
+See [API contracts](../../docs/api/README.md) and
+[current verification](../../docs/evidence/tenant-export-release-20261015.md).

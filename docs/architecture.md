@@ -23,7 +23,7 @@ CRM readbacks and an authorized email receipt from an earlier controlled run.
 Current follow-ups use capture mode with no external recipients; native voice is
 disabled with a configured 60-second, one-call limit pending real audio/tool
 acceptance. Browser and native-call tools share the same authorization and
-business rules. See [dated release evidence](evidence/pilot-verification.md).
+business rules. See [dated release evidence](evidence/tenant-export-release-20261015.md).
 
 ## Decisions
 
@@ -60,3 +60,32 @@ including read/management paths. Caller-provided identity cannot promote scope.
 Database row policies, paged operator access, tenant placement and regional partitions
 are future scale/security gates. See [API](api/README.md), [security](security-model.md)
 and [scaling](capacity/scaling-roadmap.md).
+
+## Owner exports and privacy boundaries
+
+Owner-session/CSRF endpoints use dedicated projected download schemas. General
+records contain call summaries rather than transcripts, safe job fields rather
+than arbitrary payloads, and no session/capability/private-record material. Each
+collection's count and bounded page use one database statement snapshot; collections
+can change independently. A byte cap and explicit truncation prevent an operator
+from mistaking a bounded report for a complete backup.
+
+Local transcript artifacts require an ended same-tenant call. Tenant and row locks
+serialize access with redaction; a durable tombstone suppresses stale stored text
+and late provider events. Sanitized audits establish generation/access. Browser
+cleanup aborts or discards late responses and revokes Blob URLs. Already saved
+files and provider-held recordings have separate lifecycle responsibilities.
+
+## Evolution without changing business authority
+
+Keep the transactional authority for each booking resource explicit when introducing
+replicas, queues or regional cells. A transactional outbox and idempotent consumers
+are prerequisites for splitting durable work into an external queue. Read replicas
+and caches must declare freshness/consistency; they cannot confirm an uncommitted
+reservation. Move tenant placement and quota admission into a measured distributed
+boundary before claiming multi-region or million-session operation.
+
+Version APIs/configuration/data and assess backward-compatible database expansion
+before application rollout. Retire old fields only after every consumer and retained
+rollback release is compatible. See [configuration](configuration.md),
+[provider contracts](integrations.md) and [capacity](capacity/scaling-roadmap.md).

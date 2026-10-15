@@ -161,6 +161,7 @@ class Settings(BaseSettings):
     call_intent_seconds: int = Field(default=300, gt=0)
     max_pending_call_intents: int = Field(default=100, gt=0)
     native_cipher_key: SecretStr = SecretStr("")
+    native_reconciliation_enabled: bool = False
     native_template_file: Path | None = None
     native_retell_approved_file: Path | None = None
     native_entitlement_file: Path | None = None
@@ -196,6 +197,15 @@ class Settings(BaseSettings):
     pool_size: int = Field(gt=0)
     pool_timeout_seconds: float = Field(gt=0)
     max_operations_per_minute: int = Field(gt=0)
+    mcp_denial_audit_limit_per_minute: int = Field(default=30, gt=0)
+    export_max_bytes: int = Field(default=1_048_576, gt=0)
+    export_snapshot_filename: str = Field(
+        default="voicebridge-records.json", pattern=r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,100}\.json$"
+    )
+    export_transcript_filename: str = Field(
+        default="voicebridge-call-transcript.json",
+        pattern=r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,100}\.json$",
+    )
     webhook_tolerance_seconds: int = Field(gt=0)
     smtp_host: str
     smtp_port: int = Field(gt=0, lt=65536)

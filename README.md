@@ -17,20 +17,23 @@ FastAPI/PostgreSQL core, durable workers and shared Retell/Vapi business tools.
   receipts, dead letters and explicit unknown-delivery states.
 - Grounded knowledge with source revisions, bounded PDF parsing and abstention.
 - Provider-authenticated Retell/Vapi tools, active-call scope and scoped MCP interfaces.
+- Bounded owner records and local transcript downloads with tenant/role/CSRF checks and redaction protection.
 
 ## Implementation and roadmap
 
 The single-business frontend and backend are deployed on the existing server.
 The current guarded releases matched 16 backend and seven frontend files to
-their live artifacts. The full backend suite exited successfully, and 97
+their live artifacts. The full 252-test backend suite exited successfully, and 108
 frontend tests passed. One bounded owner-only booking previously received
 direct Calendar and CRM readbacks and one authorized email confirmation.
-The owner-only native route has isolated credentials and a short-lived
-free-credit gate. One Retell web call was registered and bound to the business,
-but no media session or conversation began. Its unjoined registration occupies
-the one-call slot; Vapi creation and audio acceptance remain open. Unrestricted
-external email delivery remains disabled. See the [current release evidence](docs/evidence/owner-release-20261013.md)
-and [earlier pilot record](docs/evidence/pilot-verification.md).
+Call creation is disabled; a separately gated owner recovery action verifies
+the exact existing provider call before terminal retirement. The earlier
+unjoined Retell call ended and its slot is clear; no conversation began.
+Vapi creation and audio acceptance remain open. The twelve presentation/operator
+destinations use controlled local state; `#/engine` is the persistent console.
+The roadmap accepts 26/50 implementation and 0/30 readiness criteria. Unrestricted
+external email remains disabled. See the [current release evidence](docs/evidence/tenant-export-release-20261015.md)
+and [earlier release record](docs/evidence/pilot-verification.md).
 
 The future architecture separately targets **1M+ registered accounts**, **1M+
 active dashboard sessions** and **1M+ simultaneous voice calls**, plus a declared
@@ -103,3 +106,13 @@ python -m build --no-isolation
 CI uses standard public-repository runners; it does not invoke paid providers or
 deploy services. Credentials, recovery records, browser captures and Google Doc/PDF
 exports stay outside Git. Historical evidence remains dated to its actual scope.
+
+## Public documentation program
+
+[Documentation index](docs/README.md) covers architecture, HTTP/MCP contracts,
+configuration, providers, legal/privacy applicability, security, monitoring,
+runbooks and release evidence. [Future scaling](docs/capacity/scaling-roadmap.md)
+separates stored accounts, active sessions, simultaneous calls and mixed workloads.
+[Reliability](docs/reliability.md) defines99% and 99.9% objectives, indicators,
+measurement and recovery acceptance. [Operations](docs/operations-runbooks.md)
+and [publication criteria](docs/publication-20261015-spec.md) describe safe delivery.

@@ -87,7 +87,9 @@ class LocalCalendar:
 
 
 class RemoteTransport:
-    def __init__(self, settings: Settings, scope: Literal["calendar", "crm", "voice"]) -> None:
+    def __init__(
+        self, settings: Settings, scope: Literal["calendar", "crm", "voice", "voice_read"]
+    ) -> None:
         self.settings = settings
         self.scope = scope
 
@@ -101,7 +103,10 @@ class RemoteTransport:
         allow_absent: bool = False,
     ) -> dict[str, Any]:
         provider = self.settings.provider
-        if not getattr(provider, self.scope + "_enabled"):
+        if self.scope == "voice_read":
+            if not self.settings.native_reconciliation_enabled or method != "GET":
+                raise DomainError("external_execution_disabled", 403)
+        elif not getattr(provider, self.scope + "_enabled"):
             raise DomainError("external_execution_disabled", 403)
         destinations = {
             "calendar": (
@@ -115,6 +120,7 @@ class RemoteTransport:
                 provider.elevenlabs_base_url,
             ),
         }
+        destinations["voice_read"] = destinations["voice"]
         requested = urlparse(url)
         unsafe_path = any(
             unquote(part) in {".", ".."}

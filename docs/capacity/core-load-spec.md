@@ -4,7 +4,7 @@ The owner requested capacity/reliability testing alongside the core build on
 7 October 2026, with no paid usage, damage or slowdown of other projects.
 
 Acceptance: preserve other container identities/state; use a separate temporary
-database and test-data recipients; perform no provider calls; cap concurrency,
+database and verification recipients; perform no provider calls; cap concurrency,
 request rate, duration, inserted rows and database connections; inspect host and
 container resources before/after; stop at the configured CPU/memory/error/latency
 threshold rather than escalating load automatically. Keep persisted evidence.

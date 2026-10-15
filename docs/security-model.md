@@ -49,6 +49,35 @@ and the actual served CSP. See [reporting](../SECURITY.md) and
 For each release, record exact artifact identity, dependency/advisory results,
 secret and configuration audit, authorization-negative tests, scanner execution,
 review verdict, live behavior and local/live parity in the
-[release evidence](evidence/pilot-verification.md). A clean scan or passing build
+[release evidence](evidence/tenant-export-release-20261015.md). A clean scan or passing build
 cannot prove that external voice, customer data processing or future capacity is
 safe without their own real-flow and independent assessment gates.
+
+## Download and denial-abuse controls
+
+Owner exports require a trusted session and CSRF, use strict inputs and safe
+attachment metadata, and exclude private authorization records and raw job payloads.
+The transcript route rejects active calls and serializes with local redaction.
+Bounded rows and serialized-byte limits reduce resource exposure; they do not
+establish a distributed request-admission policy. Monitor repeated exports and
+retain only sanitized access metadata.
+
+MCP denials use fixed surface/capability/tool/reason labels and a typed per-minute
+row budget. Overflow contributes a marker and durable cumulative counters. Denial
+locks are separate from booking locks. Audit-storage failure returns a sanitized
+unavailable result and never grants a denied action. This budget is not a WAF,
+network flood defence or complete retention policy.
+
+## Verification and wider-release requirements
+
+Use [OWASP ASVS 5.0](https://owasp.org/projects/asvs) as the versioned control
+framework and map applicable Level 2 requirements to implementation, tests and
+independent review. Record exceptions and remediation owners; the project does
+not claim ASVS certification from a scanner result.
+
+Before wider access, verify administrator MFA/recovery, tenant/role administration,
+credential lifecycle, dependency monitoring, distributed admission, data-location
+controls, protected backup keys and restore/deletion drills. Conduct independent
+penetration review against the actual exposed release and verify fixes through
+regression and real-flow evidence. Establish vulnerability intake, severity,
+patch communication and retesting through [security reporting](../SECURITY.md).

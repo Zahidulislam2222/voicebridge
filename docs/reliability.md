@@ -4,7 +4,7 @@ Future baseline: **99%**. Production objective: **99.9%** for declared service
 indicators. Neither has been demonstrated by the current single-server release.
 The build plan retains its stronger production gate. An SLA requires a separate
 contract, eligibility and remedies. Recorded observation scope is in
-[deployment evidence](evidence/pilot-verification.md).
+[deployment evidence](evidence/tenant-export-release-20261015.md).
 
 | Indicator | Good event                                            | Measurement                                                  |
 | --------- | ----------------------------------------------------- | ------------------------------------------------------------ |
@@ -68,3 +68,39 @@ Measure latency/errors, locks/pools, worker lag/leases/unknown outcomes, provide
 quotas, session errors and resources. Redact private data. Assign primary/backup
 incident owners and alerts. Drill node loss, worker crash after side effect,
 database failover, bad release, provider denial, telemetry loss and restore.
+
+## Service-specific observation and release policy
+
+Measure website usability, authorized API responses, booking receipts, worker
+completion and native voice setup/audio/tools separately. A health endpoint can
+remain green while an external calendar or media provider is unavailable. Define
+each indicator's eligible events, deadline, threshold, observation source, no-data
+policy and owner. Protect business correctness during overload rather than count
+incorrect or duplicated bookings as successful availability.
+
+Publish the exact observation window, release/workload, numerator/denominator,
+latency distribution, missing intervals and incidents. The99% baseline and 99.9%
+production objective use explicit error-budget policies; contract SLA terms need
+their own approved scope/remedies. A short deployment check cannot establish a
+rolling 30-day result. Follow [Google SLO practice](https://sre.google/workbook/implementing-slos/)
+for indicator definition and error-budget decisions.
+
+When burn rate threatens the budget, prioritize user-impact mitigation, hold risky
+changes, inspect the relevant dependency and apply a verified rollback or admission
+limit. Resume normal release pace only under the agreed budget policy. Monitoring
+and alert delivery must also be exercised when a dependency or telemetry source
+fails. See [operational monitoring](monitoring.md).
+
+## Backup, availability and recovery evidence
+
+Availability and recoverability are distinct. Verify backup freshness, integrity,
+encryption/key recovery, off-device location and permission boundaries; restore
+into an isolated environment and compare schema, row/content hashes and business
+flows. Reapply lawful deletion/tombstone policy before admitting restored traffic.
+Measure actual RPO/RTO against customer-approved targets and record failed drills.
+A format-checked backup or a recovery checkpoint is not a successful restore.
+
+The current host is one failure domain. Redundancy, database/worker failover,
+regional recovery and sustained provider performance remain staged architecture
+and acceptance work. Define dependencies and thresholds before changing topology;
+retain immutable compatible artifacts and separately verified data recovery.
