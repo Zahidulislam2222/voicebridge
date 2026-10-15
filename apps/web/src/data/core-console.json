@@ -103,5 +103,9 @@
   "recordCount": "stored",
   "captureDelivery": "Captured locally; no external email was sent.",
   "externalDelivery": "External transport accepted the message; confirm inbox delivery separately.",
-  "unknownDelivery": "Delivery mode was not recorded for this historical job. Check its receipt and external inbox."
+  "unknownDelivery": "Delivery mode was not recorded for this historical job. Check its receipt and external inbox.",
+  "exportSnapshot": "Download current records",
+  "exportTranscript": "Download local transcript",
+  "exportSaved": "Download started. Keep the file private.",
+  "exportScope": "Downloads contain private business data. Records are bounded and include counts and truncation details; this is not a full backup. Transcript downloads contain local data only. Clearing a transcript cannot erase files already downloaded."
 }

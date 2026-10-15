@@ -1,17 +1,15 @@
 # Frontend publication and release handoff
 
 **Live:** https://voicebridge.zahidul-islam.com/ — frontend
-`20261013-native-frontend-08` with backend
-`20261013-native-owner-voice-14`. Guarded promotion matched seven/seven
-frontend files, 16/16 backend release files and all 15 application modules to
-the reviewed image. The owned gateway fragment matched; 13 unrelated gateway
-files were preserved. Public HTTPS returned gzip/Vary, exact decoded HTML and
-the separately served committed PNG. Packaged Chromium checked 21 routes,
-login-link rendering and the image request with zero application/CSP errors.
-A fresh public Google owner sign-in completed and the Calls panel displayed
-both providers and bounded limits. One Retell web call was registered without
-media; audio remains untested and external follow-ups are captured. See
-[current release evidence](evidence/owner-release-20261013.md).
+`20261015-tenant-exports-10` and backend `20261015-tenant-exports-19`.
+Guarded promotion verified7 frontend files,16 backend release files and15 runtime
+modules, preserving13 gateway files and57 neighboring containers. The backend
+backup passed format/digest checks; this particular backup was not restored.
+All21 actual public routes passed with0 JavaScript/CSP/external-request errors.
+Nine exact packaged download journeys verified JSON payloads, cancellation and
+Blob cleanup. Two actual owner HTTPS exports returned200 with two durable audit
+entries and unchanged business counts. Native voice creation and general external
+email remain disabled. See [current evidence](evidence/tenant-export-release-20261015.md).
 
 The sections below retain the historical static release03 publication evidence.
 Current release CSP permits same-origin images, engine connections and the

@@ -31,6 +31,9 @@ const copy = z
     ownerOnly: z.string(),
     statusUnavailable: z.string(),
     manualRecovery: z.string(),
+    reconcile: z.string(),
+    reconciling: z.string(),
+    reconciled: z.string(),
     resumeExisting: z.string(),
     operation: z.string(),
     limits: z.string(),
@@ -71,6 +74,10 @@ export function NativeCallPanel({
   const [message, setMessage] = useState(copy.idle);
   const [status, setStatus] = useState<NativeStatus | null>(null);
   const [sessionLost, setSessionLost] = useState(false);
+  const [reconciling, setReconciling] = useState(false);
+  const [recoveryMessage, setRecoveryMessage] = useState('');
+  const checking = useRef(false);
+  const recovery = useRef(new AbortController());
   const operation = useRef<string>(crypto.randomUUID());
   const media = useRef(new NativeMediaLifecycle());
   const starting = useRef(false);
@@ -86,6 +93,16 @@ export function NativeCallPanel({
   useEffect(() => {
     if (!available || !owner) media.current.close();
   }, [available, owner]);
+
+  useEffect(() => {
+    if (recovery.current.signal.aborted) recovery.current = new AbortController();
+    const controller = recovery.current;
+    return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
+    if (!owner || sessionLost) recovery.current.abort();
+  }, [owner, sessionLost]);
 
   useEffect(() => {
     if (!owner || sessionLost) return;
@@ -131,6 +148,7 @@ export function NativeCallPanel({
       sessionLost ||
       !status ||
       manualRecovery ||
+      checking.current ||
       !lifecycle.isOpen() ||
       starting.current ||
       lifecycle.hasActive()
@@ -235,6 +253,49 @@ export function NativeCallPanel({
     operation.current = crypto.randomUUID();
   }
 
+  async function reconcile() {
+    const lifecycle = media.current;
+    const controller = recovery.current;
+    if (
+      !owner ||
+      sessionLost ||
+      !unfinished ||
+      unfinished.state !== 'BOUND' ||
+      !manualRecovery ||
+      checking.current ||
+      starting.current ||
+      lifecycle.hasActive() ||
+      controller.signal.aborted
+    )
+      return;
+    checking.current = true;
+    setReconciling(true);
+    setRecoveryMessage(copy.reconciling);
+    try {
+      const result = await client.request<NativeStatus>(
+        '/api/calls/native/reconcile',
+        'POST',
+        { provider: unfinished.provider, operation_id: unfinished.operation_id },
+        controller.signal,
+      );
+      if (controller.signal.aborted) return;
+      setStatus(result);
+      setRecoveryMessage(copy.reconciled);
+      operation.current = crypto.randomUUID();
+    } catch (reason) {
+      if (controller.signal.aborted) return;
+      if (revokeMediaOnOwnerDenial(lifecycle, reason)) setSessionLost(true);
+      setRecoveryMessage(
+        reason instanceof CoreRequestError
+          ? (copy.failures[reason.code] ?? copy.manualRecovery)
+          : copy.manualRecovery,
+      );
+    } finally {
+      checking.current = false;
+      if (!controller.signal.aborted) setReconciling(false);
+    }
+  }
+
   return (
     <section className="panel core-record" aria-label={copy.title}>
       <h3>{copy.title}</h3>
@@ -244,6 +305,7 @@ export function NativeCallPanel({
       </p>
       {owner && (
         <>
+          {recoveryMessage && <p role="status">{recoveryMessage}</p>}
           {!status && <p role="alert">{copy.statusUnavailable}</p>}
           {status && (
             <>
@@ -274,6 +336,14 @@ export function NativeCallPanel({
             </>
           )}
           {!available && <p>{copy.availability}</p>}
+          {!sessionLost && manualRecovery && unfinished?.state === 'BOUND' && (
+            <Button
+              disabled={reconciling || state === 'starting' || state === 'connected'}
+              onClick={() => void reconcile()}
+            >
+              {copy.reconcile}
+            </Button>
+          )}
         </>
       )}
       {available && owner && !sessionLost && (
@@ -282,7 +352,9 @@ export function NativeCallPanel({
             <span>{copy.provider}</span>
             <select
               value={provider}
-              disabled={state === 'starting' || state === 'connected' || Boolean(unfinished)}
+              disabled={
+                reconciling || state === 'starting' || state === 'connected' || Boolean(unfinished)
+              }
               onChange={(event) => {
                 setProvider(event.target.value as Provider);
                 operation.current = crypto.randomUUID();
@@ -295,7 +367,11 @@ export function NativeCallPanel({
           <div className="core-toolbar">
             <Button
               disabled={
-                !status || Boolean(manualRecovery) || state === 'starting' || state === 'connected'
+                !status ||
+                reconciling ||
+                Boolean(manualRecovery) ||
+                state === 'starting' ||
+                state === 'connected'
               }
               onClick={() => void start()}
             >

@@ -31,9 +31,9 @@ they are included in browser bundles.
 Set `VITE_CORE_API_URL` and matching backend origins to connect the console.
 Use `VITE_CORE_SESSION_AUTH=true` in a session-authenticated release. The Business
 engine persists through HTTP/PostgreSQL. Native call controls are bounded by the
-server's provider and owner authorization gates. A Retell web call was
-registered without media and currently holds the one-call slot; real audio acceptance remains
-open. Other workspace views
+server's provider and owner authorization gates. Creation is disabled and
+owner recovery works independently through an exact-call check. The earlier
+unjoined Retell call ended; real audio acceptance remains open. Other workspace views
 currently use local state that resets on reload; they do not send operations to
 external providers.
 
@@ -44,12 +44,22 @@ and actual CSP violation events. Exercise the exact built artifact. The existing
 bundle-size warning is tracked for route splitting and deferred visual modules.
 
 The deployed release matched seven frontend files to the server after local
-97-test and packaged browser checks. It serves the artwork separately and
+108-test and packaged browser checks. It serves the artwork separately and
 compresses eligible HTML. A fresh Google owner sign-in and Calls-panel readback passed. The panel
-shows both male providers and bounded call controls. These
+shows both configured male providers and the retired Retell operation; creation controls are absent while creation is disabled. These
 checks do not establish live voice calls or future-scale reliability. See
-[current release evidence](../../docs/evidence/owner-release-20261013.md),
+[current release evidence](../../docs/evidence/tenant-export-release-20261015.md),
 [public criteria](../../docs/public-frontend-spec.md),
 [operator criteria](../../docs/frontend-spec.md),
 [deployment](../../docs/frontend-deployment.md) and
 [earlier evidence](../../docs/evidence/pilot-verification.md).
+
+## Private downloads
+
+The authenticated owner can download a bounded current records report and an
+ended call's local transcript. Requests use the session/CSRF boundary; response
+metadata controls safe JSON filenames. The report includes counts and truncation
+and omits call transcripts, raw job payloads and private authorization records.
+Logout, session denial and route cleanup cancel or discard pending downloads;
+Blob URLs are released. Files already saved require their own private handling.
+See [export acceptance](../../docs/tenant-export-spec.md).

@@ -26,7 +26,7 @@ legal, capacity, or uptime criteria.
 
 | Variable family                                                                                             | Owner                                                                                                              |
 | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| Branding, labels, agent greeting, sample scenario, voice profiles, integration catalogue, test-data records | apps/web/src/data/content.json and validated workspace data, validated at bootstrap                                |
+| Branding, labels, agent greeting, sample scenario, voice profiles, integration catalogue, verification records | apps/web/src/data/content.json and validated workspace data, validated at bootstrap                                |
 | local delays, upload/input limits, default role, timezone, locale, animation duration                       | apps/web/src/config/settings.ts with safe public environment overrides                                             |
 | Frontend port/host                                                                                          | config/development.json through tools/development-settings.mjs; VITE_DEV_HOST and VITE_DEV_PORT                    |
 | Image reference                                                                                             | apps/web/public/voice-sculpture.png; asset provenance in docs/design                                               |

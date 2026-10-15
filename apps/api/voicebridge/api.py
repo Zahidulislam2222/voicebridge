@@ -13,6 +13,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 from sqlalchemy import select, text
+from sqlalchemy.exc import SQLAlchemyError
 from starlette.concurrency import run_in_threadpool
 from starlette.middleware.cors import CORSMiddleware
 
@@ -29,10 +30,13 @@ from .contracts import (
     DocumentInput,
     DomainError,
     EvaluationFixtureView,
+    ExportInput,
     NativeCallInput,
     NativeStatusView,
+    SnapshotExportView,
     StateView,
     ToolInput,
+    TranscriptExportView,
 )
 from .db import Record, make_sessions, now, tenant_lock
 from .documents import parse_pdf
@@ -186,6 +190,38 @@ def create_app(settings: Settings) -> FastAPI:
     def state(tenant: str = Depends(authorize)) -> dict[str, Any]:
         return service.snapshot(tenant)
 
+    def download_owner(request: Request) -> str:
+        if not settings.auth:
+            raise DomainError("authorization_required", 401)
+        tenant = authorize(request, authorization="")
+        if request.query_params:
+            raise DomainError("invalid_request", 422)
+        return tenant
+
+    @app.post("/api/exports/snapshot", response_model=SnapshotExportView)
+    def export_snapshot(_: ExportInput, tenant: str = Depends(download_owner)) -> JSONResponse:
+        return JSONResponse(
+            service.export_snapshot(tenant).model_dump(mode="json"),
+            headers={
+                "Content-Disposition": 'attachment; filename="'
+                + settings.export_snapshot_filename
+                + '"'
+            },
+        )
+
+    @app.post("/api/calls/{call_id}/transcript-export", response_model=TranscriptExportView)
+    def export_transcript(
+        call_id: str, _: ExportInput, tenant: str = Depends(download_owner)
+    ) -> JSONResponse:
+        return JSONResponse(
+            service.export_transcript(tenant, call_id).model_dump(mode="json"),
+            headers={
+                "Content-Disposition": 'attachment; filename="'
+                + settings.export_transcript_filename
+                + '"'
+            },
+        )
+
     @app.get("/api/availability")
     def availability(
         start: datetime, service_name: str, tenant: str = Depends(authorize)
@@ -300,6 +336,15 @@ def create_app(settings: Settings) -> FastAPI:
             raise DomainError("native_owner_required", 403)
         return native_calls.create(tenant, granted["subject"], value)
 
+    @app.post("/api/calls/native/reconcile", response_model=NativeStatusView)
+    def reconcile_native_call(
+        value: NativeCallInput, request: Request, tenant: str = Depends(authorize)
+    ) -> dict[str, Any]:
+        granted = getattr(request.state, "identity", None)
+        if not granted or granted.get("role") != "owner":
+            raise DomainError("native_owner_required", 403)
+        return native_calls.reconcile(tenant, granted["subject"], value)
+
     @app.get("/api/calls/native/status", response_model=NativeStatusView)
     def native_call_status(request: Request, tenant: str = Depends(authorize)) -> dict[str, Any]:
         granted = getattr(request.state, "identity", None)
@@ -355,6 +400,16 @@ def create_app(settings: Settings) -> FastAPI:
 
     @app.post("/mcp/{surface}")
     async def mcp(surface: Literal["business", "management"], request: Request) -> Response:
+        async def record_denial(
+            capability: Literal["unauthorized", "read", "write"],
+            tool: object,
+            reason: Literal["authorization", "scope", "arguments", "policy", "failure"],
+        ) -> None:
+            try:
+                await run_in_threadpool(service.mcp_denied, surface, capability, tool, reason)
+            except SQLAlchemyError:
+                raise DomainError("audit_unavailable", 503) from None
+
         expected = settings.business_key if surface == "business" else settings.management_key
         read_key = (
             settings.business_read_key if surface == "business" else settings.management_read_key
@@ -362,7 +417,12 @@ def create_app(settings: Settings) -> FastAPI:
         credential = request.headers.get("authorization", "")
         read_only = hmac.compare_digest(credential, "Bearer " + read_key.get_secret_value())
         if not read_only:
-            check(credential, expected.get_secret_value())
+            try:
+                check(credential, expected.get_secret_value())
+            except DomainError:
+                await record_denial("unauthorized", None, "authorization")
+                raise
+        capability: Literal["read", "write"] = "read" if read_only else "write"
         version = request.headers.get("mcp-protocol-version")
         if version and version not in MCP_COMPATIBLE_VERSIONS:
             return JSONResponse({"error": "unsupported_mcp_version"}, status_code=400)
@@ -416,6 +476,7 @@ def create_app(settings: Settings) -> FastAPI:
             elif method == "tools/call":
                 name = params["name"]
                 if not isinstance(name, str) or name not in allowed:
+                    await record_denial(capability, name, "scope")
                     return rpc_error(-32602, "Unknown or unavailable tool")
                 try:
                     output = providers.invoke(
@@ -430,6 +491,14 @@ def create_app(settings: Settings) -> FastAPI:
                     }
                 except (DomainError, ValidationError, ValueError, TypeError) as exc:
                     error = exc.code if isinstance(exc, DomainError) else "invalid_tool_arguments"
+                    reason: Literal["policy", "failure", "arguments"] = (
+                        "policy"
+                        if isinstance(exc, DomainError) and exc.status in {401, 403}
+                        else "failure"
+                        if isinstance(exc, DomainError) and exc.status >= 500
+                        else "arguments"
+                    )
+                    await record_denial(capability, name, reason)
                     result = {"content": [{"type": "text", "text": error}], "isError": True}
             elif method == "ping":
                 result = {}

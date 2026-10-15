@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   agentDraft,
   bookingNotice,
@@ -18,6 +18,7 @@ import copy from '../data/core-console';
 import type { CorePage } from '../protocol';
 import { Brand, Button, Field, Notice } from './ui';
 import { NativeCallPanel } from './native-call-panel';
+import { OwnerDownloads } from '../services/owner-downloads';
 import './core-console.css';
 
 export function CoreConsole() {
@@ -29,6 +30,9 @@ export function CoreConsole() {
   const [notice, setNotice] = useState('');
   const [pending, setPending] = useState(false);
   const [owner, setOwner] = useState(false);
+  const [downloadPending, setDownloadPending] = useState(false);
+  const downloads = useMemo(() => (client ? new OwnerDownloads(client) : null), [client]);
+  useEffect(() => () => downloads?.cancel(), [downloads]);
   const [bootstrap, setBootstrap] = useState<{
     services: Record<string, number>;
     timezone: string;
@@ -46,6 +50,29 @@ export function CoreConsole() {
     null,
   );
   const [agent, setAgent] = useState<Agent | null>(null);
+  const clearConnection = useCallback(() => {
+    downloads?.dispose();
+    setClient(null);
+    setState(null);
+    setBootstrap(null);
+    setAgent(null);
+    setOwner(false);
+    setDownloadPending(false);
+  }, [downloads]);
+  async function download(path: string) {
+    if (!downloads || !owner || downloadPending) return;
+    setDownloadPending(true);
+    setError('');
+    setNotice('');
+    try {
+      if (await downloads.save(path)) setNotice(copy.exportSaved);
+    } catch (reason) {
+      if (ownerSessionDenied(reason)) clearConnection();
+      setError(reason instanceof Error ? reason.message : copy.unavailable);
+    } finally {
+      setDownloadPending(false);
+    }
+  }
   useEffect(() => {
     if (!settings.coreSessionAuth) return;
     let alive = true;
@@ -90,10 +117,7 @@ export function CoreConsole() {
         if (alive) setState(next);
       } catch (reason) {
         if (alive && ownerSessionDenied(reason)) {
-          setClient(null);
-          setState(null);
-          setBootstrap(null);
-          setOwner(false);
+          clearConnection();
         } else if (alive) setError(copy.unavailable);
       } finally {
         if (alive)
@@ -110,7 +134,7 @@ export function CoreConsole() {
       controller.abort();
       clearTimeout(timer);
     };
-  }, [client]);
+  }, [client, clearConnection]);
   async function action(run: () => Promise<unknown>, message = copy.saved, refreshAfter = true) {
     if (pending) return;
     setPending(true);
@@ -121,6 +145,7 @@ export function CoreConsole() {
       if (refreshAfter) await refresh();
       setNotice(typeof result === 'string' ? result : message);
     } catch (reason) {
+      if (ownerSessionDenied(reason)) clearConnection();
       setError(reason instanceof Error ? reason.message : copy.unavailable);
     } finally {
       setPending(false);
@@ -182,6 +207,16 @@ export function CoreConsole() {
       ) : (
         <>
           <div className="core-toolbar">
+            {owner && settings.coreSessionAuth && (
+              <Button
+                disabled={pending || downloadPending}
+                onClick={() => {
+                  void download('/api/exports/snapshot');
+                }}
+              >
+                {copy.exportSnapshot}
+              </Button>
+            )}
             <Button
               disabled={pending}
               onClick={() => {
@@ -194,30 +229,25 @@ export function CoreConsole() {
               disabled={pending}
               onClick={() => {
                 if (settings.coreSessionAuth && client) {
+                  downloads?.cancel();
                   void action(
                     async () => {
                       await client.request('/auth/logout', 'POST');
-                      setClient(null);
-                      setState(null);
-                      setBootstrap(null);
-                      setAgent(null);
-                      setOwner(false);
+                      clearConnection();
                     },
                     copy.logout,
                     false,
                   );
                   return;
                 }
-                setClient(null);
-                setState(null);
+                clearConnection();
                 setCredential('');
-                setAgent(null);
-                setOwner(false);
               }}
             >
               {settings.coreSessionAuth ? copy.logout : copy.disconnect}
             </Button>
           </div>
+          {owner && settings.coreSessionAuth && <p>{copy.exportScope}</p>}
           <nav aria-label={copy.title} className="core-navigation">
             {copy.navigation.map((item) => (
               <button
@@ -559,6 +589,18 @@ export function CoreConsole() {
                         {line.speaker}: {line.text}
                       </p>
                     ))}
+                    {owner && settings.coreSessionAuth && row.state === 'ended' && (
+                      <Button
+                        disabled={pending || downloadPending}
+                        onClick={() => {
+                          void download(
+                            `/api/calls/${encodeURIComponent(row.id)}/transcript-export`,
+                          );
+                        }}
+                      >
+                        {copy.exportTranscript}
+                      </Button>
+                    )}
                     {owner && row.state === 'ended' && row.transcript.length > 0 && (
                       <Button
                         variant="danger"

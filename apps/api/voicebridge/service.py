@@ -5,14 +5,30 @@ import json
 import uuid
 from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
-from typing import Any
+from typing import Any, Literal
 from zoneinfo import ZoneInfo
 
+from pydantic import BaseModel
 from sqlalchemy import DateTime, and_, cast, func, or_, select
+from sqlalchemy import case as sql_case
 from sqlalchemy.orm import Session, sessionmaker
 
 from .connectors import Calendar
-from .contracts import AgentInput, BookingInput, ChangeInput, DocumentInput, DomainError
+from .contracts import (
+    AgentInput,
+    AppointmentView,
+    AuditView,
+    BookingInput,
+    CallSummaryView,
+    ChangeInput,
+    ContactView,
+    DocumentInput,
+    DocumentView,
+    DomainError,
+    JobView,
+    SnapshotExportView,
+    TranscriptExportView,
+)
 from .db import (
     Appointment,
     Audit,
@@ -26,6 +42,7 @@ from .db import (
     now,
     tenant_lock,
 )
+from .protocol import BUSINESS_TOOLS, MANAGEMENT_TOOLS
 from .settings import Business, EvaluationSuite, ProviderProfiles, Settings, read_data
 
 
@@ -101,6 +118,59 @@ class Service:
                     )
                 )
             audit(s, tenant, "tenant.initialized", tenant)
+
+    def mcp_denied(
+        self,
+        surface: Literal["business", "management"],
+        capability: Literal["unauthorized", "read", "write"],
+        tool: object,
+        reason: Literal["authorization", "scope", "arguments", "policy", "failure"],
+    ) -> None:
+        """Persist fixed vocabulary only; bounded rows with an atomic overflow count."""
+        safe_tool = (
+            tool
+            if isinstance(tool, str) and tool in BUSINESS_TOOLS | MANAGEMENT_TOOLS
+            else "unknown"
+        )
+        tenant = self.settings.tenant_id
+        bucket = surface + ":" + capability
+        with self.sessions.begin() as session:
+            tenant_lock(session, "mcp-denial:" + json.dumps([tenant, surface, capability]))
+            minute = int(now().timestamp() // 60)
+            row = session.scalar(
+                select(Record).where(
+                    Record.tenant_id == tenant,
+                    Record.kind == "mcp_denial_limit",
+                    Record.key == bucket,
+                )
+            )
+            count = int(row.value["count"]) if row and row.value["minute"] == minute else 0
+            limit = self.settings.mcp_denial_audit_limit_per_minute
+            if count < limit:
+                audit(session, tenant, "mcp.denied." + reason, bucket + ":" + safe_tool)
+            elif count == limit:
+                audit(session, tenant, "mcp.denials.suppressed", bucket)
+            value = {
+                "minute": minute,
+                "count": count + 1,
+                "suppressed": max(0, count + 1 - limit),
+                "total_count": int(row.value["total_count"]) + 1 if row else 1,
+                "total_suppressed": (
+                    (int(row.value["total_suppressed"]) if row else 0) + int(count >= limit)
+                ),
+            }
+            if row:
+                row.value = value
+            else:
+                session.add(
+                    Record(
+                        id=identity(),
+                        tenant_id=tenant,
+                        kind="mcp_denial_limit",
+                        key=bucket,
+                        value=value,
+                    )
+                )
 
     def slot(self, start: datetime, service: str) -> tuple[datetime, datetime]:
         if service not in self.business.services:
@@ -653,6 +723,17 @@ class Service:
                     .limit(self.settings.max_records_per_page)
                 )
 
+            current_calls = list(rows(Call))
+            redacted_calls = set(
+                s.scalars(
+                    select(Record.key).where(
+                        Record.tenant_id == tenant,
+                        Record.kind == "call_redaction",
+                        Record.key.in_([call.id for call in current_calls]),
+                    )
+                )
+            )
+
             def count(model: Any) -> int:
                 return int(
                     s.scalar(
@@ -696,10 +777,10 @@ class Service:
                         "id": r.id,
                         "provider": r.provider,
                         "state": r.state,
-                        "transcript": r.transcript,
+                        "transcript": [] if r.id in redacted_calls else r.transcript,
                         "date": r.created.isoformat(),
                     }
-                    for r in rows(Call)
+                    for r in current_calls
                 ],
                 "audit": [
                     {
@@ -759,3 +840,140 @@ class Service:
                     self.settings.provider.calendar_enabled or self.settings.provider.crm_enabled
                 ),
             }
+
+    def _check_export_bytes(self, value: BaseModel) -> None:
+        if len(value.model_dump_json().encode("utf-8")) > self.settings.export_max_bytes:
+            raise DomainError("export_too_large", 413)
+
+    def export_snapshot(self, tenant: str) -> SnapshotExportView:
+        """Dedicated projections exclude transcripts, raw payloads and private records."""
+        definitions: dict[str, tuple[Any, type[BaseModel], list[Any]]] = {
+            "appointments": (
+                Appointment,
+                AppointmentView,
+                [
+                    Appointment.id,
+                    Appointment.contact_id,
+                    Appointment.call_id,
+                    Appointment.service,
+                    Appointment.start,
+                    Appointment.end,
+                    Appointment.status,
+                    Appointment.external_id,
+                    Appointment.revision,
+                ],
+            ),
+            "contacts": (
+                Contact,
+                ContactView,
+                [Contact.id, Contact.name, Contact.email, Contact.phone, Contact.notes],
+            ),
+            "jobs": (
+                Job,
+                JobView,
+                [
+                    Job.id,
+                    Job.kind,
+                    Job.status,
+                    Job.attempts,
+                    Job.detail,
+                    Job.receipt,
+                    Job.payload["booking_id"].as_string().label("booking_id"),
+                    sql_case(
+                        (Job.kind == "followup", Job.payload["delivery_mode"].as_string()),
+                        else_=None,
+                    ).label("delivery_mode"),
+                ],
+            ),
+            "calls": (
+                Call,
+                CallSummaryView,
+                [Call.id, Call.provider, Call.state, Call.created.label("date")],
+            ),
+            "documents": (
+                Document,
+                DocumentView,
+                [
+                    Document.id,
+                    Document.name,
+                    Document.text,
+                    Document.revision,
+                    Document.updated,
+                    Document.checksum,
+                ],
+            ),
+            "audit": (
+                Audit,
+                AuditView,
+                [Audit.id, Audit.action, Audit.target, Audit.created.label("date")],
+            ),
+        }
+        records: dict[str, Any] = {}
+        counts, truncated = {}, {}
+        serialized_rows = 0
+        with self.sessions.begin() as session:
+            for name, (model, view, columns) in definitions.items():
+                filters = [model.tenant_id == tenant]
+                if model is Document:
+                    filters.append(Document.active.is_(True))
+                counts[name] = 0
+                values = []
+                query = (
+                    select(*columns, func.count().over().label("_total"))
+                    .where(*filters)
+                    .order_by(model.id)
+                    .limit(self.settings.max_records_per_page)
+                )
+                for row in session.execute(query.execution_options(yield_per=1)).mappings():
+                    data = dict(row)
+                    counts[name] = int(data.pop("_total"))
+                    value = view.model_validate(data)
+                    serialized_rows += len(value.model_dump_json().encode("utf-8"))
+                    if serialized_rows > self.settings.export_max_bytes:
+                        raise DomainError("export_too_large", 413)
+                    values.append(value)
+                records[name] = values
+                truncated[name] = counts[name] > len(values)
+            result = SnapshotExportView(
+                generated_at=now(),
+                record_limit=self.settings.max_records_per_page,
+                counts=counts,
+                truncated=truncated,
+                **records,
+            )
+            self._check_export_bytes(result)
+            audit(session, tenant, "export.snapshot.generated", "current-page")
+            return result
+
+    def export_transcript(self, tenant: str, call_id: str) -> TranscriptExportView:
+        with self.sessions.begin() as session:
+            tenant_lock(session, tenant)
+            call = session.scalar(
+                select(Call).where(Call.tenant_id == tenant, Call.id == call_id).with_for_update()
+            )
+            if not call:
+                raise DomainError("call_not_found", 404)
+            if call.state != "ended":
+                raise DomainError("call_not_ended", 409)
+            redacted = (
+                session.scalar(
+                    select(Record.id).where(
+                        Record.tenant_id == tenant,
+                        Record.kind == "call_redaction",
+                        Record.key == call_id,
+                    )
+                )
+                is not None
+            )
+            result = TranscriptExportView.model_validate(
+                {
+                    "generated_at": now(),
+                    "call_id": call.id,
+                    "provider": call.provider,
+                    "redacted": redacted,
+                    "transcript": [] if redacted else call.transcript,
+                }
+            )
+            self._check_export_bytes(result)
+            audit(session, tenant, "export.transcript.generated", call.id)
+            return result

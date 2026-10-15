@@ -101,10 +101,9 @@ test('live provider profile source is explicit and confined to ignored releases'
 });
 
 test('engine services preserve private DB, loopback gateway, constraints and capture delivery', async () => {
-  const source = await readFile(
-    new URL('../deploy/engine-compose.yaml.template', import.meta.url),
-    'utf8',
-  );
+  const source = (
+    await readFile(new URL('../deploy/engine-compose.yaml.template', import.meta.url), 'utf8')
+  ).replaceAll('\r\n', '\n');
   assert.match(source, /ports: \["127\.0\.0\.1:/);
   assert.match(source, /private: \{internal: true\}/);
   assert.match(source, /POSTGRES_PASSWORD_FILE/);
@@ -135,10 +134,11 @@ test('worker egress is explicitly typed, disabled by default and leaves other se
     new URL('../deploy/engine-compose.yaml.template', import.meta.url),
     'utf8',
   );
-  const worker = source.split('  worker:')[1].split('  observer:')[0];
+  const normalized = source.replaceAll('\r\n', '\n');
+  const worker = normalized.split('  worker:')[1].split('  observer:')[0];
   assert.match(worker, /networks: \{\{WORKER_NETWORKS\}\}/);
   for (const service of ['observer', 'postgres', 'mailpit']) {
-    const section = source.split('\n  ' + service + ':\n')[1].split(/^  \w+:/m)[0];
+    const section = normalized.split('\n  ' + service + ':\n')[1].split(/^  \w+:/m)[0];
     assert.match(section, /networks: \[private\]/);
   }
 });

@@ -10,8 +10,73 @@ import {
 import copy from '../data/core-console';
 import { createSettings, settings } from '../config/settings';
 
+vi.mock(import('../config/settings'), async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    settings: actual.createSettings({ VITE_CORE_API_URL: 'http://127.0.0.1:18082' }),
+  };
+});
+
 afterEach(() => vi.unstubAllGlobals());
 describe('core boundary regressions', () => {
+  it('rejects a non-JSON response even with a safe filename', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        new Response('<html>private</html>', {
+          headers: {
+            'Content-Type': 'text/html',
+            'Content-Disposition': 'attachment; filename="test.json"',
+          },
+        }),
+      ),
+    );
+    await expect(
+      new CoreClient('test-key').download('/api/exports/snapshot', new AbortController().signal),
+    ).rejects.toThrow('invalid export response');
+  });
+  it('uses the authenticated JSON POST boundary for a safe attachment', async () => {
+    if (!settings.coreApiUrl) throw new Error('Test API URL required');
+    const fetcher = vi.fn().mockResolvedValue(
+      new Response('{"schema_version":1}', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Disposition': 'attachment; filename="test-export.json"',
+        },
+      }),
+    );
+    vi.stubGlobal('fetch', fetcher);
+    const result = await new CoreClient('test-key', 'test-csrf').download(
+      '/api/exports/snapshot',
+      new AbortController().signal,
+    );
+    expect(await result.blob.text()).toBe('{"schema_version":1}');
+    expect(result.filename).toBe('test-export.json');
+    expect(fetcher.mock.calls[0]?.[1]).toMatchObject({
+      method: 'POST',
+      body: '{"format":"json"}',
+      cache: 'no-store',
+      redirect: 'error',
+    });
+  });
+  it.each([
+    'attachment; filename="../test.json"',
+    'inline; filename="test.json"',
+    'attachment; filename="test.html"',
+  ])('rejects unsafe download metadata %s', async (disposition) => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        new Response('{}', {
+          headers: { 'Content-Type': 'application/json', 'Content-Disposition': disposition },
+        }),
+      ),
+    );
+    await expect(
+      new CoreClient('test-key').download('/api/exports/snapshot', new AbortController().signal),
+    ).rejects.toThrow('invalid export response');
+  });
   it('keeps pending calendar changes visibly unverified', () => {
     for (const action of ['create', 'reschedule', 'cancel'] as const) {
       expect(bookingNotice('pending', action)).toBe(copy.pending);

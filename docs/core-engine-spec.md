@@ -1,6 +1,6 @@
 # Core engine acceptance contract
 
-Stage: local integrated core, test-data business data, external execution disabled.
+Stage: local integrated core, verification business data, external execution disabled.
 Written before feature code on 7 October 2026. Application login/OIDC is deferred
 at the owner's request. Local operator capabilities still require a server-side
 credential; tenant and provider-tool boundaries are mandatory.
@@ -35,12 +35,12 @@ credential; tenant and provider-tool boundaries are mandatory.
 - C13 Scoped MCP business and management tools reuse the same services, distinguish
   read/write permissions and deny secret access or unapproved provider promotion.
 - C14 The dashboard can exercise real local HTTP persistence and readable failures,
-  preserving the published test-data local until a separately gated release.
+  preserving the published verification local until a separately gated release.
 - C15 Real connector transports have explicit execution gates and typed configuration;
   Vapi access has an explicit owner-resolution gate. The earlier denial is now
   resolved for read-only assistant inventory by a support-approved HTTPX request;
   real voice execution remains separately gated.
-- C16 Local n8n workflow routes test-data confirmations into Mailpit, with durable
+- C16 Local n8n workflow routes verification confirmations into Mailpit, with durable
   job outcomes and no external recipients or SMTP relay.
 - C17 OpenAPI/client drift, configuration/secret regression, backend/frontend tests,
   types, lint, security, package/build and real HTTP/UI flows pass with evidence.

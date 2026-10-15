@@ -84,3 +84,43 @@ California rights and business applicability require a separate
 informational calls require separate federal and state consent/opt-out reviews.
 Track decisions in [the roadmap](roadmap.md); this register is not a blanket
 certification for every jurisdiction or customer.
+
+## AI output and communication review
+
+Review both interaction notice and generated-output obligations. The European
+Commission's [Article 50 guidance](https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act)
+distinguishes informing people of AI interaction from applicable machine-readable
+marking/detectability duties for generated content. Establish the provider/deployer
+role, exemptions, applicable dates and evidence with the selected voice provider;
+an audible greeting alone is not the entire review.
+
+For US communication, classify inbound assistance, informational outbound calls and
+marketing separately. The [FCC AI-voice ruling](https://docs.fcc.gov/public/attachments/FCC-24-17A1.pdf)
+addresses artificial/prerecorded voices under the TCPA. Review current consent,
+identification, revocation, suppression, calling-time and federal/state overlap
+before activation. Jurisdiction and participant location determine the recording
+assessment; do not infer permission from a single state's rule.
+
+## Download and rights-request handling
+
+Local owner exports are authenticated, tenant scoped and bounded. The records
+report excludes transcripts, credentials/private authorization records and raw job
+payloads; a separate ended-call artifact handles local transcript access. Record
+limits/counts/truncation are explicit. An owner download is an operational control,
+not a complete jurisdiction-specific access-request response or a full backup.
+
+Maintain a request process for identity verification, case ownership, response
+scope/deadline, provider coordination, lawful exceptions and private receipts.
+Downloaded copies require access/storage/retention handling by their recipient.
+Redacting local text cannot recall already downloaded files, erase a provider's
+recording or rewrite a historical backup. Verify deletion-after-restore behavior
+and provider deletion separately. Keep only the necessary metadata in an audit.
+
+## Decision record before customer activation
+
+Record jurisdiction/customer purpose; controller/processor roles; AI and recording
+notice; consent or other applicable legal basis; approved voice licence; provider
+terms/subprocessors/transfers; retention/deletion schedule; rights/complaint route;
+incident escalation and notification assessment. Revisit material changes in region,
+provider, purpose or feature. Qualified legal review and signed customer decisions
+remain release dependencies, not assertions created by publishing this register.

@@ -1,10 +1,12 @@
-# Authenticated core pilot verification
+# Authenticated core release verification
 
 Updated: 2026-10-13 UTC. This is a scrubbed evidence summary derived from the private project dossier.
 
 This page preserves the earlier backend10/frontend06 verification record.
 The later backend14/frontend08 state and its open audio and Vapi gates are
-recorded in [current release evidence](owner-release-20261013.md).
+recorded in the [October 13 release](owner-release-20261013.md). Current
+[recovery release evidence](reconciliation-release-20261015.md) supersedes later
+runtime/recovery status; original dated records remain below.
 
 The release verified in this record is backend `20261013-native-redaction-capture-10`
 and frontend `20261013-native-frontend-06` on the existing server. The guarded
@@ -19,7 +21,7 @@ enabled. Earlier versions and checks below retain their dated scope.
 ## Verified behavior
 
 - Actual Google owner sign-in, trusted identity binding, administrator two-step verification, secure host-only session cookie and CSRF rejection passed.
-- Two older test-data bookings persist with six once-completed jobs and two captured follow-ups. One owner-only booking was confirmed by direct Google Calendar and Free CRM readback, with exactly one approved Gmail inbox confirmation. The same booking was cancelled after a worker restart; a new calendar job completed once and direct Calendar GET showed cancelled. No second follow-up job or inbox conversation appeared.
+- Two older verification bookings persist with six once-completed jobs and two captured follow-ups. One owner-only booking was confirmed by direct Google Calendar and Free CRM readback, with exactly one approved Gmail inbox confirmation. The same booking was cancelled after a worker restart; a new calendar job completed once and direct Calendar GET showed cancelled. No second follow-up job or inbox conversation appeared.
 - An earlier business02 34,386-byte server backup restored into an isolated clone with thirteen table count/content-hash matches against source before and after; the working database was preserved. The backend10 promotion backup was format/digest checked, not separately restored. The new cancellation job proves fresh worker processing after restart.
 - The official MCP Python SDK passed four live HTTPS credential scopes, including business/management reads and read-only write denials. Native ChatGPT/Claude client integration was not exercised.
 - Prior authenticated native live Chrome passed twenty-one routes, three widths and four flows with zero JavaScript/CSP errors. Actual logout revoked the session; a copied old cookie returned401.
@@ -92,7 +94,7 @@ Provider artifact deletion and historical backup replay safeguards still
 prevent full privacy acceptance. Local redaction does not erase provider copies
 or old backups.
 
-## Earlier pilot local gates (recorded for backend03)
+## Earlier release local gates (recorded for backend03)
 
 | Gate                      | Result                                                                                                                                        |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -117,4 +119,4 @@ Real voice samples and real-call acceptance remain open. External Calendar/CRM/e
 
 A guarded local load run measured40requests across4clients with0errors and approximately24ms p95; a separate populated-data run measured approximately188ms p95. Neither proves a million users or simultaneous calls. Passive health samples report their observed periods and unknown gaps; sustained uptime, zero downtime, off-device backup and physical power-loss durability remain unproven. The broader80-criterion production roadmap remains open.
 
-The earlier aggregate source review accepted its recorded synthetic scope with live voice outstanding. Fresh scoped reviews accepted the current business connector and worker correction. A separate actual HTTPS check confirmed served frontend06 HTML and CSP bytes at its recorded time. Native voice, final operator UI, privacy/release closeout and the broader roadmap are not accepted as complete.
+The earlier aggregate source review accepted its recorded isolated verification scope with live voice outstanding. Fresh scoped reviews accepted the current business connector and worker correction. A separate actual HTTPS check confirmed served frontend06 HTML and CSP bytes at its recorded time. Native voice, final operator UI, privacy/release closeout and the broader roadmap are not accepted as complete.

@@ -10,6 +10,8 @@ NATIVE_OPERATION_PREFIX = "native:"
 NATIVE_ACCOUNT_LOCK = "native-shared-provider-account"
 NATIVE_OPERATION_METADATA_KEY = "voicebridge_operation"
 NATIVE_CREATE_PATHS = {"retell": "/v3/create-web-call", "vapi": "/call/web"}
+NATIVE_CALL_READ_PATHS = {"retell": "/v2/get-call/", "vapi": "/call/"}
+NATIVE_TERMINAL_STATUSES = {"retell": {"ended", "error"}, "vapi": {"ended"}}
 VAPI_EVENT_PATH = "/engine-api/providers/vapi/events"
 VAPI_TOOL_PATH = "/engine-api/providers/vapi/tools"
 VAPI_REQUIRED_SERVER_MESSAGES = {"end-of-call-report", "tool-calls"}
@@ -42,7 +44,7 @@ CORE_DISTRIBUTION = "voicebridge-core"
 EVALUATION_CALENDAR_PREFIX = "E:"
 EVALUATION_TENANT_PREFIX = "evaluation-"
 SAFE_HTTP_METHODS = {"GET", "HEAD", "OPTIONS"}
-OWNER_API_PREFIXES = ("/api/agent", "/api/evaluations", "/api/calls")
+OWNER_API_PREFIXES = ("/api/agent", "/api/evaluations", "/api/calls", "/api/exports")
 
 # A single ASCII mailbox; display names, lists and header controls are excluded.
 SINGLE_EMAIL_PATTERN = (

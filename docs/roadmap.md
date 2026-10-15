@@ -9,11 +9,15 @@ release closeout remain open in the
 [single-business acceptance](pilot-completion-spec.md). A successful deployment
 does not close those unrelated criteria.
 
-The current release registered one owner-only Retell web call, but its browser
-media never joined and the registration still occupies the one-call slot. The
-next pilot gate is safe reconciliation of that call, followed by bounded Retell
-and Vapi audio/tool checks with owner feedback. Publication and deployment dates
-are recorded in the [release evidence](evidence/owner-release-20261013.md);
+The recorded owner-only Retell web call never joined browser media. Later provider
+readback showed `error user not joined`, duration zero and cost zero; the owner
+operation reached DONE and released its slot. Vapi has not been attempted and
+the saved free-credit receipt is stale. The deployed exact-call recovery extension
+adds provider-confirmed terminal reads for future delayed webhooks; its separate
+[acceptance](native-reconciliation-spec.md) does not close real audio gates.
+The next audio gates remain bounded Retell and Vapi tool checks with owner
+listening, which the owner deferred on October 15. Publication and deployment dates
+are recorded in the [October 15 recovery evidence](evidence/tenant-export-release-20261015.md), with the [October 13 owner release](evidence/owner-release-20261013.md) retained as history;
 no completion due date has been agreed for the open voice and customer-readiness
 gates. Future capacity dates depend on measured provider limits, workload and
 funding decisions, so assigning a calendar deadline now would be unsupported.

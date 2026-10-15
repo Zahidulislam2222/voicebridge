@@ -2,13 +2,13 @@
 
 VoiceBridge is an AI voice receptionist and business automation application. Build a complete frontend first, connect it to a verified backend, then deliver custom ElevenLabs voices through Retell and Vapi. Both voice platforms use the same business services for knowledge lookup, appointment booking, CRM updates and follow-ups.
 
-This plan defines ten sequential phases with 50 implementation criteria, plus 30 readiness criteria covering USA/EU legal applicability, future capacity, reliability, strict security, monitoring and maintained documentation. It describes the intended implementation; all 80 criteria are unchecked. A polished interface, a passing controlled or an agent saying "done" cannot substitute for the required real-flow evidence.
+This plan defines ten sequential phases with 50 implementation criteria, plus 30 readiness criteria covering USA/EU legal applicability, future capacity, reliability, strict security, monitoring and maintained documentation. The 2026-10-15 evidence review accepts 26 implementation criteria; 24 implementation and all 30 readiness criteria remain open. A polished interface, a passing controlled test or an agent saying "done" cannot substitute for the required real-flow evidence.
 
 ## Product scope and delivery boundary
 
-The first implementation serves one configured service business with test-data customers, an English voice and an appointment calendar. Use a configured appliance-repair business as editable implementation data. Start with Retell and add Vapi after the shared business flow works. Administrative records carry an organization boundary from the start, but self-service agency onboarding, customer subscriptions and large-scale hosting are outside this release.
+The first implementation serves one configured service business with verification customers, an English voice and an appointment calendar. Use a configured appliance-repair business as editable implementation data. Start with Retell and add Vapi after the shared business flow works. Administrative records carry an organization boundary from the start, but self-service agency onboarding, customer subscriptions and large-scale hosting are outside this release.
 
-The future roadmap covers one million registered accounts, one million active dashboard sessions and one million simultaneous AI voice calls, including a declared mixed workload. Those are separate capacity targets, not measured capabilities of this pilot. Large-scale hosting is deferred from the initial release rather than omitted from the architecture roadmap. The production reliability objective is 99.9% for explicitly defined service indicators; it is not an achieved uptime figure or a contractual SLA.
+The future roadmap covers one million registered accounts, one million active dashboard sessions and one million simultaneous AI voice calls, including a declared mixed workload. Those are separate capacity targets, not measured capabilities of this release. Large-scale hosting is deferred from the initial release rather than omitted from the architecture roadmap. The production reliability objective is 99.9% for explicitly defined service indicators; it is not an achieved uptime figure or a contractual SLA.
 
 The readiness workstreams below start during Phase 1. Apply their release prerequisites before real personal-data processing or production deployment; do not defer compliance, security or monitoring until after launch. Future-capacity criteria are closed only for the workload and stage their evidence actually supports. Documentation authoring does not close an implementation criterion.
 
@@ -18,29 +18,29 @@ The first voice-specialist deliverable is a working custom voice in Retell, repr
 
 Excluded from this build: selling the developer's permanent voice rights, proving human cold-calling experience, mass outbound calling, arbitrary internet crawling, healthcare advice, payment-card collection, production patient data, Kubernetes, automatic cross-platform mid-call failover and a public unlimited-call playground.
 
-## Authenticated pilot update — 2026-10-08
+## Authenticated release update — 2026-10-08
 
 Subsequent execution authorization added Google owner authentication and published
 backend03/frontend06 on the existing server.144backend/78frontend tests pass;
 all12backend and6frontend release hashes match. Dedicated Retell/Vapi configs pass
-native readback, while actual calls remain untested. test-data bookings, durable
+native readback, while actual calls remain untested. verification bookings, durable
 worker recovery and captured follow-up passed. Safe local load and passive samples
 have evidence with explicit limits. See docs/evidence/pilot-verification.md and the
-focused pilot/provider specs. This milestone does not close the broader80 criteria,
+focused release/provider specs. This milestone does not close the broader80 criteria,
 prove external delivery, custom voice, million-user capacity or sustained uptime.
 The older baseline below is historical; use the rolling checkpoint for current state.
 
-## Current baseline
+## Historical baseline — 2026-10-07
 
-- Frontend source and locked dependency manifests now exist; twelve destinations and test-data booking/automation flows are implemented. See `docs/frontend-spec.md` and `docs/evidence/frontend-verification.md`.
+- Frontend source and locked dependency manifests now exist; twelve destinations and verification booking/automation flows are implemented. See `docs/frontend-spec.md` and `docs/evidence/frontend-verification.md`.
 - React 19.3.0, Motion 14.0.0, TypeScript 6.0.3 and Vite 8.3.3 are installed and verified. Local native Node 24.21.0 runs builds; the existing Windows Node installation powers the presentation launcher.
 - Current public frontend has eight destinations and the approved twelve-page operator dashboard. Seventy application tests, three packaging checks, three release checks, types/lint/format/security/build and scoped independent reviews pass. Live Chrome passed 32 public layouts/12 journeys, 52 dashboard layouts/17 journeys and all20-route CSP checks. W01–W14 and H01–H08 meet their frontend/publication scope; all 80 roadmap criteria remain unchecked.
-- Actual Git initialization/private protections and installed pre-commit scanners are verified. Manual edit-bridge success is recorded; automatic dispatch on every edit is unproven. Static frontend release03 is published and verified on the authorized existing shared VPS, with all6 release hashes matching and existing apps/DNS/gateway preserved. The local integrated backend meets eighteen test-data-stage acceptance criteria; live provider execution remains disabled. See docs/evidence/core-verification.md for the 107 backend/77 frontend checks, current HTTP/UI/MCP/restore evidence and fresh review with no blocking implementation findings. All80 broader criteria remain unchecked.
+- Actual Git initialization/private protections and installed pre-commit scanners are verified. Manual edit-bridge success is recorded; automatic dispatch on every edit is unproven. Static frontend release03 is published and verified on the authorized existing shared VPS, with all6 release hashes matching and existing apps/DNS/gateway preserved. The local integrated backend meets eighteen verification-stage acceptance criteria; live provider execution remains disabled. See docs/evidence/core-verification.md for the 107 backend/77 frontend checks, current HTTP/UI/MCP/restore evidence and fresh review with no blocking implementation findings. All80 broader criteria remain unchecked.
 - The existing pre-commit configuration targets the Windows scanner environment. Its real hook execution must be proved in Phase 1; do not remove scans to make the setup pass.
 - The earlier scaffold session reported repository-metadata write restrictions. Resolve and verify the active environment before relying on commits, ignore protections or installed hooks.
 - No subscriptions, provider accounts, phone numbers, cloud resources or chargeable API operations are authorized by this planning request.
 
-### Setup update and current execution order — 2026-10-07
+### Historical setup update and execution order — 2026-10-07
 
 Subsequent user instructions authorized free-first account and local dependency
 setup. Google Calendar test authorization, Retell voice inventory, ElevenLabs Free
@@ -53,14 +53,14 @@ A Vapi support email is recorded as sent; do not recreate or resend it blindly. 
 local dependency checks pass. Full integration, production authorization, real
 voice/call execution and delivery are separate gates.
 
-The latest user instruction is to build the business core first, with application
+At this dated stage, the user instruction was to build the business core first, with application
 login/authentication later. The user has now issued the start instruction, including Vapi adapter implementation. Develop and verify the shared business
-services, persistence and durable worker locally with test-data data and isolated
+services, persistence and durable worker locally with verification data and isolated
 adapters before customer onboarding/login work. Preserve the original acceptance
 criteria: protected endpoints, tenant isolation and authorization must pass before
 external exposure, real customer data or billable execution. The phase table below
 is the acceptance roadmap, not permission to ignore this updated execution order.
-All 50 implementation and 30 readiness criteria remain unchecked.
+At this dated stage, all 50 implementation and 30 readiness criteria were unchecked. Current acceptance is recorded in the October 15 phase-status table and per-criterion matrix.
 
 Resume from the project's ignored `memory/recovery-checkpoint.md`. Update the master
 dossier and checkpoint after meaningful changes and verification, before significant
@@ -69,7 +69,7 @@ mutations and handoffs, and at safe boundaries during long work as required by
 
 ## Architecture
 
-Local Docker Desktop and Compose access are verified through the Windows Docker CLI. PostgreSQL, n8n Community Edition and a capture-only email inbox support the local engine. The authenticated n8n confirmation flow returned a verified SMTP receipt; local database backup/isolated restore and scoped MCP SDK flows passed. All eighteen local test-data acceptance criteria have evidence; these checks do not close the full roadmap's live-provider/readiness criteria. Kubernetes access remains unverified. Shared-server Docker was verified for static frontend publication; the static frontend needs no new cluster. Publication evidence is in docs/frontend-deployment-spec.md and docs/frontend-deployment.md.
+Local Docker Desktop and Compose access are verified through the Windows Docker CLI. PostgreSQL, n8n Community Edition and a capture-only email inbox support the local engine. The authenticated n8n confirmation flow returned a verified SMTP receipt; local database backup/isolated restore and scoped MCP SDK flows passed. All eighteen local verification acceptance criteria have evidence; these checks do not close the full roadmap's live-provider/readiness criteria. Kubernetes access remains unverified. Shared-server Docker was verified for static frontend publication; the static frontend needs no new cluster. Publication evidence is in docs/frontend-deployment-spec.md and docs/frontend-deployment.md.
 
 Use a modular monolith: one FastAPI application, a separate worker process and one PostgreSQL database. Voice audio remains in Retell or Vapi's managed pipeline; the shared backend handles business tools and call events. Avoid routing every audio frame through the application backend.
 
@@ -113,7 +113,7 @@ MCP management lets an authorized assistant inspect or change agents and voices.
 
 | Concern          | Planned owner and approach                                                                                                  | Reason                                                                               |
 | ---------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| Frontend         | React, TypeScript in strict mode, Vite, Motion, semantic CSS tokens and native dialog primitives                            | Implemented test-data dashboard; local Chrome flows verified                         |
+| Frontend         | React, TypeScript in strict mode, Vite, Motion, semantic CSS tokens and native dialog primitives                            | Implemented verification dashboard; local Chrome flows verified                         |
 | Frontend data    | Typed client generated from OpenAPI; query cache; explicit forms and error states                                           | Avoid a second hand-maintained API contract                                          |
 | Backend          | Python, FastAPI, Pydantic and Pydantic Settings; separate routers, services and adapters                                    | Typed contracts and one configuration boundary                                       |
 | Persistence      | PostgreSQL, SQLAlchemy and Alembic                                                                                          | Transactions, migrations, relational constraints and recoverable state               |
@@ -142,7 +142,7 @@ Write the inventory before feature code. The backend settings layer owns deploym
 | Agent, voice and tool settings                                                               | Validated configuration profiles with revision and provider capability metadata                      |
 | Prices, quotas, concurrency, call duration and spending controls                             | Versioned pricing/limits data plus typed operational settings                                        |
 | Immutable protocol fields and event names                                                    | One protocol module per provider                                                                     |
-| Test scenarios, load shape and evaluation targets                                            | Versioned test-data test/evaluation data                                                             |
+| Test scenarios, load shape and evaluation targets                                            | Versioned verification test/evaluation data                                                             |
 
 Every consumed environment variable must be represented in typed settings and .env.example. Keep examples unmistakably fake. Change provider/model/price/timeout/local data through configuration or data edits rather than business-code edits. Treat Vite build configuration as tooling configuration; frontend business modules must not read ad hoc environment variables.
 
@@ -167,22 +167,28 @@ A gate not applicable to a documentation-only change must be explained. A missin
 
 Establish project commands in Phase 1. Planned targets include web test/typecheck/lint/build, backend pytest/mypy/Ruff/build, a configuration-hygiene test and the machine's security commands. Do not report these commands as existing until the manifests and toolchain have been verified.
 
-Each phase report records criterion IDs, commit/revision, commands and exit codes, environment, real-flow evidence, reviewer verdict and remaining limits. Passing a fake adapter closes fake-adapter criteria only. Write "criteria N/5 met" for a phase, "N/50 implementation criteria met" and "N/30 readiness criteria met" separately. The complete roadmap has 80 criteria; a pilot must not imply future-capacity criteria passed.
+Each phase report records criterion IDs, commit/revision, commands and exit codes, environment, real-flow evidence, reviewer verdict and remaining limits. Passing a fake adapter closes fake-adapter criteria only. Write "criteria N/5 met" for a phase, "N/50 implementation criteria met" and "N/30 readiness criteria met" separately. The complete roadmap has 80 criteria; a release must not imply future-capacity criteria passed.
 
 ## Phase sequence
 
+The 2026-10-15 independent evidence audit accepts 26/50 individual implementation
+criteria for their stated controlled/API/bounded-owner scope. Phase 1 has all five
+criteria evidenced; the other nine phases retain open requirements. All 30
+readiness criteria remain open. These are acceptance counts, not a product
+completion percentage. See [per-criterion evidence and remaining gates](docs/evidence/roadmap-status-20261015.md).
+
 | Phase | Outcome                                         | Dependency        | External cost boundary                                           | Status                                                                                                     |
 | ----- | ----------------------------------------------- | ----------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| 1     | Product contract, repository and toolchain      | Existing scaffold | Local only                                                       | Foundation progressed; Git/private protections and scanners verified; broader Phase 1 criteria remain open |
-| 2     | Complete frontend with test-data interactions   | Phase 1           | Local local; frontend visual generation authorized for this task | Public/operator frontend published and verified; broader Phase 2 criteria remain open                      |
-| 3     | Authenticated API and persistent dashboard      | Phase 2           | Local first; issuer decision before remote use                   | Not started                                                                                                |
-| 4     | Custom ElevenLabs voice working in Retell       | Phase 3           | Explicit voice/API/telephony approval                            | Not started                                                                                                |
-| 5     | Confirmed bookings and CRM handoff              | Phase 4           | Calendar/CRM terms and test-call approval                        | Not started                                                                                                |
-| 6     | Durable n8n follow-ups and recovery             | Phase 5           | Real messaging approval                                          | Not started                                                                                                |
-| 7     | Grounded answers and evaluation suite           | Phase 6           | Embedding/model usage approval if paid                           | Not started                                                                                                |
-| 8     | Vapi adapter and comparison evidence            | Phase 7           | Explicit Vapi/provider/call approval                             | Not started                                                                                                |
-| 9     | Scoped MCP management and business tools        | Phase 8           | Mutating/chargeable tools individually controlled                | Not started                                                                                                |
-| 10    | Release rehearsal and approved production pilot | Phase 9           | Hosting and release approval                                     | Not started                                                                                                |
+| 1     | Product contract, repository and toolchain      | Existing scaffold | Local only                                                       | All five scoped foundation criteria evidenced; Git/private protections and scanner execution verified |
+| 2     | Complete frontend with verification interactions   | Phase 1           | Local only; frontend visual generation authorized for this task | Public/operator frontend published and verified; broader Phase 2 criteria remain open                      |
+| 3     | Authenticated API and persistent dashboard      | Phase 2           | Local first; issuer decision before remote use                   | Owner OIDC, PostgreSQL and engine operations verified; presentation destinations still use controlled data |
+| 4     | Custom ElevenLabs voice working in Retell       | Phase 3           | Explicit voice/API/telephony approval                            | AI-generated sample and dedicated profiles prepared; actual audio, phone path and listening remain open |
+| 5     | Confirmed bookings and CRM handoff              | Phase 4           | Calendar/CRM terms and test-call approval                        | Bounded owner Calendar/CRM lifecycle verified; voice-originated end-to-end journey remains open |
+| 6     | Durable n8n follow-ups and recovery             | Phase 5           | Real messaging approval                                          | Durable worker/capture recovery and one owner Gmail receipt verified; full workflow acceptance remains open |
+| 7     | Grounded answers and evaluation suite           | Phase 6           | Embedding/model usage approval if paid                           | Knowledge import/revisions, source answers and adversarial controlled evaluations implemented and tested |
+| 8     | Vapi adapter and comparison evidence            | Phase 7           | Explicit Vapi/provider/call approval                             | Adapter and dedicated assistant readbacks verified; actual Vapi audio and comparative calls remain open |
+| 9     | Scoped MCP management and business tools        | Phase 8           | Mutating/chargeable tools individually controlled                | Official SDK read scopes and live audited denials verified; native clients, provider promotion and real-call MCP remain open |
+| 10    | Release rehearsal and approved production release | Phase 9           | Hosting and release approval                                     | Guarded owner release deployed with hash parity; full roadmap release, privacy and real-phone acceptance remain open |
 
 ## Phase 1 Product specification and secure foundation
 
@@ -196,17 +202,17 @@ Define the OpenAPI draft and shared domain schemas for organizations, users, age
 
 Acceptance criteria:
 
-- [ ] P1.1 The product contract defines the configured business, roles, test-data data boundary, complete flow and excluded scope.
-- [ ] P1.2 Actual Git initialization, private-file ignore/staging/history checks and installed-hook execution are verified; every configured scanner demonstrably runs.
-- [ ] P1.3 Chosen runtimes and package registry checks are recorded; reproducible locked setup and applicable test/type/lint/build commands run.
-- [ ] P1.4 Domain schemas, API contracts and state transitions validate; the configuration inventory maps each changeable value to one owner.
-- [ ] P1.5 Local services and controlled adapters start from a clean setup; ordinary tests refuse real provider network access.
+- [x] P1.1 The product contract defines the configured business, roles, verification data boundary, complete flow and excluded scope.
+- [x] P1.2 Actual Git initialization, private-file ignore/staging/history checks and installed-hook execution are verified; every configured scanner demonstrably runs.
+- [x] P1.3 Chosen runtimes and package registry checks are recorded; reproducible locked setup and applicable test/type/lint/build commands run.
+- [x] P1.4 Domain schemas, API contracts and state transitions validate; the configuration inventory maps each changeable value to one owner.
+- [x] P1.5 Local services and controlled adapters start from a clean setup; ordinary tests refuse real provider network access.
 
 Evidence: approved specification, contract files, toolchain/registry checks, scanner output and clean local startup report. Do not close this phase while the actual Git/security prerequisites remain unresolved.
 
 ## Phase 2 Frontend experience and complete controlled journey
 
-Build the responsive operator application before adding live provider connections. Use test-data fixtures through the same API client contract that will later reach FastAPI. Every controlled screen displays that it is a local interaction and cannot make a real call.
+Build the responsive operator application before adding live provider connections. Use verification fixtures through the same API client contract that will later reach FastAPI. Every controlled screen displays that it is a local interaction and cannot make a real call.
 
 Screens: overview, agent editor, voice library/settings, call test panel, call history/detail with transcript and recording state, appointments, contacts, workflow jobs, knowledge sources, evaluation results, integrations, usage and audit history. Keep navigation focused; future surfaces can show an accurate locked state until implemented.
 
@@ -214,11 +220,11 @@ Show loading, empty, validation, unauthorized, failure and retry states. Support
 
 Acceptance criteria:
 
-- [ ] P2.1 Planned screens and routes render at the selected desktop and mobile viewports without clipping or inaccessible navigation.
-- [ ] P2.2 An operator can edit a draft agent, select a controlled voice, exercise a conversation contract and inspect its resulting controlled booking/contact/job records.
-- [ ] P2.3 Empty/loading/error/permission states and destructive-action confirmation are exercised through UI tests.
-- [ ] P2.4 Component and browser tests verify keyboard access, form validation and the principal journey; production build and strict types pass.
-- [ ] P2.5 test-data state is clearly labelled; the controlled journey sends no real calls/messages and contains no private credentials or fabricated live metrics.
+- [x] P2.1 Planned screens and routes render at the selected desktop and mobile viewports without clipping or inaccessible navigation.
+- [x] P2.2 An operator can edit a draft agent, select a controlled voice, exercise a conversation contract and inspect its resulting controlled booking/contact/job records.
+- [x] P2.3 Empty/loading/error/permission states and destructive-action confirmation are exercised through UI tests.
+- [x] P2.4 Component and browser tests verify keyboard access, form validation and the principal journey; production build and strict types pass.
+- [ ] P2.5 verification state is clearly labelled; the controlled journey sends no real calls/messages and contains no private credentials or fabricated live metrics.
 
 Evidence: browser walkthrough, screenshots, accessibility findings and frontend gate report. Visual acceptance at this phase does not prove backend or voice functionality.
 
@@ -228,17 +234,17 @@ Implement FastAPI routers, typed services, repository interfaces and the first A
 
 Use a maintained OIDC library; verify authorization-code flow protections and server-managed session behavior against a local test issuer first. Select and verify the actual issuer before live login. Apply role and organization checks to every record, query, download and event stream. Derive organization identity from trusted session/integration bindings, not an arbitrary browser or caller argument.
 
-Implement the H2/H3 session, administrator-MFA, secret-storage and data-protection controls before live integrations. Add privacy-safe metrics and traces as the HTTP/database flow is implemented; instrumentation and security tests belong with each feature. Polling is a bounded pilot choice: its request rate must fit S1, and a later change to push delivery needs its own connection-capacity evidence.
+Implement the H2/H3 session, administrator-MFA, secret-storage and data-protection controls before live integrations. Add privacy-safe metrics and traces as the HTTP/database flow is implemented; instrumentation and security tests belong with each feature. Polling is a bounded release choice: its request rate must fit S1, and a later change to push delivery needs its own connection-capacity evidence.
 
 Persist agents and configuration revisions, voice metadata, calls, contacts, draft bookings, usage and audit records. Store credential references rather than secret values in application records; actual tokens need protected storage and rotation. Use narrow database privileges, pagination, structured errors, request limits and redacted logs. Start with polling for UI freshness; add authenticated SSE only if the required interaction warrants it.
 
 Acceptance criteria:
 
 - [ ] P3.1 Dashboard actions use the real API and PostgreSQL; restart preserves records and generated clients stay consistent with OpenAPI.
-- [ ] P3.2 Login/logout, session expiry, role denial, CSRF protection and trusted-origin behavior pass real HTTP/browser checks.
-- [ ] P3.3 Two test-data organizations cannot access each other's records, exports, jobs or artifacts; forged organization IDs fail.
-- [ ] P3.4 Migrations apply to a clean database and upgrade an existing fixture; backup/restore preserves the verified records.
-- [ ] P3.5 Invalid/oversized requests fail predictably; logs and API/frontend responses reveal no secrets; settings/environment coverage audit passes.
+- [x] P3.2 Login/logout, session expiry, role denial, CSRF protection and trusted-origin behavior pass real HTTP/browser checks.
+- [x] P3.3 Two verification organizations cannot access each other's records, exports, jobs or artifacts; forged organization IDs fail.
+- [x] P3.4 Migrations apply to a clean database and upgrade an existing fixture; backup/restore preserves the verified records.
+- [x] P3.5 Invalid/oversized requests fail predictably; logs and API/frontend responses reveal no secrets; settings/environment coverage audit passes.
 
 Evidence: authenticated browser journey, cross-organization denial tests, migration and restore reports. Provider operations remain disabled.
 
@@ -246,7 +252,7 @@ Evidence: authenticated browser journey, cross-organization denial tests, migrat
 
 Deliver the first direct voice-specialist sample. Select Voice Design for a designed persona or Professional Voice Cloning when the verified speaker, source recordings and account entitlement support it. Do not clone another person's voice under the developer's identity. The speaker completes any required verification in their own account.
 
-Before uploading real speaker samples or initiating real calls, close the applicable L1-L5 requirements for that limited test, including provider terms, consent/disclosure behavior and data transfers. test-data customer records do not make a real speaker's audio or phone number anonymous. Recipient permission and legal call eligibility are distinct from the developer's cost approval.
+Before uploading real speaker samples or initiating real calls, close the applicable L1-L5 requirements for that limited test, including provider terms, consent/disclosure behavior and data transfers. verification customer records do not make a real speaker's audio or phone number anonymous. Recipient permission and legal call eligibility are distinct from the developer's cost approval.
 
 Document the voice brief, creation method, permitted use, voice ID, source/sample references, pronunciation cases and settings revisions. Compare candidate voices through real listening tests instead of assuming a clone is always best. Verify the exact Retell import/access path, account ownership and supported model before promising a custom voice will work. Do not assume an account-private voice is automatically portable.
 
@@ -256,9 +262,9 @@ After an explicit cost approval, make browser calls and at least one real phone-
 
 Acceptance criteria:
 
-- [ ] P4.1 A custom ElevenLabs voice has a documented creation/rights basis, verified account access and reproducible settings notes.
+- [x] P4.1 A custom ElevenLabs voice has a documented creation/rights basis, verified account access and reproducible settings notes.
 - [ ] P4.2 That voice works in the actual Retell account on browser and approved phone-path tests; preserve representative authorized recordings.
-- [ ] P4.3 Provider events authenticate, deduplicate and tolerate out-of-order delivery; invalid signatures and mismatched call/organization bindings fail.
+- [x] P4.3 Provider events authenticate, deduplicate and tolerate out-of-order delivery; invalid signatures and mismatched call/organization bindings fail.
 - [ ] P4.4 Human listening checks cover interruptions, names/numbers, silence, noise and handoff; report observed latency and unresolved voice defects.
 - [ ] P4.5 Duration/concurrency/destination limits and call-start permissions work; no billable test occurs without the required fresh-turn cost approval.
 
@@ -277,9 +283,9 @@ Use an internal CRM contact store plus one approved real CRM connector. Verify O
 Acceptance criteria:
 
 - [ ] P5.1 A real call checks the approved calendar, obtains confirmation and creates an appointment whose provider ID and details match the database/UI.
-- [ ] P5.2 Concurrent callers and repeated tool requests cannot produce duplicate confirmed bookings for the application-controlled slot.
+- [x] P5.2 Concurrent callers and repeated tool requests cannot produce duplicate confirmed bookings for the application-controlled slot.
 - [ ] P5.3 Timeout-after-write, stale availability and calendar rejection enter explicit states and reconcile without a false spoken confirmation.
-- [ ] P5.4 Time-zone/DST, corrected details, cancellation and rescheduling cases pass; unauthorized lookup/change of an existing booking fails.
+- [x] P5.4 Time-zone/DST, corrected details, cancellation and rescheduling cases pass; unauthorized lookup/change of an existing booking fails.
 - [ ] P5.5 The contact and CRM handoff match the confirmed outcome; revoked OAuth, missing scope and connector failure remain visible and recoverable.
 
 Evidence: call-to-calendar trace, external calendar inspection, concurrency/fault tests, CRM record and permission-denial proof. Report any external-calendar race limitation rather than claiming universal exactly-once behavior.
@@ -288,17 +294,17 @@ Evidence: call-to-calendar trace, external calendar inspection, concurrency/faul
 
 Implement a persisted webhook inbox and transactional outbox, with a separate worker that claims jobs using leases. Acknowledge asynchronous events only after durable acceptance. Keep time-sensitive call tools on the synchronous path; do not queue a live availability question behind email work.
 
-Create versioned n8n workflows for confirmed booking messages, CRM synchronization, operator notifications and follow-up scheduling. Pass the minimum required data and stable operation key. Keep n8n's editor private and credentials in its approved store. Start with a local SMTP capture sink and test-data CRM endpoint; real delivery requires authorization.
+Create versioned n8n workflows for confirmed booking messages, CRM synchronization, operator notifications and follow-up scheduling. Pass the minimum required data and stable operation key. Keep n8n's editor private and credentials in its approved store. Start with a local SMTP capture sink and verification CRM endpoint; real delivery requires authorization.
 
 Add retry/backoff, attempts, next-run time, dead-letter state, replay controls and outcome reconciliation. Worker death after sending but before recording success is an uncertain side effect: inspect provider delivery state where possible rather than pretending every channel supports perfect duplicate prevention.
 
 Acceptance criteria:
 
-- [ ] P6.1 A confirmed booking creates a durable outbox job; local n8n sends the expected confirmation into the test inbox and updates job state.
+- [x] P6.1 A confirmed booking creates a durable outbox job; local n8n sends the expected confirmation into the test inbox and updates job state.
 - [ ] P6.2 Killing/restarting the worker or n8n does not lose accepted jobs; expired leases are recovered without overlapping active owners.
-- [ ] P6.3 Duplicate/reordered webhooks and repeated replay requests do not duplicate supported idempotent actions.
+- [x] P6.3 Duplicate/reordered webhooks and repeated replay requests do not duplicate supported idempotent actions.
 - [ ] P6.4 Retries, exhausted attempts and ambiguous delivery appear in the dashboard; an operator can reconcile/replay safely with an audit entry.
-- [ ] P6.5 After explicit approval, one real follow-up reaches an authorized recipient and its provider receipt is verified; secrets and editor access remain protected.
+- [x] P6.5 After explicit approval, one real follow-up reaches an authorized recipient and its provider receipt is verified; secrets and editor access remain protected.
 
 Evidence: crash/restart experiment, durable job history, local test-inbox proof, approved real-delivery receipt and sanitized workflow export.
 
@@ -310,13 +316,13 @@ Index only approved business information. Preserve chunk provenance and organiza
 
 Return bounded passages and source references to the voice agent. Treat retrieved text as data, never as authority to change permissions or execute tools. If information is missing or conflicting, the agent asks, abstains or hands off. Live booking availability always comes from the calendar, not a retrieved document.
 
-Create versioned test-data scenarios and a listening rubric. Track grounded-answer accuracy, unsafe actions, booking outcomes, interruption recovery, handoff, end-to-end response delay and cost. Use deterministic checks for business facts and operations; optional model judges supplement rather than replace them.
+Create versioned verification scenarios and a listening rubric. Track grounded-answer accuracy, unsafe actions, booking outcomes, interruption recovery, handoff, end-to-end response delay and cost. Use deterministic checks for business facts and operations; optional model judges supplement rather than replace them.
 
 Acceptance criteria:
 
-- [ ] P7.1 Ingestion/change/deletion produces the expected searchable revision; rejected/failed imports leave the last usable knowledge intact.
-- [ ] P7.2 Answers identify supporting sources; stale, absent and contradictory information trigger the configured safe behavior.
-- [ ] P7.3 Organization isolation and document prompt-injection tests fail to obtain private data or unauthorized actions.
+- [x] P7.1 Ingestion/change/deletion produces the expected searchable revision; rejected/failed imports leave the last usable knowledge intact.
+- [x] P7.2 Answers identify supporting sources; stale, absent and contradictory information trigger the configured safe behavior.
+- [x] P7.3 Organization isolation and document prompt-injection tests fail to obtain private data or unauthorized actions.
 - [ ] P7.4 The versioned evaluation suite covers successful and adversarial calls; results include auditable transcripts/tool outcomes and human listening notes.
 - [ ] P7.5 Prompt/model/knowledge changes are compared against a baseline; all critical business/security cases pass and declared quality targets are met.
 
@@ -334,9 +340,9 @@ Acceptance criteria:
 
 - [ ] P8.1 The actual Vapi assistant uses the custom ElevenLabs voice on authorized browser and phone-path tests.
 - [ ] P8.2 Retell and Vapi both complete the shared booking/CRM/follow-up journey with matching business results.
-- [ ] P8.3 Vapi webhook/tool authentication, tenancy, payload validation and duplicate/out-of-order handling pass platform-specific tests.
+- [x] P8.3 Vapi webhook/tool authentication, tenancy, payload validation and duplicate/out-of-order handling pass platform-specific tests.
 - [ ] P8.4 Comparable listening/latency/outcome/cost results are recorded for both platforms with capability and test-environment differences stated.
-- [ ] P8.5 Selecting the configured platform changes only its adapter/profile; business services remain unchanged and existing Retell tests pass.
+- [x] P8.5 Selecting the configured platform changes only its adapter/profile; business services remain unchanged and existing Retell tests pass.
 
 Evidence: Vapi recordings, adapter contract results, real full-flow trace and comparison report. Switching the configured platform applies to new calls; automatic migration of an active call is outside scope.
 
@@ -355,7 +361,7 @@ Acceptance criteria:
 - [ ] P9.1 An actual compatible assistant client discovers and invokes the allowed management tools with sanitized outputs and no secrets in model context.
 - [ ] P9.2 The assistant creates or changes a permitted draft and an authorized promotion produces the verified provider state; stale revisions cannot overwrite newer settings.
 - [ ] P9.3 Retell and Vapi use the MCP business tools during real authorized calls and obey the same booking/organization rules as HTTP.
-- [ ] P9.4 Missing scopes, cross-organization requests, secret-read attempts and unapproved mutations/spending are denied and audited.
+- [x] P9.4 Missing scopes, cross-organization requests, secret-read attempts and unapproved mutations/spending are denied and audited.
 - [ ] P9.5 A supported Claude client completes the management walkthrough; the requested ChatGPT surface is separately tested where available, with unsupported access reported as incomplete.
 
 Evidence: discovered tool inventory, client transcripts with sanitized results, provider read-back, denial cases and recorded management walkthrough. Do not promise every tool is supported through both clients before testing them.
@@ -404,7 +410,7 @@ Store provider artifact references only as long as needed. Any retained recordin
 
 The owner additionally requested safe capacity and uptime checks alongside core
 implementation. Follow `docs/capacity/core-load-spec.md` and the versioned bounded
-local profile. Isolated test-data tests, resource checks and stop thresholds are
+local profile. Isolated verification tests, resource checks and stop thresholds are
 mandatory; preserve other projects and use no paid calls. Report measured records,
 clients, throughput, latency, errors and observation duration. The 99.5% owner
 minimum and 99.9% roadmap target are observation goals, not completed tests.
@@ -416,7 +422,7 @@ These are initial design goals, not measured results. Put their selected values 
 | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Security and destructive business actions | Every required negative case passes; no unauthorized mutation or cross-organization access                                                        |
 | Booking correctness                       | Every deterministic booking case matches the provider state; duplicate/unknown-outcome cases have no false confirmation                           |
-| test-data concurrency                     | Exercise 20 simultaneous business-tool clients, including competing bookings; publish hardware, dataset and workload                              |
+| verification concurrency                     | Exercise 20 simultaneous business-tool clients, including competing bookings; publish hardware, dataset and workload                              |
 | Local lookup latency                      | Initial p95 goal at or below 300 ms for the declared local catalogue/availability fake workload                                                   |
 | Voice response delay                      | Initial p95 goal at or below 1.5 seconds from end of caller speech to first audible response for ordinary FAQ calls; report tool calls separately |
 | Naturalness                               | Human rubric for pronunciation, cadence, pauses, interruption recovery and appropriate tone; save raw observations and defects                    |
@@ -431,16 +437,16 @@ These 30 criteria supplement the original 50. Each criterion has a named owner, 
 
 | Boundary                                                   | Required evidence before crossing it                                                                                                                                                                                                                                                                                                |
 | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| test-data local implementation                             | Original phase gates for implemented features; L1 scope decision, H1 threat model, S1 workload definition, R1 objectives and D1 ownership started                                                                                                                                                                                   |
+| verification local implementation                             | Original phase gates for implemented features; L1 scope decision, H1 threat model, S1 workload definition, R1 objectives and D1 ownership started                                                                                                                                                                                   |
 | Real voice samples, provider calls or personal information | Applicable L1-L5 closed for that test, implemented H controls tested, monitoring for enabled operations, recipient authorization and separate cost approval                                                                                                                                                                         |
-| Controlled production pilot                                | Before deployment: applicable P1-P9 and P10.1-P10.3 checks plus L1-L5, H1-H5, M1-M5, R1-R4 and D1-D3 verified for the declared pilot scope, with documented pilot-capacity portions of S1-S4. Close P10.4-P10.5 and D4-D5 through approved deployment, smoke checks and handover; only then report the 50-criterion pilot delivered |
-| Public claim of achieved 99.9% service reliability         | R5 observation evidence for the stated window and each named service; pilot launch alone does not meet this boundary                                                                                                                                                                                                                |
+| Controlled production release                                | Before deployment: applicable P1-P9 and P10.1-P10.3 checks plus L1-L5, H1-H5, M1-M5, R1-R4 and D1-D3 verified for the declared release scope, with documented release-capacity portions of S1-S4. Close P10.4-P10.5 and D4-D5 through approved deployment, smoke checks and handover; only then report the 50-criterion release delivered |
+| Public claim of achieved 99.9% service reliability         | R5 observation evidence for the stated window and each named service; release launch alone does not meet this boundary                                                                                                                                                                                                                |
 | Claim of million-scale service                             | S1-S5 proved at the requested target and mixed workload, with L/H/M/R/D evidence revalidated at that stage                                                                                                                                                                                                                          |
 
 A stage-limited pass is recorded against that stage and does not check off the
 full future-target criterion. D4's clean recreation/restore/release drills occur
 before deployment; its live alert-response/handover evidence is completed in the
-pilot. R5 needs a subsequent full observation window. These evidence timings
+release. R5 needs a subsequent full observation window. These evidence timings
 prevent a circular requirement to prove deployed behavior before deployment.
 
 ### L USA/EU legal applicability and privacy
@@ -476,7 +482,7 @@ Treat the following as separate future targets. Workload profiles must also stat
 
 Define request rates, payload sizes, call arrivals and duration, tool invocations, knowledge sizes, tenant skew, background jobs, retention, region distribution and realistic think times. For illustration only, one dashboard request every ten seconds from one million sessions creates 100,000 requests/second before user actions; this is arithmetic, not a selected refresh policy or benchmark. A million concurrent calls also requires a supported arrival rate; a concurrency allowance alone does not prove either.
 
-Keep the modular monolith initially, with reviewed dependency directions, domain services independent of provider adapters, generated/versioned contracts and configuration-only provider changes. Test architecture boundaries. Introduce service separation only for measured independent scaling, isolation or ownership needs; record its migration and operational cost. Kubernetes is excluded from the pilot, not forbidden forever if a later documented deployment decision justifies it.
+Keep the modular monolith initially, with reviewed dependency directions, domain services independent of provider adapters, generated/versioned contracts and configuration-only provider changes. Test architecture boundaries. Introduce service separation only for measured independent scaling, isolation or ownership needs; record its migration and operational cost. Kubernetes is excluded from the release, not forbidden forever if a later documented deployment decision justifies it.
 
 Make API processes replaceable and stateless, with a shared session strategy, bounded connection pools, load balancing, per-tenant limits and graceful draining. Scale workers separately and measure lease contention, queue age, retries and side-effect reconciliation. Split queues/work classes when required; preserve atomic business-write/outbox acceptance if introducing a broker. Bound dashboard polling or validate authenticated push capacity. Add CDN/cache behavior for appropriate data without caching one tenant's private response for another.
 
@@ -484,9 +490,9 @@ Measure query plans, indexes, hot-tenant contention, connection budgets and data
 
 The voice target is contingent on upstream commitments. Verify Retell/Vapi org/subscription concurrency, calls-per-second, telephony channels, STT/LLM/TTS limits, calendar/CRM quotas, regions and SLAs. Vendor documentation does not establish this account's allocation or vendor willingness to support one million calls. Record each bottleneck, reserved headroom, approved costs and fallback behavior. [Retell capacity inventory](https://docs.retellai.com/llms.txt), [Vapi concurrency](https://docs.vapi.ai/calls/call-concurrency).
 
-Use increasing benchmark stages defined in validated workload data, such as 1,000, 10,000, 100,000 and 1,000,000 where feasible. Each stage requires sustained/soak, burst, tenant-skew, failure and recovery tests with generator capacity verified. Publish hardware/topology, duration, throughput, p95/p99 latency, errors, saturation, queue age and cost assumptions. test-data provider traffic closes backend criteria only; it cannot close a real million-call claim. Do not book paid capacity or run paid load without exact-cost approval.
+Use increasing benchmark stages defined in validated workload data, such as 1,000, 10,000, 100,000 and 1,000,000 where feasible. Each stage requires sustained/soak, burst, tenant-skew, failure and recovery tests with generator capacity verified. Publish hardware/topology, duration, throughput, p95/p99 latency, errors, saturation, queue age and cost assumptions. verification provider traffic closes backend criteria only; it cannot close a real million-call claim. Do not book paid capacity or run paid load without exact-cost approval.
 
-- [ ] S1 Versioned profiles cover all three million-scale targets and their mixed workload, with admitted pilot limits, region/tenant distributions and calculated upstream/backend resource demand.
+- [ ] S1 Versioned profiles cover all three million-scale targets and their mixed workload, with admitted release limits, region/tenant distributions and calculated upstream/backend resource demand.
 - [ ] S2 Architecture-boundary tests, replaceable replicas, shared sessions, bounded database pools, worker scaling and distributed tenant limits pass at the declared stage without bypassing authorization.
 - [ ] S3 Stage-specific database/query/caching design and growth thresholds are measured; any replica/partition/shard migration preserves booking consistency, privacy deletion and tested recovery.
 - [ ] S4 Every critical provider's account-specific capacity, arrival-rate limits, contract/region constraints, availability assumptions and approved budget support the claimed stage; absent million-call commitments leave that target blocked.
@@ -534,19 +540,19 @@ Instrument application/worker/database/provider operations with correlated struc
 
 Version dashboards and alert definitions for traffic/errors/p95-p99 latency, active/admitted/rejected calls, speech-to-audio delay, booking unknown/failed outcomes, webhook verification failures and backlog, worker heartbeat/lease age, oldest job age/retries/dead letters, database connections/locks/replication/storage, provider quotas and authorized spend. Measure both infrastructure and customer-visible outcomes. Counters used for reliability indicators and mandatory audit records cannot be lost through trace sampling.
 
-Define reviewed warning/page thresholds and multi-window error-budget burn alerts in operational configuration, with severity, named primary/backup owner, escalation path and runbook. Test actual alert delivery and acknowledgement using authorized test recipients/channels. Real call/message test-data probes have bounded frequency, consenting participants and separate cost approval. Also monitor failed probes, missing telemetry, collector failure and alert-delivery failure; a dashboard alone does not establish coverage. [SLO alerting](https://sre.google/workbook/alerting-on-slos/).
+Define reviewed warning/page thresholds and multi-window error-budget burn alerts in operational configuration, with severity, named primary/backup owner, escalation path and runbook. Test actual alert delivery and acknowledgement using authorized test recipients/channels. Real call/message verification probes have bounded frequency, consenting participants and separate cost approval. Also monitor failed probes, missing telemetry, collector failure and alert-delivery failure; a dashboard alone does not establish coverage. [SLO alerting](https://sre.google/workbook/alerting-on-slos/).
 
 Protect telemetry dashboards/exports with roles and access audits, retention/deletion policies and controlled sampling/cost/cardinality budgets. Monitoring failure must not block lawful business processing except where a separately specified safety/audit gate requires it; it must remain observable through independent checks. Document the behavior when required audit storage or abuse/spending enforcement is unavailable.
 
 - [ ] M1 Each implemented HTTP/tool/job/provider flow produces correlated privacy-safe signals; missing/out-of-order events do not manufacture business success and tenant-private telemetry stays protected.
 - [ ] M2 Versioned dashboards expose service indicators, voice/booking outcomes, dependency health, database/queue saturation, provider quotas and spend at the admitted stage.
 - [ ] M3 Configured service/security/quota/error-budget alerts reach an authorized primary and backup owner; acknowledgement/escalation and linked runbooks are demonstrated.
-- [ ] M4 Outage, latency, retry-storm, worker/collector death and missing-telemetry experiments exercise detection and recovery; paid test-data probes remain bounded and separately approved.
+- [ ] M4 Outage, latency, retry-storm, worker/collector death and missing-telemetry experiments exercise detection and recovery; paid verification probes remain bounded and separately approved.
 - [ ] M5 Telemetry/audit access, retention, redaction, sampling, cardinality and cost controls pass verification; evidence counters and required audits remain reliable under peak load and monitoring failure.
 
 ### D Owned documentation and future delivery evidence
 
-Create these files as their subject is implemented; they are planned artifacts, not documents that already exist. Keep public examples test-data and secrets/infrastructure detail in the approved ignored private records. Every maintained document has an assigned owner, reviewed scope, related implementation/configuration revision and a trigger for updates.
+Create these files as their subject is implemented; they are planned artifacts, not documents that already exist. Keep public examples verification and secrets/infrastructure detail in the approved ignored private records. Every maintained document has an assigned owner, reviewed scope, related implementation/configuration revision and a trigger for updates.
 
 | Planned artifact                                                  | Accountable role      | Update trigger and evidence                                                                            |
 | ----------------------------------------------------------------- | --------------------- | ------------------------------------------------------------------------------------------------------ |
@@ -634,9 +640,9 @@ A finished delivery includes the tested release revision, how to start it locall
 
 Provide a concise AI-operator walkthrough: the acceptance criterion, an agent's incorrect completion claim, the actual defect, instructions sent back to the coding agent and proof of the corrected real flow. Use an actual found defect or a clearly labelled deliberate test fixture; never invent a historical incident.
 
-The production claim requires all relevant evidence, explicit cost/release approval and all gates green. Until then, report the precise stage: frontend local interaction, local integrated build, verified provider local, staging rehearsal or approved production pilot.
+The production claim requires all relevant evidence, explicit cost/release approval and all gates green. Until then, report the precise stage: frontend local interaction, local integrated build, verified provider local, staging rehearsal or approved production release.
 
-Report the original 50 implementation criteria and additional 30 readiness criteria separately, with stage-specific evidence. Launching a pilot does not establish million-scale capacity or observed 99.9% reliability. Lawful deployment depends on the reviewed real scope and implemented controls; this plan is not a compliance certificate.
+Report the original 50 implementation criteria and additional 30 readiness criteria separately, with stage-specific evidence. Launching a release does not establish million-scale capacity or observed 99.9% reliability. Lawful deployment depends on the reviewed real scope and implemented controls; this plan is not a compliance certificate.
 
 ## Official implementation references
 

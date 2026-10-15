@@ -45,3 +45,9 @@ limits. Publication checks worktree, staging, full history, private exclusions,
 metadata and attribution; fresh-context review records scope and verdict.
 Public CI uses standard Linux runners, minimal permissions and no production keys,
 private uploads or automatic deployment. Counts remain dated to their evidence.
+
+Frontend verification uses `apps/web/vitest.config.ts` with environment-file loading
+disabled. Client tests declare typed mocked settings and intercept requests; they
+must not require a private developer environment. Formatting/type gates include
+the test configuration. Clean CI is a required publication gate even after a local
+suite passes.

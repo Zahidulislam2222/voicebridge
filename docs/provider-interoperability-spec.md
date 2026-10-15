@@ -1,6 +1,6 @@
 # Provider event interoperability acceptance
 
-This is a focused extension of pilot R08. It does not authorize chargeable calls.
+This is a focused extension of release R08. It does not authorize chargeable calls.
 
 - [x] P01 Opt-in capability metadata is read only after provider authentication.
       A supplied header has precedence; missing, wrong or unregistered call/agent
@@ -60,6 +60,6 @@ Compose retains raw short mount strings in x-runtime extensions. Deployment chec
 
 The actual retained x-runtime mount uses the template-relative ./provider-profiles.json source, while resolved service mounts use absolute release paths. Verify the checker against saved real platform output before resuming, rather than relying on structural fixtures alone.
 
-A free post-upgrade public probe checks readiness200, unauthenticated state/intent401, invalid Retell/Vapi credentials401, and correctly authenticated but unregistered test-data calls403. It must contact only the selected owned engine origin, refuse redirects, persist only status/error evidence, and never create a native call, join audio or store a test-data call.
+A free post-upgrade public probe checks readiness200, unauthenticated state/intent401, invalid Retell/Vapi credentials401, and correctly authenticated but unregistered verification calls403. It must contact only the selected owned engine origin, refuse redirects, persist only status/error evidence, and never create a native call, join audio or store a verification call.
 
-P01–P08 accepted for the measured authenticated pilot scope:144backend/23focused checks, native configuration readback,14source/12release hash parity, reviewed03deployment and public auth-denial checks. P09 remains open: no native call creation/bind/audio run has occurred.
+P01–P08 accepted for the measured authenticated release scope:144backend/23focused checks, native configuration readback,14source/12release hash parity, reviewed03deployment and public auth-denial checks. P09 remains open: no native call creation/bind/audio run has occurred.

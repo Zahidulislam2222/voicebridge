@@ -53,6 +53,10 @@ const textKeys = [
   'captureDelivery',
   'externalDelivery',
   'unknownDelivery',
+  'exportSnapshot',
+  'exportTranscript',
+  'exportSaved',
+  'exportScope',
 ] as const;
 const fieldKeys = [
   'name',
