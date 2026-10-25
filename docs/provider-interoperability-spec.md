@@ -62,4 +62,13 @@ The actual retained x-runtime mount uses the template-relative ./provider-profil
 
 A free post-upgrade public probe checks readiness200, unauthenticated state/intent401, invalid Retell/Vapi credentials401, and correctly authenticated but unregistered verification calls403. It must contact only the selected owned engine origin, refuse redirects, persist only status/error evidence, and never create a native call, join audio or store a verification call.
 
+2026-10-25 status of P09: the Retell path is implemented and deployed in backend
+release 20. The server seals the capability into Retell call metadata, creates the
+call, binds the returned ID durably and only then returns the media grant; the
+browser joins with the official web SDK. A fresh agent v1/LLM v1 readback is the
+approved profile and calls are capped at 180 seconds. P09 stays unchecked until a
+real call joins audio, runs a business tool and books, and until the Vapi path is
+exercised. The October 13 `error user not joined` result came from a creation made
+without a browser join, not from the binding order.
+
 P01–P08 accepted for the measured authenticated release scope:144backend/23focused checks, native configuration readback,14source/12release hash parity, reviewed03deployment and public auth-denial checks. P09 remains open: no native call creation/bind/audio run has occurred.

@@ -2,7 +2,7 @@
 
 This is an applicability and implementation register. Before each customer/region
 release, assign an owner to verify entities, purposes, recipient locations,
-provider contracts and legal decisions. Review date: 2026-10-13. This register
+provider contracts and legal decisions. Review date: 2026-10-25. This register
 identifies work for a specific release; it is not a jurisdiction-wide legal opinion.
 
 | Area               | Applicability question                                          | Release evidence                                                                     |
@@ -33,6 +33,44 @@ generally requires consent of all participants to record private communications,
 subject to its stated exceptions and announcement rules. Determine every
 participant's location and the applicable rule before capture. Turning off stored
 audio alone does not resolve transcription, vendor processing or notice duties.
+
+## Extended US and EU applicability checklist
+
+Each row names a law or framework to assess for a specific customer, region and
+feature. Inclusion does not mean it applies, and absence does not mean it does not.
+Confirm current text, thresholds and effective dates with qualified counsel.
+
+| Jurisdiction | Instrument                                                                 | Assess when                                                                    |
+| ------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| US federal   | TCPA (47 U.S.C. §227) and FCC rules (47 CFR §64.1200)                      | Any outbound call or text, including AI/artificial voice, autodialled or prerecorded |
+| US federal   | FTC Telemarketing Sales Rule (16 CFR Part 310)                              | Outbound sales or charitable calls; scripts, disclosures and Do Not Call       |
+| US federal   | Federal Wiretap Act (18 U.S.C. §2511)                                       | Recording or intercepting calls; federal one-party rule does not displace states |
+| US federal   | FTC Act §5 (15 U.S.C. §45)                                                  | Product claims about AI, privacy promises and reasonable data security         |
+| US federal   | CAN-SPAM Act (15 U.S.C. §7701 et seq.)                                      | Commercial follow-up email content, identification and opt-out                 |
+| US federal   | COPPA Rule (16 CFR Part 312)                                                | Service directed to children under 13 or actual knowledge of such users        |
+| US federal   | HIPAA Privacy, Security and Breach Rules (45 CFR Parts 160 and 164)         | Covered entity or business associate handling protected health information     |
+| US federal   | ADA Title III; WCAG 2.2 AA as the engineering target                        | Public-facing booking and support used by people with disabilities             |
+| US states    | California CCPA/CPRA and comprehensive laws such as Virginia, Colorado, Connecticut, Utah, Texas and Oregon | Business meets a statute's thresholds for residents' personal data |
+| US states    | All-party recording consent, for example California Penal Code §632 and Washington RCW 9.73.030 | Any participant may be located in such a state                  |
+| US states    | Biometric laws, for example Illinois BIPA (740 ILCS 14), Texas Bus. & Com. Code §503.001, Washington RCW 19.375 | Voiceprints or voice-based identification are created or used |
+| US states    | State telemarketing laws, for example Florida's Telephone Solicitation Act  | Outbound solicitation calls or texts to residents                              |
+| US states    | State AI laws, for example Utah AI disclosure and Colorado SB 24-205       | Generative AI interaction disclosure; consequential decisions                  |
+| US states    | State data-breach notification statutes                                    | Unauthorized access to covered personal information                            |
+| EU/EEA       | GDPR (Regulation (EU) 2016/679)                                             | Personal data of people in the EU/EEA or an EU establishment                   |
+| EU/EEA       | ePrivacy Directive 2002/58/EC and national implementations                 | Confidentiality of communications, terminal storage and electronic marketing   |
+| EU/EEA       | AI Act (Regulation (EU) 2024/1689), including Article 50 from 2 August 2026 | AI interaction notice, generated-content marking and prohibited-use screening  |
+| EU/EEA       | EU–US Data Privacy Framework adequacy decision; Standard Contractual Clauses (Decision (EU) 2021/914) | Transfer of EU personal data to US providers               |
+| EU/EEA       | European Accessibility Act (Directive (EU) 2019/882)                        | In-scope consumer services such as e-commerce booking                          |
+| EU/EEA       | NIS2 Directive (EU) 2022/2555                                               | Entity size and sector bring the operator into scope                           |
+| UK           | UK GDPR, Data Protection Act 2018 and PECR                                  | Personal data of people in the UK or UK electronic marketing                   |
+| Any          | PCI DSS (industry standard)                                                 | Payment card data; the design avoids collecting card numbers by voice          |
+
+Current technical posture relevant to this checklist (2026-10-25): the owner call
+opens with an AI and recording notice; external email is capture-only with no
+recipients; no outbound calling exists; no voiceprint or speaker identification is
+created; card data is not requested; owner bookings write to the business's own
+calendar and CRM. Recording consent, transfer mechanisms and customer notices still
+require the decisions recorded below before any customer or public caller is admitted.
 
 ## Data lifecycle
 

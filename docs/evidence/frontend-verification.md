@@ -34,7 +34,7 @@ criteria remain unchecked. Derived from the private master dossier.
 | Existing infrastructure        | 11 gateway files unchanged during promotion; all 22 pre-existing containers retain identity/running/health state; all 11 earlier DNS records unchanged                                                          |
 | Actual Git/private protections | PASS: main initialized, private paths ignored and unstaged, zero commits/history, no remote                                                                                                                     |
 | Installed pre-commit           | Installed; Gitleaks, Bandit and Semgrep each executed and passed                                                                                                                                                |
-| Automatic dispatch boundary    | Installed edit bridge manually executed successfully. Automatic invocation on every edit was not independently demonstrated; no actual commit was created                                                       |
+| Automatic dispatch boundary    | Installed edit bridge manually executed successfully. Automatic invocation on every edit was not independently proven; no actual commit was created                                                       |
 
 ## Acceptance criteria and real flows
 

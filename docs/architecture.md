@@ -20,10 +20,20 @@ flowchart LR
 The deployed single-business release keeps Calendar and CRM permissions
 independently enabled. One bounded owner-only booking has direct Calendar and
 CRM readbacks and an authorized email receipt from an earlier controlled run.
-Current follow-ups use capture mode with no external recipients; native voice is
-disabled with a configured 60-second, one-call limit pending real audio/tool
-acceptance. Browser and native-call tools share the same authorization and
-business rules. See [dated release evidence](evidence/tenant-export-release-20261015.md).
+Current follow-ups use capture mode with no external recipients. Owner native
+voice creation is enabled with a configured 180-second, one-call limit and requires
+a current free-credit receipt (at most two hours old); the released receipt is
+expired, so creation is refused before any provider request until a new release
+carries a fresh billing check. Real audio/tool acceptance is open. Browser and
+native-call tools share the same authorization and business rules. See
+[dated release evidence](evidence/voice-release-20261025.md).
+
+The owner call sequence is: owner session and CSRF, free-credit receipt check,
+exact live provider-profile comparison, durable operation reservation, sealed
+call capability, provider create with that capability in call metadata, durable
+binding of the returned call ID, and only then a minimized media grant for the
+browser. Business tools accept requests only from authenticated provider calls
+whose metadata capability matches a bound, not-ended call.
 
 ## Decisions
 

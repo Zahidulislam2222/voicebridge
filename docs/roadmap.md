@@ -9,6 +9,13 @@ release closeout remain open in the
 [single-business acceptance](pilot-completion-spec.md). A successful deployment
 does not close those unrelated criteria.
 
+Status 2026-10-25: backend release 20 enables bounded three-minute owner Retell
+calls behind an expiring free-credit receipt; the released receipt is expired, so
+calls stay refused until the owner opens a window with a fresh billing check and a
+new immutable release. Next acceptance: one owner Retell call that joins audio, runs
+a tool and books end to end, followed by the Vapi path. See the
+[current release evidence](evidence/voice-release-20261025.md).
+
 The recorded owner-only Retell web call never joined browser media. Later provider
 readback showed `error user not joined`, duration zero and cost zero; the owner
 operation reached DONE and released its slot. Vapi has not been attempted and

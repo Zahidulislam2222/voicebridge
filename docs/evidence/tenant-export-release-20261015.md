@@ -40,7 +40,7 @@ Actual owner HTTPS returned200 for both exports (11481-byte records report and
 170-byte transcript artifact), with two fresh durable audit entries and unchanged
 three appointments, three contacts, one historical call and ten jobs. The live
 transcript is empty and unredacted; nonempty, redaction and foreign-tenant cases
-are demonstrated locally. Ten public HTTPS checks verified exact HTML/artwork/CSP,
+are proven locally. Ten public HTTPS checks verified exact HTML/artwork/CSP,
 readiness, anonymous export401 and private-path404. All 21 actual routes passed
 with 0 JavaScript/CSP/external-request errors. The signed-in owner UI rendered one
 records and one ended-transcript control, with creation controls absent and0

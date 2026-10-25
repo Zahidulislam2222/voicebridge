@@ -18,7 +18,8 @@ table describes boundaries and open acceptance, not an ASVS certification.
 | Secret/supply-chain exposure  | Lockfiles, private ignores, configuration tests and scanners                     | Advisory monitoring and rotation drills                          |
 | Host compromise               | Non-root runtime, isolated services and readonly profiles                        | Central secrets, patching, least privilege and off-device backup |
 | Transcript/privacy leakage    | Owner/tenant checks, ended-call redaction and late-event tombstone               | Provider deletion, backup replay and rights-request rehearsal    |
-| Cost or quota exhaustion      | Disabled live voice, bounded native duration and guarded provider settings       | Distributed admission, account quotas and real-call limits       |
+| Cost or quota exhaustion      | Expiring free-credit receipt, 180-second cap, one owner call, exact profiles     | Distributed admission, account quotas and real-call limits       |
+| Provider configuration drift  | Whole-object live agent/LLM comparison with an approved snapshot before create   | Scheduled readback and alerting on provider schema growth        |
 
 ## Secrets and telemetry
 
@@ -30,8 +31,14 @@ Log bounded error classes, operation/revision/outcome and correlation IDs. Redac
 contacts, raw provider payloads, credentials and recordings. Avoid unbounded tenant/
 call labels in metrics. Apply explicit audit access and retention.
 
-The deployed single-business release keeps real voice and unrestricted external
-mail disabled. A bounded owner-only Calendar/CRM/email receipt is evidence of that
+The deployed single-business release keeps unrestricted external mail disabled.
+Owner voice creation is enabled but refused unless a release carries a free-credit
+receipt younger than the typed limit (at most 7200 seconds) showing a positive
+prepaid balance, recharge off and no billable add-on; the current receipt is expired.
+Calls are capped at 180 seconds and one concurrent call. The provider agent and LLM
+must equal an approved readback exactly, so a silent provider change fails closed.
+The browser receives only a minimized expiring media grant; provider keys, call
+capabilities and webhook secrets stay server-side. A bounded owner-only Calendar/CRM/email receipt is evidence of that
 specific path only. Before broader traffic, review vendor and caller permissions,
 retention, provider artifact deletion, per-tenant limits and abuse alerts. The
 [legal register](legal-and-privacy.md) owns jurisdiction-specific decisions.
@@ -49,7 +56,7 @@ and the actual served CSP. See [reporting](../SECURITY.md) and
 For each release, record exact artifact identity, dependency/advisory results,
 secret and configuration audit, authorization-negative tests, scanner execution,
 review verdict, live behavior and local/live parity in the
-[release evidence](evidence/tenant-export-release-20261015.md). A clean scan or passing build
+[release evidence](evidence/voice-release-20261025.md). A clean scan or passing build
 cannot prove that external voice, customer data processing or future capacity is
 safe without their own real-flow and independent assessment gates.
 

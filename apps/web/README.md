@@ -31,9 +31,10 @@ they are included in browser bundles.
 Set `VITE_CORE_API_URL` and matching backend origins to connect the console.
 Use `VITE_CORE_SESSION_AUTH=true` in a session-authenticated release. The Business
 engine persists through HTTP/PostgreSQL. Native call controls are bounded by the
-server's provider and owner authorization gates. Creation is disabled and
-owner recovery works independently through an exact-call check. The earlier
-unjoined Retell call ended; real audio acceptance remains open. Other workspace views
+server's provider and owner authorization gates. The browser asks for the
+microphone, requests creation, validates the minimized Retell grant and only then
+joins audio; it never creates a provider call itself. Owner recovery works
+independently through an exact-call check. Real audio acceptance remains open. Other workspace views
 currently use local state that resets on reload; they do not send operations to
 external providers.
 
@@ -46,9 +47,13 @@ bundle-size warning is tracked for route splitting and deferred visual modules.
 The deployed release matched seven frontend files to the server after local
 108-test and packaged browser checks. It serves the artwork separately and
 compresses eligible HTML. A fresh Google owner sign-in and Calls-panel readback passed. The panel
-shows both configured male providers and the retired Retell operation; creation controls are absent while creation is disabled. These
-checks do not establish live voice calls or future-scale reliability. See
-[current release evidence](../../docs/evidence/tenant-export-release-20261015.md),
+shows both configured male providers and the retired Retell operation. With
+backend release 20 the Start control is available to the owner and shows the
+server's limit (180 seconds); while the free-credit receipt is expired the server
+refuses creation and the panel reports that no call was created. Frontend release
+10 is unchanged and its seven live files match. These checks do not establish live
+voice calls or future-scale reliability. See
+[current release evidence](../../docs/evidence/voice-release-20261025.md),
 [public criteria](../../docs/public-frontend-spec.md),
 [operator criteria](../../docs/frontend-spec.md),
 [deployment](../../docs/frontend-deployment.md) and

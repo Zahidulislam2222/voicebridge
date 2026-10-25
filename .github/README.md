@@ -8,7 +8,7 @@ Permissions are read-only. There are no production secrets, provider calls, publ
 artifact uploads or deployments. Paid AI review stays disabled. Contributors use
 pull requests; sensitive reports use private vulnerability reporting.
 
-The [current release evidence](../docs/evidence/tenant-export-release-20261015.md)
+The [current release evidence](../docs/evidence/voice-release-20261025.md)
 records local and live checks separately from CI. Future capacity, uptime and
 legal gates remain documented targets rather than repository checkmarks.
 

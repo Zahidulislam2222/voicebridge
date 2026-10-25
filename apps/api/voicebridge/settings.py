@@ -165,9 +165,9 @@ class Settings(BaseSettings):
     native_template_file: Path | None = None
     native_retell_approved_file: Path | None = None
     native_entitlement_file: Path | None = None
-    native_entitlement_ttl_seconds: int = Field(default=900, gt=0)
+    native_entitlement_ttl_seconds: int = Field(default=900, gt=0, le=7200)
     native_grant_seconds: int = Field(default=120, gt=0)
-    native_max_seconds: int = Field(default=60, gt=0, le=60)
+    native_max_seconds: int = Field(default=60, gt=0, le=180)
     native_vapi_media_host_suffix: str = Field(default="daily.co", pattern=r"^[a-z0-9.-]+$")
     native_vapi_model_provider: str = Field(default="openai", pattern=r"^[a-z][a-z0-9_-]{0,39}$")
     tenant_id: str

@@ -203,7 +203,7 @@ Define the OpenAPI draft and shared domain schemas for organizations, users, age
 Acceptance criteria:
 
 - [x] P1.1 The product contract defines the configured business, roles, verification data boundary, complete flow and excluded scope.
-- [x] P1.2 Actual Git initialization, private-file ignore/staging/history checks and installed-hook execution are verified; every configured scanner demonstrably runs.
+- [x] P1.2 Actual Git initialization, private-file ignore/staging/history checks and installed-hook execution are verified; every configured scanner verifiably runs.
 - [x] P1.3 Chosen runtimes and package registry checks are recorded; reproducible locked setup and applicable test/type/lint/build commands run.
 - [x] P1.4 Domain schemas, API contracts and state transitions validate; the configuration inventory maps each changeable value to one owner.
 - [x] P1.5 Local services and controlled adapters start from a clean setup; ordinary tests refuse real provider network access.
@@ -258,7 +258,7 @@ Document the voice brief, creation method, permitted use, voice ID, source/sampl
 
 Implement the Retell adapter, authorized call initiation and authenticated webhook receipt. Verify signatures over the raw request body and map events into monotonic call states. Store provider call IDs and artifact references with access/retention policies. Browser calls use permitted scoped credentials; server API secrets never reach the browser.
 
-After an explicit cost approval, make browser calls and at least one real phone-path test using an approved number or existing telephony setup. Tune endpointing, interruption sensitivity, speaking speed, pronunciation, silence behavior and background noise. Demonstrate human transfer or callback handling; document which path was actually tested.
+After an explicit cost approval, make browser calls and at least one real phone-path test using an approved number or existing telephony setup. Tune endpointing, interruption sensitivity, speaking speed, pronunciation, silence behavior and background noise. Verify human transfer or callback handling; document which path was actually tested.
 
 Acceptance criteria:
 
@@ -509,10 +509,10 @@ Design independent failure domains: load-balanced API replicas across suitable z
 Declare recovery-time and recovery-point objectives per data class, with immutable/encrypted backup protection where selected, point-in-time recovery and restores into an isolated environment. Backups must have recorded access and retention policies. Test zone/process/database faults, vendor latency/rate limits, queue recovery and rolling deployments; implement bounded retries, circuit breakers and graceful degradation. Route new calls to a verified alternative only where supported; do not promise migration of an already active call.
 
 - [ ] R1 Named service indicators, 99.9% objectives, rolling window, failure/degraded definitions, latency thresholds and error-budget policy are reviewed and represented in validated operational configuration.
-- [ ] R2 The approved production topology eliminates the identified single-host failure point and demonstrates replica/database/worker failover without data/tenant isolation violations.
+- [ ] R2 The approved production topology eliminates the identified single-host failure point and proves replica/database/worker failover without data/tenant isolation violations.
 - [ ] R3 Scoped RTO/RPO, backup integrity, isolated restoration, deletion-after-restore and disaster-recovery exercises have measured evidence within the agreed objectives.
 - [ ] R4 Deployment/migration recovery and dependency/zone fault rehearsals meet stage objectives; on-call ownership, escalation and error-budget-driven release decisions are exercised.
-- [ ] R5 A complete valid observation window demonstrates each claimed 99.9% indicator at declared load; insufficient traffic, observation time or missing telemetry leaves achieved uptime unverified.
+- [ ] R5 A complete valid observation window proves each claimed 99.9% indicator at declared load; insufficient traffic, observation time or missing telemetry leaves achieved uptime unverified.
 
 ### H Strict security and abuse resistance
 
@@ -546,7 +546,7 @@ Protect telemetry dashboards/exports with roles and access audits, retention/del
 
 - [ ] M1 Each implemented HTTP/tool/job/provider flow produces correlated privacy-safe signals; missing/out-of-order events do not manufacture business success and tenant-private telemetry stays protected.
 - [ ] M2 Versioned dashboards expose service indicators, voice/booking outcomes, dependency health, database/queue saturation, provider quotas and spend at the admitted stage.
-- [ ] M3 Configured service/security/quota/error-budget alerts reach an authorized primary and backup owner; acknowledgement/escalation and linked runbooks are demonstrated.
+- [ ] M3 Configured service/security/quota/error-budget alerts reach an authorized primary and backup owner; acknowledgement/escalation and linked runbooks are proven.
 - [ ] M4 Outage, latency, retry-storm, worker/collector death and missing-telemetry experiments exercise detection and recovery; paid verification probes remain bounded and separately approved.
 - [ ] M5 Telemetry/audit access, retention, redaction, sampling, cardinality and cost controls pass verification; evidence counters and required audits remain reliable under peak load and monitoring failure.
 

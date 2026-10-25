@@ -81,7 +81,7 @@ artifact intentionally embeds its required assets for local delivery.
 Actual Git private ignore/staging/history protections are verified; Windows
 pre-commit is installed and its Gitleaks/Bandit/Semgrep commands pass. Installed
 edit-bridge manual execution passes; automatic dispatch on every edit is not
-independently demonstrated. These results do not establish legal compliance,
+independently proven. These results do not establish legal compliance,
 capacity, complete security or uptime. Live parity, promotion and rollback are in
 [frontend-deployment.md](frontend-deployment.md).
 

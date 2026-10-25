@@ -22,22 +22,29 @@ FastAPI/PostgreSQL core, durable workers and shared Retell/Vapi business tools.
 ## Implementation and roadmap
 
 The single-business frontend and backend are deployed on the existing server.
-The current guarded releases matched 16 backend and seven frontend files to
-their live artifacts. The full 252-test backend suite exited successfully, and 108
-frontend tests passed. One bounded owner-only booking previously received
-direct Calendar and CRM readbacks and one authorized email confirmation.
-Call creation is disabled; a separately gated owner recovery action verifies
-the exact existing provider call before terminal retirement. The earlier
-unjoined Retell call ended and its slot is clear; no conversation began.
-Vapi creation and audio acceptance remain open. The twelve presentation/operator
-destinations use controlled local state; `#/engine` is the persistent console.
-The roadmap accepts 26/50 implementation and 0/30 readiness criteria. Unrestricted
-external email remains disabled. See the [current release evidence](docs/evidence/tenant-export-release-20261015.md)
-and [earlier release record](docs/evidence/pilot-verification.md).
+Backend release 20 (2026-10-25) matched 16 backend files and 15 image source
+modules to the live server; frontend release 10 matched seven files. The full
+254-test backend suite and 108 frontend tests passed. One bounded owner-only
+booking previously received direct Calendar and CRM readbacks and one authorized
+email confirmation.
+
+The owner voice route now allows a bounded three-minute Retell web call: the server
+seals a call capability into provider metadata, creates the call, binds its ID and
+only then hands the browser its media grant. Each call needs a current free-credit
+receipt valid for at most two hours; the deployed receipt is expired, so calls are
+refused before any provider request until the owner runs a fresh billing check.
+No real conversation has been completed yet, and Vapi remains unattempted.
+Read-only owner recovery retires an exactly bound call from a verified provider
+receipt. The twelve presentation/operator destinations use controlled local state;
+`#/engine` is the persistent console. The roadmap accepts 26/50 implementation and
+0/30 readiness criteria. Unrestricted external email remains disabled. See the
+[current release evidence](docs/evidence/voice-release-20261025.md), the
+[October 15 release](docs/evidence/tenant-export-release-20261015.md) and the
+[earlier release record](docs/evidence/pilot-verification.md).
 
 The future architecture separately targets **1M+ registered accounts**, **1M+
 active dashboard sessions** and **1M+ simultaneous voice calls**, plus a declared
-mixed workload. None of these loads has been demonstrated. Reliability planning
+mixed workload. None of these loads has been proven. Reliability planning
 sets a **99% baseline** and a **99.9% production objective** for defined service
 indicators; neither is an achieved uptime figure or contractual SLA. The
 [capacity roadmap](docs/capacity/scaling-roadmap.md) and
@@ -113,6 +120,6 @@ exports stay outside Git. Historical evidence remains dated to its actual scope.
 configuration, providers, legal/privacy applicability, security, monitoring,
 runbooks and release evidence. [Future scaling](docs/capacity/scaling-roadmap.md)
 separates stored accounts, active sessions, simultaneous calls and mixed workloads.
-[Reliability](docs/reliability.md) defines99% and 99.9% objectives, indicators,
+[Reliability](docs/reliability.md) defines 99% and 99.9% objectives, indicators,
 measurement and recovery acceptance. [Operations](docs/operations-runbooks.md)
 and [publication criteria](docs/publication-20261015-spec.md) describe safe delivery.

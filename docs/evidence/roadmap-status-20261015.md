@@ -26,12 +26,12 @@ unaccepted. The owner deferred listening; deployment cannot close those gates.
 | ID | Status | Evidence and exact remaining boundary |
 | --- | --- | --- |
 | P1.1 | Accepted | B/F/C product contracts define configured repair business, owner/operator/viewer/unauthenticated boundaries, isolated verification data, end-to-end flow and exclusions. Guest access is denied rather than invented as a customer account feature. |
-| P1.2 | Accepted | publication and release evidence record actual Git, ignored/unstaged/history-safe private files and installed Gitleaks/Bandit/Semgrep hook execution. Automatic edit-hook dispatch on every edit remains unproven; this criterion specifically requires demonstrated configured scanner/installed-hook execution, which exists. |
+| P1.2 | Accepted | publication and release evidence record actual Git, ignored/unstaged/history-safe private files and installed Gitleaks/Bandit/Semgrep hook execution. Automatic edit-hook dispatch on every edit remains unproven; this criterion specifically requires proven configured scanner/installed-hook execution, which exists. |
 | P1.3 | Accepted | G records exact runtimes, registry verification, locked dependency setup, successful clean CI installation and applicable tests/types/lint/build commands. This accepts the reproducible foundation; the broader production-readiness gate is assessed separately under P10.1. |
 | P1.4 | Accepted | C01/C02/C03/C08–C13, typed contracts/settings, generated OpenAPI/client drift tests and documented configuration inventory establish schemas, state transitions and configuration owners for the implemented system. |
 | P1.5 | Accepted | Initial owned PostgreSQL/n8n/Mailpit setup and controlled adapters were started/verified; G clean CI creates isolated PostgreSQL/Mailpit and installs from locks. tests/conftest.py explicitly rejects non-loopback sockets and real-enabled provider/delivery settings. |
 | P2.1 | Accepted | F records all eight public/twelve operator destinations at 375/768/1024/1440 widths, 32 public + 52 operator layouts, navigation/focus and corrected overflow findings. Later packaged route checks preserve scope; this is presentation acceptance. |
-| P2.2 | Accepted | F operator browser journeys and workspace-service tests demonstrate agent/voice coherence and controlled linked call/booking/contact/job creation. No actual voice is implied. |
+| P2.2 | Accepted | F operator browser journeys and workspace-service tests verify agent/voice coherence and controlled linked call/booking/contact/job creation. No actual voice is implied. |
 | P2.3 | Accepted | F explicitly exercises empty/search, input/error/permission, viewer restrictions, destructive confirmations and loading/retry UI states. |
 | P2.4 | Accepted | F records keyboard skip/focus/dialog return, form validation and principal journey in real browser plus component/type/build gates. |
 | P2.5 | Partial | No real sends/private credentials in controlled flow is evidenced, but original B requires every controlled screen/test state clearly labelled. Later owner-amended W09 deliberately changed visible labels; F notes that amendment. Do not silently check unchanged original wording. Resolve/record a precise accepted presentation-scope amendment, or reintroduce relevant-action local-state disclosure. |
@@ -94,7 +94,7 @@ No readiness criterion is proposed closed from planning documents alone.
 | S4 | External gate | Dated small free account balances/inventory are not account-specific capacity/arrival/region/contract/budget commitments for claimed scale. |
 | S5 | External gate | Bounded baseline does not provide sustained/burst/skew/mixed/failure benchmarks or upstream-supported million-call evidence. |
 | R1 | Partial | docs/reliability.md names indicators/rolling thirty-day objectives; validated complete per-indicator eligibility/latency/degraded/error-budget policy config and reviewed owners absent. |
-| R2 | External gate | Current single shared host is an explicit failure domain; no approved redundant topology/failover demonstration. |
+| R2 | External gate | Current single shared host is an explicit failure domain; no approved redundant topology/failover verification. |
 | R3 | Partial | Isolated backup count/hash restoration exists; scoped measured RTO/RPO, off-host integrity, deletion-after-restore and disaster-recovery exercise incomplete. |
 | R4 | Partial | Actual bad-release rollback/worker recovery exists; dependency/zone drills, on-call escalation and exercised error-budget release decisions absent. |
 | R5 | External gate | No complete valid 99.9% indicator observation window at declared load; passive sampler explicitly never claims sustained uptime. |
