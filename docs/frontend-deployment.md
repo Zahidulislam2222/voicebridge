@@ -1,9 +1,9 @@
 # Frontend publication and release handoff
 
 **Live:** https://voicebridge.zahidul-islam.com/ — frontend
-`20261015-tenant-exports-10` and backend `20261025-video-voice-20`. On
+`20261015-tenant-exports-10` and backend `20261025-video-call-23`. On
 2026-10-25 a read-only check matched all seven live frontend files to release 10;
-the backend change needed no new frontend release. The record below describes the
+the backend changes needed no new frontend release. The record below describes the
 October 15 promotion.
 Guarded promotion verified7 frontend files,16 backend release files and15 runtime
 modules, preserving13 gateway files and57 neighboring containers. The backend

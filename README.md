@@ -22,23 +22,25 @@ FastAPI/PostgreSQL core, durable workers and shared Retell/Vapi business tools.
 ## Implementation and roadmap
 
 The single-business frontend and backend are deployed on the existing server.
-Backend release 20 (2026-10-25) matched 16 backend files and 15 image source
+Backend release 23 (2026-10-25) matched 16 backend files and 15 image source
 modules to the live server; frontend release 10 matched seven files. The full
-254-test backend suite and 108 frontend tests passed. One bounded owner-only
+258-test backend suite and 108 frontend tests passed. One bounded owner-only
 booking previously received direct Calendar and CRM readbacks and one authorized
 email confirmation.
 
 The owner voice route now allows a bounded three-minute Retell web call: the server
 seals a call capability into provider metadata, creates the call, binds its ID and
 only then hands the browser its media grant. Each call needs a current free-credit
-receipt valid for at most two hours; the deployed receipt is expired, so calls are
-refused before any provider request until the owner runs a fresh billing check.
-No real conversation has been completed yet, and Vapi remains unattempted.
+receipt valid for at most two hours. On 2026-10-25 the fifth owner web call, with a
+synthetic test caller, joined audio, checked availability and booked; the worker
+completed its Google Calendar and CRM jobs. The first four calls failed and are
+recorded with their fixes. That receipt has since expired, so new calls are refused
+before any provider request, and Vapi remains unattempted.
 Read-only owner recovery retires an exactly bound call from a verified provider
 receipt. The twelve presentation/operator destinations use controlled local state;
 `#/engine` is the persistent console. The roadmap accepts 26/50 implementation and
 0/30 readiness criteria. Unrestricted external email remains disabled. See the
-[current release evidence](docs/evidence/voice-release-20261025.md), the
+[current release evidence](docs/evidence/voice-calls-20261025.md), the
 [October 15 release](docs/evidence/tenant-export-release-20261015.md) and the
 [earlier release record](docs/evidence/pilot-verification.md).
 

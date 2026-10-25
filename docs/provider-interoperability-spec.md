@@ -71,4 +71,9 @@ real call joins audio, runs a business tool and books, and until the Vapi path i
 exercised. The October 13 `error user not joined` result came from a creation made
 without a browser join, not from the binding order.
 
-P01–P08 accepted for the measured authenticated release scope:144backend/23focused checks, native configuration readback,14source/12release hash parity, reviewed03deployment and public auth-denial checks. P09 remains open: no native call creation/bind/audio run has occurred.
+Update 2026-10-25, backend release 23: owner Retell web call 5 joined audio, ran
+`check_availability` and `create_booking` and booked; the worker completed the
+Calendar and CRM jobs. The Retell half of P09 is met. P09 stays unchecked until the
+Vapi path is exercised. See the [owner call evidence](evidence/voice-calls-20261025.md).
+
+P01–P08 accepted for the measured authenticated release scope:144backend/23focused checks, native configuration readback,14source/12release hash parity, reviewed03deployment and public auth-denial checks. P09 remains open for Vapi; see the 2026-10-25 update above.

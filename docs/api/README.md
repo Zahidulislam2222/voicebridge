@@ -32,7 +32,7 @@ session and CSRF, accepts only an exact owned operation and uses a separately
 enabled GET-only provider path. It never creates or stops a provider call.
 UNKNOWN creation without a returned external ID stays manual. Any later creation
 still needs fresh free-entitlement verification. End-to-end audio/tool acceptance
-remains open. See [current release evidence](../evidence/voice-release-20261025.md).
+is met for Retell by one booked owner call and open for Vapi. See [current release evidence](../evidence/voice-calls-20261025.md).
 
 Use stable operation IDs on retries, new IDs when intent changes, expected revisions
 and timezone-aware appointments. Present pending/conflict/unknown outcomes explicitly.

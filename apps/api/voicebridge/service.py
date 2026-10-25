@@ -172,9 +172,16 @@ class Service:
                     )
                 )
 
+    def canonical_service(self, service: str) -> str:
+        """Match a caller's service wording to the configured name, ignoring case and spacing."""
+        wanted = " ".join(service.split()).casefold()
+        for name in self.business.services:
+            if name.casefold() == wanted:
+                return name
+        raise DomainError("unsupported_service", 422)
+
     def slot(self, start: datetime, service: str) -> tuple[datetime, datetime]:
-        if service not in self.business.services:
-            raise DomainError("unsupported_service", 422)
+        service = self.canonical_service(service)
         zone = ZoneInfo(self.business.timezone)
         if start.tzinfo is None or start.utcoffset() is None:
             raise DomainError("timezone_offset_required", 422)
@@ -344,7 +351,7 @@ class Service:
                 tenant_id=tenant,
                 contact_id=contact.id,
                 call_id=value.call_id,
-                service=value.service,
+                service=self.canonical_service(value.service),
                 start=start,
                 end=end,
                 status="pending",

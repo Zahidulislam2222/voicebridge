@@ -9,21 +9,21 @@ release closeout remain open in the
 [single-business acceptance](pilot-completion-spec.md). A successful deployment
 does not close those unrelated criteria.
 
-Status 2026-10-25: backend release 20 enables bounded three-minute owner Retell
-calls behind an expiring free-credit receipt; the released receipt is expired, so
-calls stay refused until the owner opens a window with a fresh billing check and a
-new immutable release. Next acceptance: one owner Retell call that joins audio, runs
-a tool and books end to end, followed by the Vapi path. See the
-[current release evidence](evidence/voice-release-20261025.md).
+Status 2026-10-25: after backend releases 21 to 23, the fifth bounded owner Retell
+web call (synthetic test caller) joined audio, checked availability, booked and
+completed its Calendar and CRM jobs. The five approved calls are used and the receipt
+has expired, so new calls need a fresh billing check and release. Next acceptance:
+the Vapi path, a pre-call Google token check and hours retrieval. See the
+[current release evidence](evidence/voice-calls-20261025.md).
 
-The recorded owner-only Retell web call never joined browser media. Later provider
+The October 13 owner-only Retell web call never joined browser media. Later provider
 readback showed `error user not joined`, duration zero and cost zero; the owner
 operation reached DONE and released its slot. Vapi has not been attempted and
 the saved free-credit receipt is stale. The deployed exact-call recovery extension
 adds provider-confirmed terminal reads for future delayed webhooks; its separate
 [acceptance](native-reconciliation-spec.md) does not close real audio gates.
-The next audio gates remain bounded Retell and Vapi tool checks with owner
-listening, which the owner deferred on October 15. Publication and deployment dates
+The next audio gates are the bounded Vapi tool check and owner listening, which
+the owner deferred on October 15. Publication and deployment dates
 are recorded in the [October 15 recovery evidence](evidence/tenant-export-release-20261015.md), with the [October 13 owner release](evidence/owner-release-20261013.md) retained as history;
 no completion due date has been agreed for the open voice and customer-readiness
 gates. Future capacity dates depend on measured provider limits, workload and
