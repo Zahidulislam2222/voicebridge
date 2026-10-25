@@ -14,8 +14,8 @@ contract, eligibility and remedies. Recorded observation scope is in
 | Voice     | Admitted call meets setup/audio/tool requirements     | Calls within approved quota; setup/audio/tools separated     |
 | Website   | Required routes remain usable within budget           | Actual requests plus declared external probe cadence         |
 
-As of backend release 20 (2026-10-25) the voice indicator has no observed events:
-owner calls are receipt-gated and none has completed. Point-in-time readiness and
+As of backend release 23 (2026-10-25) the voice indicator has five owner web calls
+and one booking, too few events for an indicator; owner calls stay receipt-gated. Point-in-time readiness and
 release parity passed; no thirty-day window has been measured.
 
 Use rolling thirty-day and shorter burn-rate windows. Record workload/release,

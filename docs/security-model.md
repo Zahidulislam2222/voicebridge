@@ -56,7 +56,7 @@ and the actual served CSP. See [reporting](../SECURITY.md) and
 For each release, record exact artifact identity, dependency/advisory results,
 secret and configuration audit, authorization-negative tests, scanner execution,
 review verdict, live behavior and local/live parity in the
-[release evidence](evidence/voice-release-20261025.md). A clean scan or passing build
+[release evidence](evidence/voice-calls-20261025.md). A clean scan or passing build
 cannot prove that external voice, customer data processing or future capacity is
 safe without their own real-flow and independent assessment gates.
 

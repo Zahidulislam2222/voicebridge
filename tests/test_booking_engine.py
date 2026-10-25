@@ -137,6 +137,17 @@ def test_time_service_validation(app: FastAPI, change: dict[str, str], error: st
         app.state.service.book("northline", BookingInput.model_validate(data))
 
 
+@pytest.mark.parametrize(
+    "spoken", ["appliance repair", "Appliance Repair", "  APPLIANCE   repair "]
+)
+def test_spoken_service_name_books_configured_service(app: FastAPI, spoken: str) -> None:
+    # Voice models pass the caller's wording, not the configured capitalisation.
+    value = request(app).model_copy(update={"service": spoken})
+    assert app.state.service.availability("northline", value.start, spoken)["available"]
+    key = app.state.service.book("northline", value)["booking_id"]
+    assert app.state.service.appointment("northline", key)["service"] == "Appliance repair"
+
+
 def test_slot_cannot_end_after_business_closes(app: FastAPI) -> None:
     # Keep the slot in the future so this tests business hours on every run.
     value = request(app, hour=app.state.service.business.closing_hour)

@@ -24,9 +24,9 @@ Current follow-ups use capture mode with no external recipients. Owner native
 voice creation is enabled with a configured 180-second, one-call limit and requires
 a current free-credit receipt (at most two hours old); the released receipt is
 expired, so creation is refused before any provider request until a new release
-carries a fresh billing check. Real audio/tool acceptance is open. Browser and
+carries a fresh billing check. Real audio/tool acceptance is met for Retell by one booked owner call and open for Vapi. Browser and
 native-call tools share the same authorization and business rules. See
-[dated release evidence](evidence/voice-release-20261025.md).
+[dated release evidence](evidence/voice-calls-20261025.md).
 
 The owner call sequence is: owner session and CSRF, free-credit receipt check,
 exact live provider-profile comparison, durable operation reservation, sealed

@@ -65,7 +65,7 @@ Run pytest, Mypy, Ruff, Bandit, secret scans and Python builds. See
 [testing](../../docs/testing.md), [API](../../docs/api/README.md),
 [architecture](../../docs/architecture.md) and
 [operations](../../docs/core-engine-operations.md) and the dated
-[current release evidence](../../docs/evidence/voice-release-20261025.md).
+[current release evidence](../../docs/evidence/voice-calls-20261025.md).
 
 ## Records and local transcript exports
 

@@ -34,7 +34,7 @@ engine persists through HTTP/PostgreSQL. Native call controls are bounded by the
 server's provider and owner authorization gates. The browser asks for the
 microphone, requests creation, validates the minimized Retell grant and only then
 joins audio; it never creates a provider call itself. Owner recovery works
-independently through an exact-call check. Real audio acceptance remains open. Other workspace views
+independently through an exact-call check. Real audio acceptance is met for Retell by one booked owner call and open for Vapi. Other workspace views
 currently use local state that resets on reload; they do not send operations to
 external providers.
 
@@ -48,12 +48,12 @@ The deployed release matched seven frontend files to the server after local
 108-test and packaged browser checks. It serves the artwork separately and
 compresses eligible HTML. A fresh Google owner sign-in and Calls-panel readback passed. The panel
 shows both configured male providers and the retired Retell operation. With
-backend release 20 the Start control is available to the owner and shows the
+backend release 20 and later the Start control is available to the owner and shows the
 server's limit (180 seconds); while the free-credit receipt is expired the server
 refuses creation and the panel reports that no call was created. Frontend release
-10 is unchanged and its seven live files match. These checks do not establish live
-voice calls or future-scale reliability. See
-[current release evidence](../../docs/evidence/voice-release-20261025.md),
+10 is unchanged and its seven live files match. One booked call does not establish voice
+reliability or future-scale reliability. See
+[current release evidence](../../docs/evidence/voice-calls-20261025.md),
 [public criteria](../../docs/public-frontend-spec.md),
 [operator criteria](../../docs/frontend-spec.md),
 [deployment](../../docs/frontend-deployment.md) and

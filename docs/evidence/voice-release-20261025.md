@@ -5,7 +5,8 @@ on the existing server on 2026-10-25 between 05:16 and 05:20 UTC. Frontend
 `20261015-tenant-exports-10` was unchanged; a read-only check matched its seven
 live files to the local release. This record supersedes the current-state lines of the
 [October 15 release evidence](tenant-export-release-20261015.md), which remains
-the dated record for that release.
+the dated record for that release. Releases 21 to 23 and the first booked owner
+call are recorded in the [owner voice calls evidence](voice-calls-20261025.md).
 
 ## Before and after
 

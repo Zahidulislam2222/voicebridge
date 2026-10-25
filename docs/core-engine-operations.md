@@ -9,12 +9,12 @@ shell arguments, screenshots or public evidence.
 
 The historical local engine meets eighteen verification criteria. The current
 authenticated single-business release is backend
-`20261025-video-voice-20` with frontend
-`20261015-tenant-exports-10`. The full 254-test backend suite and 108 frontend
+`20261025-video-call-23` with frontend
+`20261015-tenant-exports-10`. The full 258-test backend suite and 108 frontend
 tests passed; promotion matched 16/16 backend files and 15/15 image modules,
 read-only frontend parity matched 7/7 files, the gateway was unchanged and 77
 unrelated containers were preserved. Readiness passed at the recorded time.
-See [current release evidence](evidence/voice-release-20261025.md);
+See [current release evidence](evidence/voice-calls-20261025.md);
 these checks do not measure
 sustained uptime or a real voice conversation.
 
