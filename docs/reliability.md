@@ -1,7 +1,7 @@
 # Reliability, uptime objectives and recovery
 
 Future baseline: **99%**. Production objective: **99.9%** for declared service
-indicators. Neither has been demonstrated by the current single-server release.
+indicators. Neither has been proven by the current single-server release.
 The build plan retains its stronger production gate. An SLA requires a separate
 contract, eligibility and remedies. Recorded observation scope is in
 [deployment evidence](evidence/tenant-export-release-20261015.md).
@@ -13,6 +13,10 @@ contract, eligibility and remedies. Recorded observation scope is in
 | Worker    | Eligible job reaches receipt before deadline          | Admitted jobs; unknown outcome is not success                |
 | Voice     | Admitted call meets setup/audio/tool requirements     | Calls within approved quota; setup/audio/tools separated     |
 | Website   | Required routes remain usable within budget           | Actual requests plus declared external probe cadence         |
+
+As of backend release 20 (2026-10-25) the voice indicator has no observed events:
+owner calls are receipt-gated and none has completed. Point-in-time readiness and
+release parity passed; no thirty-day window has been measured.
 
 Use rolling thirty-day and shorter burn-rate windows. Record workload/release,
 sample count, errors, latency histograms and unknown telemetry intervals. Keep

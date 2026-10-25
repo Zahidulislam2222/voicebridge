@@ -23,12 +23,16 @@ provider keys in browser variables.
 Local transcript redaction records a tombstone so late provider events cannot
 restore the deleted local transcript. It does not delete a provider copy or
 rewrite an earlier backup; both need separate verified lifecycle procedures.
-Native creation is disabled. `POST /api/calls/native/reconcile` requires the owner
+`POST /api/calls/native/create` requires the owner session and CSRF, a current
+free-credit receipt and an exact provider-profile match before any provider request;
+it seals the call capability into provider metadata, binds the returned call ID and
+returns a minimized expiring media grant. Repeating the same operation ID returns the
+existing grant. `POST /api/calls/native/reconcile` requires the owner
 session and CSRF, accepts only an exact owned operation and uses a separately
 enabled GET-only provider path. It never creates or stops a provider call.
 UNKNOWN creation without a returned external ID stays manual. Any later creation
 still needs fresh free-entitlement verification. End-to-end audio/tool acceptance
-remains open. See [current release evidence](../evidence/tenant-export-release-20261015.md).
+remains open. See [current release evidence](../evidence/voice-release-20261025.md).
 
 Use stable operation IDs on retries, new IDs when intent changes, expected revisions
 and timezone-aware appointments. Present pending/conflict/unknown outcomes explicitly.

@@ -13,8 +13,22 @@ must be implemented and measured before increasing admission beyond a validated 
 
 One million sessions refreshing every thirty seconds imply roughly 33,333 requests/
 second before writes. One million five-minute calls imply roughly 3,333 admissions/
-second in steady state. These are sizing assumptions, excluding bursts/reconnects/
-retries. Use `concurrency = arrival rate × average lifetime` with measured inputs.
+second in steady state. With the current three-minute owner call cap, one million simultaneous calls at
+full length imply roughly 5,556 admissions/second. These are sizing assumptions,
+excluding bursts/reconnects/retries. Use `concurrency = arrival rate × average lifetime` with measured inputs.
+
+## Current measured baseline
+
+| Dimension             | Current verified scope (2026-10-25)                       | Target                                |
+| --------------------- | --------------------------------------------------------- | ------------------------------------- |
+| Deployment            | One shared server, five constrained services              | Regional cells with redundancy        |
+| Voice concurrency     | One owner call at a time, 180-second cap, receipt-gated   | 1M+ simultaneous calls (V4)           |
+| Dashboard sessions    | Single owner plus guarded local load criteria             | 1M+ active sessions (C4)              |
+| Registered accounts   | Single business tenant with owner identity                | 1M+ stored accounts                   |
+| Availability evidence | Point-in-time readiness and release parity                | 99% baseline, 99.9% production SLO    |
+
+The gap between these columns is the work of stages C1–C4 and V1–V4; nothing in
+the current column is extrapolated to the target column.
 
 ## Target topology
 

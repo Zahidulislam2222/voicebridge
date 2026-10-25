@@ -36,6 +36,16 @@ Declare denominators, deadlines and exclusions before measuring. Preserve unknow
 telemetry intervals rather than treating missing data as success. Sampled traces
 explain failures; durable receipts establish business outcomes.
 
+## Voice route signals
+
+Track receipt age against `VB_NATIVE_ENTITLEMENT_TTL_SECONDS`, create outcomes by
+error class (receipt unverified, profile drift, capacity reached, unknown), bound
+calls without an ended event, reconciliation outcomes, tool latency against the
+provider tool timeout, and call duration against the configured cap. A profile-drift
+error is a configuration signal to refresh the approved provider readback, never a
+reason to relax the comparison. As of 2026-10-25 these are design requirements; no
+call has produced these signals yet.
+
 ## Alerts and verification
 
 Use short/long burn-rate windows against the declared service objective, plus

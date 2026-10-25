@@ -9,12 +9,12 @@ shell arguments, screenshots or public evidence.
 
 The historical local engine meets eighteen verification criteria. The current
 authenticated single-business release is backend
-`20261015-tenant-exports-19` with frontend
-`20261015-tenant-exports-10`. The full backend suite exited successfully and
-108 frontend tests passed; promotion matched 16/16 backend and 7/7 frontend
-files, the reviewed image modules and the owned gateway. Readiness, exact
-public HTML/PNG, gzip/Vary and unauthorized business-state HTTP 401 passed at
-the recorded time. See [current release evidence](evidence/tenant-export-release-20261015.md);
+`20261025-video-voice-20` with frontend
+`20261015-tenant-exports-10`. The full 254-test backend suite and 108 frontend
+tests passed; promotion matched 16/16 backend files and 15/15 image modules,
+read-only frontend parity matched 7/7 files, the gateway was unchanged and 77
+unrelated containers were preserved. Readiness passed at the recorded time.
+See [current release evidence](evidence/voice-release-20261025.md);
 these checks do not measure
 sustained uptime or a real voice conversation.
 
@@ -22,11 +22,19 @@ Vapi support identified the default Python header as the cause
 of the earlier edge denial and authorized an application User-Agent/HTTPX request.
 One read-only assistant inventory request returned HTTP 200. The configured owner
 gate is resolved for this account; dedicated native profile configuration is
-verified. The owner-only native route has a configured 60-second, one-call limit.
-The earlier unjoined Retell call ended and its slot is clear. Creation is disabled;
-GET-only owner recovery requires VB_NATIVE_RECONCILIATION_ENABLED=true and never
-enables creation or media. Any later call also requires fresh free-credit and
-account verification. No audio/tool acceptance has passed. Calendar and CRM permissions are
+verified. The owner-only native route has a configured 180-second, one-call limit.
+The earlier unjoined Retell call ended and its slot is clear. Creation is enabled
+for the owner but refused until a release carries a free-credit receipt younger
+than `VB_NATIVE_ENTITLEMENT_TTL_SECONDS` (7200 seconds); the deployed receipt is
+expired. GET-only owner recovery requires VB_NATIVE_RECONCILIATION_ENABLED=true
+and never creates calls or joins media.
+
+To open a filming or acceptance window: confirm in the provider dashboards that the
+prepaid balance is positive, no card is saved, recharge is off and no billable add-on
+or bring-your-own-key is active; record that receipt; freeze a new immutable release
+carrying it; run the guarded upgrade; then complete calls within the window. Let a
+call end before starting another. If a call stays bound after it ends, use owner
+recovery before a retry rather than creating a new operation. No audio/tool acceptance has passed. Calendar and CRM permissions are
 independently enabled, with one bounded owner-only readback; general external
 email delivery is disabled and follow-ups use capture mode.
 

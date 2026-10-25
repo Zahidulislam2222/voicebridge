@@ -18,10 +18,12 @@ Populate a private environment file from `.env.example`; configure PostgreSQL,
 unique capabilities and business data. Examples are test credentials only.
 Keep `VB_PROVIDER__ENABLED=false` and follow-up capture enabled locally. The
 deployed single-business release has an owner-only native route with isolated
-API credentials. Creation is disabled; separately gated GET-only recovery can
-verify and retire an exact bound call without enabling audio. The earlier
-unjoined Retell call ended; native audio and Vapi acceptance remain open.
-Unrestricted email
+API credentials. Creation is enabled for the owner but each call requires a
+current free-credit receipt (`VB_NATIVE_ENTITLEMENT_TTL_SECONDS`, at most 7200)
+and an exact provider-profile match; `VB_NATIVE_MAX_SECONDS` caps calls at no more
+than 180 seconds. The deployed receipt is expired, so creation fails closed before
+any provider request. Separately gated GET-only recovery can verify and retire an
+exact bound call. Native audio and Vapi acceptance remain open. Unrestricted email
 delivery remains disabled. An earlier owner-only Calendar/CRM/email receipt
 verifies a bounded path; it does not authorize general delivery.
 
@@ -63,7 +65,7 @@ Run pytest, Mypy, Ruff, Bandit, secret scans and Python builds. See
 [testing](../../docs/testing.md), [API](../../docs/api/README.md),
 [architecture](../../docs/architecture.md) and
 [operations](../../docs/core-engine-operations.md) and the dated
-[current release evidence](../../docs/evidence/tenant-export-release-20261015.md).
+[current release evidence](../../docs/evidence/voice-release-20261025.md).
 
 ## Records and local transcript exports
 

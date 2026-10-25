@@ -31,6 +31,16 @@ scope, raise resource limits or alter data processing. Verify the effective runn
 configuration, not just a file on disk. A disabled execution policy must remain
 visible in operational checks.
 
+## Native call limits
+
+`VB_NATIVE_MAX_SECONDS` sets the owner call limit (default 60, typed maximum 180)
+and must equal the approved provider agent's maximum call duration, or creation fails
+with a profile-drift error. `VB_NATIVE_ENTITLEMENT_TTL_SECONDS` sets how long a
+free-credit receipt stays valid (default 900, typed maximum 7200). The deployment
+guard reads both maximums from the typed settings and accepts a change only when it
+equals an explicit release approval. `VB_PROVIDER__VOICE_ENABLED` enables creation
+only in the separated API runtime; worker and observer runtimes keep it off.
+
 ## Operator exports
 
 `VB_EXPORT_MAX_BYTES`, `VB_EXPORT_SNAPSHOT_FILENAME` and
