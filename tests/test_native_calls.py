@@ -15,7 +15,9 @@ from voicebridge.contracts import DomainError, NativeCallInput
 from voicebridge.db import Call, Operation, now
 
 
-def prepared_native(app: FastAPI, tmp_path: Any) -> tuple[Any, list[dict[str, Any]]]:
+def prepared_native(
+    app: FastAPI, tmp_path: Any, max_seconds: int = 60
+) -> tuple[Any, list[dict[str, Any]]]:
     native = app.state.native_calls
     service = app.state.service
     service.profiles = service.profiles.model_copy(
@@ -56,7 +58,7 @@ def prepared_native(app: FastAPI, tmp_path: Any) -> tuple[Any, list[dict[str, An
             "agent_id": "test-retell-agent",
             "version": 0,
             "voice_id": "test-male-voice",
-            "max_call_duration_ms": 60000,
+            "max_call_duration_ms": max_seconds * 1000,
             "response_engine": {"type": "retell-llm", "llm_id": "test-llm", "version": 0},
         },
         "llm": {"llm_id": "test-llm", "version": 0, "model": "test-model"},
@@ -70,6 +72,7 @@ def prepared_native(app: FastAPI, tmp_path: Any) -> tuple[Any, list[dict[str, An
             "native_cipher_key": SecretStr(Fernet.generate_key().decode()),
             "native_entitlement_file": entitlement,
             "native_retell_approved_file": approved_path,
+            "native_max_seconds": max_seconds,
         }
     )
     native.settings = settings
@@ -516,3 +519,22 @@ def test_vapi_version_recording_or_extra_tool_drift_blocks_creation(
         with pytest.raises(DomainError) as unsafe:
             native._template()
         assert unsafe.value.code == "native_template_mismatch"
+
+
+def test_three_minute_cap_reaches_preflight_override_and_status(
+    app: FastAPI, tmp_path: Any
+) -> None:
+    native, seen = prepared_native(app, tmp_path, max_seconds=180)
+    tenant = app.state.service.settings.tenant_id
+    value = NativeCallInput(provider="retell", operation_id="test-operation-0180")
+    native.create(tenant, "test-owner", value)
+    assert seen[0]["agent_override"] == {"agent": {"max_call_duration_ms": 180000}}
+    assert native.status(tenant, "test-owner")["limits"]["max_seconds"] == 180
+    native.settings = native.settings.model_copy(update={"native_max_seconds": 60})
+    with pytest.raises(DomainError) as drift:
+        native.create(
+            tenant,
+            "test-owner",
+            NativeCallInput(provider="retell", operation_id="test-operation-0060"),
+        )
+    assert drift.value.code == "native_profile_drift"
